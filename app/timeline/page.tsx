@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { repository } from "@/lib/github/contents";
+import { identity } from "@/lib/auth/session";
+import { isOwner } from "@/lib/github/authz";
+import { buildTimeline } from "@/lib/content/timeline";
+export default async function Page() {
+  const items = await buildTimeline(repository(), isOwner(await identity()));
+  return (
+    <>
+      <div className="page-heading">
+        <p className="eyebrow">A TRACE OF PRACTICE</p>
+        <h1>学习时间线</h1>
+        <p>每次正式保存，都是一次可以回看的进步。</p>
+        <small>
+          最近 30
+          条记录展开提交历史；较早记录显示最新活动。完整历史可在各记录页面查看。
+        </small>
+      </div>
+      <ol className="timeline">
+        {items.map((i) => (
+          <li className="paper panel" key={i.id}>
+            <time>{i.date.slice(0, 16).replace("T", " ")} UTC</time>
+            <h2>
+              <Link href={i.url}>{i.title}</Link>
+            </h2>
+            <span className="badge">{i.type}</span>
+          </li>
+        ))}
+      </ol>
+      {!items.length && <p>暂无学习活动。</p>}
+    </>
+  );
+}

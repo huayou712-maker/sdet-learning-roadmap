@@ -1,0 +1,13 @@
+{
+  "name": "huayou712-maker",
+  "bio": "以项目驱动学习，以证据展示测试开发能力。",
+  "skills": [
+    "Python",
+    "pytest",
+    "Playwright",
+    "MySQL",
+    "Docker",
+    "GitHub Actions",
+    "RAG Evaluation"
+  ]
+}

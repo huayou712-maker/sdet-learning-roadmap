@@ -1,0 +1,12 @@
+node_modules
+.next
+package-lock.json
+CODEX_FRONTEND_PROMPT.md
+CODEX_PROMPT.md
+README_HANDOFF.md
+docs/ROADMAP.md
+docs/RESOURCES.md
+docs/PROJECTS.md
+docs/PROGRESS.md
+test-results
+playwright-report

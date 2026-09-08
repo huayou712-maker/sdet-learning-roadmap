@@ -1,0 +1,137 @@
+[
+  {
+    "id": "project-0",
+    "projectNo": 0,
+    "title": "测试用例设计",
+    "body": "# Project 0：测试用例设计\n\n## 被测对象\n\n任选一个：\n\n- 登录\n- 注册\n- 商品搜索\n- 购物车\n- 下单\n\n## 输出\n\n创建：\n\n```text\nprojects/manual-testing/\n├── test-cases.md\n└── bug-report-example.md\n```\n\n### test-cases.md 至少覆盖\n\n- 正常流程\n- 等价类\n- 边界值\n- 异常输入\n- 状态变化\n- 权限\n- 重复操作\n- 网络异常\n\n### 验收\n\n能解释为什么设计这些测试，而不是只有用例数量。\n\n---\n\n",
+    "checklist": [
+      "登录",
+      "注册",
+      "商品搜索",
+      "购物车",
+      "下单",
+      "正常流程",
+      "等价类",
+      "边界值",
+      "异常输入",
+      "状态变化",
+      "权限",
+      "重复操作",
+      "网络异常"
+    ],
+    "stageId": "stage-04"
+  },
+  {
+    "id": "project-1",
+    "projectNo": 1,
+    "title": "API 自动化测试框架（核心）",
+    "body": "# Project 1：API 自动化测试框架（核心）\n\n## 推荐目录\n\n```text\nprojects/api-test-framework/\n├── api/\n│   ├── auth_api.py\n│   ├── user_api.py\n│   └── order_api.py\n├── tests/\n│   ├── test_auth.py\n│   ├── test_user.py\n│   └── test_order.py\n├── data/\n│   ├── auth.yaml\n│   └── user.yaml\n├── utils/\n│   ├── config.py\n│   ├── db.py\n│   └── logger.py\n├── config/\n│   └── config.example.yaml\n├── conftest.py\n├── pytest.ini\n├── requirements.txt\n└── README.md\n```\n\n## 必做功能\n\n- [ ] GET 请求\n- [ ] POST 请求\n- [ ] PUT / PATCH\n- [ ] DELETE\n- [ ] 登录获取 Token\n- [ ] Token 自动注入\n- [ ] fixture\n- [ ] fixture scope\n- [ ] 参数化\n- [ ] YAML / JSON 数据驱动\n- [ ] API 链路依赖\n- [ ] MySQL 校验\n- [ ] 异常处理\n- [ ] logging\n- [ ] Allure 报告\n- [ ] GitHub Actions\n\n## 加分\n\n- [ ] JSON Schema\n- [ ] Mock\n- [ ] 并行执行\n- [ ] retry 策略\n- [ ] Docker 化\n\n## README 必须解释\n\n- 为什么这样分层\n- 如何安装\n- 如何运行\n- 如何配置环境\n- 测试数据怎么管理\n- CI 怎么执行\n- 一次失败案例怎么排查\n\n---\n\n",
+    "checklist": [
+      "GET 请求",
+      "POST 请求",
+      "PUT / PATCH",
+      "DELETE",
+      "登录获取 Token",
+      "Token 自动注入",
+      "fixture",
+      "fixture scope",
+      "参数化",
+      "YAML / JSON 数据驱动",
+      "API 链路依赖",
+      "MySQL 校验",
+      "异常处理",
+      "logging",
+      "Allure 报告",
+      "GitHub Actions",
+      "JSON Schema",
+      "Mock",
+      "并行执行",
+      "retry 策略",
+      "Docker 化"
+    ],
+    "stageId": "stage-05"
+  },
+  {
+    "id": "project-2",
+    "projectNo": 2,
+    "title": "Playwright Web 自动化",
+    "body": "# Project 2：Playwright Web 自动化\n\n## 推荐目录\n\n```text\nprojects/web-ui-test/\n├── pages/\n│   ├── login_page.py\n│   └── home_page.py\n├── tests/\n│   ├── test_login.py\n│   └── test_search.py\n├── data/\n├── conftest.py\n├── pytest.ini\n└── README.md\n```\n\n## 必做\n\n- [ ] Playwright 安装\n- [ ] Locator\n- [ ] Role / Text 定位\n- [ ] 登录测试\n- [ ] fixture\n- [ ] 登录状态复用\n- [ ] POM\n- [ ] 参数化\n- [ ] Screenshot\n- [ ] Trace\n- [ ] 失败自动截图\n- [ ] CI 执行\n\n## 验收\n\n不能只是“录制生成脚本”；要能够自己写 Page Object 和测试逻辑。\n\n---\n\n",
+    "checklist": [
+      "Playwright 安装",
+      "Locator",
+      "Role / Text 定位",
+      "登录测试",
+      "fixture",
+      "登录状态复用",
+      "POM",
+      "参数化",
+      "Screenshot",
+      "Trace",
+      "失败自动截图",
+      "CI 执行"
+    ],
+    "stageId": "stage-06"
+  },
+  {
+    "id": "project-3",
+    "projectNo": 3,
+    "title": "性能测试",
+    "body": "# Project 3：性能测试\n\n## 被测对象\n\n优先复用前面的 API 服务。\n\n## 场景\n\n至少 2 个：\n\n- 登录接口\n- 查询接口\n- 创建订单 / 创建资源\n\n## 输出\n\n```text\nprojects/performance-test/\n├── jmeter/\n│   └── test-plan.jmx\n├── report/\n├── test-plan.md\n└── result-analysis.md\n```\n\n## result-analysis.md 包含\n\n- 压测环境\n- 并发数\n- 持续时间\n- 数据量\n- 平均响应时间\n- P95 / P99\n- TPS / QPS\n- Error Rate\n- CPU / 内存\n- 观察到的瓶颈\n- 下一步优化建议\n\n---\n\n",
+    "checklist": [
+      "登录接口",
+      "查询接口",
+      "创建订单 / 创建资源",
+      "压测环境",
+      "并发数",
+      "持续时间",
+      "数据量",
+      "平均响应时间",
+      "P95 / P99",
+      "TPS / QPS",
+      "Error Rate",
+      "CPU / 内存",
+      "观察到的瓶颈",
+      "下一步优化建议"
+    ],
+    "stageId": "stage-07"
+  },
+  {
+    "id": "project-4",
+    "projectNo": 4,
+    "title": "CI/CD",
+    "body": "# Project 4：CI/CD\n\n把 Project 1 或 Project 2 接入 GitHub Actions。\n\n## 最低要求\n\n`.github/workflows/test.yml`\n\n逻辑：\n\n```text\npush / pull_request\n→ checkout\n→ setup Python\n→ install requirements\n→ run pytest\n→ upload artifact\n```\n\n## 加分\n\n- 缓存 pip\n- matrix 多 Python 版本\n- 定时回归\n- 测试失败通知\n\n---\n\n",
+    "checklist": [
+      "缓存 pip",
+      "matrix 多 Python 版本",
+      "定时回归",
+      "测试失败通知"
+    ],
+    "stageId": "stage-08"
+  },
+  {
+    "id": "project-5",
+    "projectNo": 5,
+    "title": "AI / RAG Evaluation",
+    "body": "# Project 5：AI / RAG Evaluation\n\n## 被测系统\n\n用 Dify 构建一个小型知识库，例如：\n\n- 学校规章问答\n- 软件测试知识库\n- 某开源项目文档助手\n\n## 构建评测集\n\n```text\nquestion\nexpected_answer\nexpected_source\ncategory\n```\n\n场景至少包括：\n\n- 正确答案\n- 文档中不存在答案\n- 相似问题\n- 歧义问题\n- 错误前提\n- Prompt Injection\n\n## 自动化\n\nPython 调用被测 AI API，记录：\n\n- 返回文本\n- 引用\n- 延迟\n- token（能获取时）\n\n使用 Evaluator 评估：\n\n- Correctness\n- Faithfulness\n- Retrieval Relevance\n- Format / Policy\n\n最终接入 pytest 或 CI 做回归。\n",
+    "checklist": [
+      "学校规章问答",
+      "软件测试知识库",
+      "某开源项目文档助手",
+      "正确答案",
+      "文档中不存在答案",
+      "相似问题",
+      "歧义问题",
+      "错误前提",
+      "Prompt Injection",
+      "返回文本",
+      "引用",
+      "延迟",
+      "token（能获取时）",
+      "Correctness",
+      "Faithfulness",
+      "Retrieval Relevance",
+      "Format / Policy"
+    ],
+    "stageId": "stage-10"
+  }
+]
