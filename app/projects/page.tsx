@@ -2,6 +2,7 @@ import Link from "next/link";
 import { readProjects, readEntries } from "@/lib/content/read";
 import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
+import { Thumbnail } from "@/components/dashboard/media";
 export default async function Page() {
   const owner = isOwner(await identity());
   const projects = await readProjects();
@@ -14,7 +15,7 @@ export default async function Page() {
         <p>从测试用例，到可复现的质量工程。</p>
       </div>
       <div className="project-grid">
-        {projects.map((p) => {
+        {projects.map((p, i) => {
           const e = entries.find(
             (e) =>
               e.id === p.id && !e.deletedAt && (owner || e.showInPortfolio),
@@ -25,6 +26,7 @@ export default async function Page() {
               key={p.id}
               href={"/projects/" + p.id}
             >
+              <Thumbnail kind="project" index={i} />
               <small>PROJECT {p.projectNo}</small>
               <h2>{p.title}</h2>
               <p>
