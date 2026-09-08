@@ -9,7 +9,7 @@ export function SignIn({
 }) {
   return (
     <button
-      disabled={!configured}
+      disabled={!loggedIn && !configured}
       onClick={() => (loggedIn ? signOut() : signIn("github"))}
     >
       {loggedIn ? "退出登录" : "使用 GitHub 登录"}
