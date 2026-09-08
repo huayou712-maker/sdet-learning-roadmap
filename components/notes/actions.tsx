@@ -7,10 +7,12 @@ export function ContentActions({
   id,
   sha,
   trashed = false,
+  kind = "notes",
 }: {
   id: string;
   sha: string;
   trashed?: boolean;
+  kind?: string;
 }) {
   const [confirm, setConfirm] = useState("");
   const [message, setMessage] = useState("");
@@ -18,7 +20,7 @@ export function ContentActions({
   async function run(action: string) {
     const response = await fetch(
       action === "delete"
-        ? "/api/notes/" + id
+        ? "/api/" + kind + "/" + id
         : "/api/trash/" + id + "/" + action,
       {
         method: action === "delete" ? "DELETE" : "POST",

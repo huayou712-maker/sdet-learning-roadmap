@@ -1,6 +1,42 @@
 import { z } from "zod";
 export const idSchema = z.string().regex(/^[a-z0-9][a-z0-9-]{0,100}$/);
 export const stageSchema = z.string().regex(/^stage-(0[1-9]|10)$/);
+export const kindSchema = z.enum([
+  "note",
+  "assignment",
+  "project",
+  "debug",
+  "daily",
+]);
+const url = z
+  .union([
+    z.literal(""),
+    z.url().refine((v) => new URL(v).protocol === "https:", "链接必须为 HTTPS"),
+  ])
+  .default("");
+const extra = {
+  assignmentId: idSchema.optional(),
+  iteration: z.number().int().positive().optional(),
+  date: z.iso.date().optional(),
+  plannedMinutes: z.number().int().min(0).max(1440).default(0),
+  actualMinutes: z.number().int().min(0).max(1440).default(0),
+  mood: z.string().max(50).default(""),
+  projectNo: z.number().int().min(0).max(5).optional(),
+  projectId: idSchema.optional(),
+  repositoryPath: z.string().max(200).default(""),
+  externalRepository: url,
+  demoUrl: url,
+  reportUrl: url,
+  checklist: z
+    .array(
+      z.object({ title: z.string().min(1).max(180), completed: z.boolean() }),
+    )
+    .max(100)
+    .default([]),
+  startedAt: z.string().nullable().optional(),
+  submittedAt: z.string().nullable().optional(),
+  completedAt: z.string().nullable().optional(),
+};
 export const noteInput = z
   .object({
     title: z.string().trim().min(1).max(160),
@@ -9,7 +45,7 @@ export const noteInput = z
     tags: z.array(z.string().trim().min(1).max(32)).max(20).default([]),
     body: z.string().min(1).max(100000),
     status: z
-      .enum(["planned", "in_progress", "completed"])
+      .enum(["planned", "in_progress", "completed", "submitted", "archived"])
       .default("in_progress"),
     showInPortfolio: z.boolean().default(false),
     durationMinutes: z.number().int().min(0).max(1440).default(0),
@@ -20,17 +56,20 @@ export const noteInput = z
     acknowledgedPublic: z.literal(true),
   })
   .strict();
+export const recordInput = noteInput.extend(extra);
 export const metaSchema = noteInput
   .omit({ body: true, sha: true, acknowledgedPublic: true })
   .extend({
+    ...extra,
     id: idSchema,
-    type: z.literal("note"),
+    type: kindSchema,
     createdAt: z.string(),
     updatedAt: z.string(),
     deletedAt: z.string().nullable(),
   });
 export type ContentMeta = z.infer<typeof metaSchema>;
 export type Entry = ContentMeta & { body: string; path: string; sha: string };
+export type Kind = z.infer<typeof kindSchema>;
 export const progressInput = z
   .object({
     completed: z.boolean(),

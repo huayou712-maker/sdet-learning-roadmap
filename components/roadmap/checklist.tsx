@@ -1,17 +1,122 @@
 "use client";
 import { useState } from "react";
-import type { Roadmap, Progress } from "@/lib/models";
+import type { Roadmap, Progress, Evidence } from "@/lib/models";
+import { kindRoute } from "@/lib/content/catalog";
+import type { Kind } from "@/lib/schemas/content";
+type Candidate = { id: string; type: Kind; title: string };
+function EvidenceEditor({
+  current,
+  candidates,
+  owner,
+  disabled,
+  onSave,
+}: {
+  current: Evidence[];
+  candidates: Candidate[];
+  owner: boolean;
+  disabled: boolean;
+  onSave: (e: Evidence[]) => Promise<void>;
+}) {
+  const [chosen, setChosen] = useState(
+    current.filter((e) => e.type !== "commit").map((e) => e.id),
+  );
+  const [commit, setCommit] = useState(
+    current
+      .filter((e) => e.type === "commit")
+      .map((e) => e.id)
+      .join(","),
+  );
+  return (
+    <details className="evidence">
+      <summary>
+        {current.length} 份证据 · {owner ? "关联输出" : "查看输出"}
+      </summary>
+      <ul>
+        {current.map((e) => {
+          const found = candidates.find(
+            (c) => c.id === e.id && c.type === e.type,
+          );
+          return (
+            <li key={e.type + e.id}>
+              {e.type === "commit" ? (
+                <a
+                  href={
+                    "https://github.com/huayou712-maker/sdet-learning-roadmap/commit/" +
+                    e.id
+                  }
+                >
+                  Commit {e.id.slice(0, 7)}
+                </a>
+              ) : found ? (
+                <a href={"/" + kindRoute[found.type] + "/" + found.id}>
+                  {found.title}
+                </a>
+              ) : (
+                <span>记录未展示或已删除</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+      {owner && (
+        <>
+          <label>
+            关联学习记录
+            <select
+              multiple
+              value={chosen}
+              onChange={(e) =>
+                setChosen(Array.from(e.target.selectedOptions, (o) => o.value))
+              }
+            >
+              {candidates
+                .filter((e) => e.type !== "daily")
+                .map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.type} · {e.title}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label>
+            Commit 完整 SHA（逗号分隔）
+            <input value={commit} onChange={(e) => setCommit(e.target.value)} />
+          </label>
+          <button
+            disabled={disabled}
+            onClick={() =>
+              onSave([
+                ...candidates
+                  .filter((e) => chosen.includes(e.id) && e.type !== "daily")
+                  .map((e) => ({ type: e.type as Evidence["type"], id: e.id })),
+                ...commit
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean)
+                  .map((id) => ({ type: "commit" as const, id })),
+              ])
+            }
+          >
+            保存证据关联
+          </button>
+        </>
+      )}
+    </details>
+  );
+}
 import { PublicNotice } from "@/components/ui/public-notice";
 export function Checklist({
   roadmap,
   progress,
   owner = false,
   sha = "",
+  entries = [],
 }: {
   roadmap: Roadmap;
   progress: Progress;
   owner?: boolean;
   sha?: string;
+  entries?: Candidate[];
 }) {
   const [filter, setFilter] = useState("all");
   const [state, setState] = useState(progress);
@@ -19,7 +124,7 @@ export function Checklist({
   const [ack, setAck] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
-  async function toggle(id: string, completed: boolean) {
+  async function toggle(id: string, completed: boolean, evidence?: Evidence[]) {
     setBusy(true);
     try {
       const r = await fetch("/api/progress/" + id, {
@@ -27,6 +132,7 @@ export function Checklist({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           completed,
+          evidence,
           sha: version,
           acknowledgedPublic: ack,
         }),
@@ -111,9 +217,19 @@ export function Checklist({
                             />
                             <span>{item.title}</span>
                           </label>
-                          <small>
-                            {state.items[item.id]?.evidence.length || 0} 份证据
-                          </small>
+                          <EvidenceEditor
+                            current={state.items[item.id]?.evidence || []}
+                            candidates={entries}
+                            owner={owner}
+                            disabled={!ack || busy}
+                            onSave={(e) =>
+                              toggle(
+                                item.id,
+                                state.items[item.id]?.completed ?? false,
+                                e,
+                              )
+                            }
+                          />
                         </div>
                       ))}
                   </section>

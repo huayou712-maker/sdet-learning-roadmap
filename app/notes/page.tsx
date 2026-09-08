@@ -11,6 +11,7 @@ export default async function Page({
   const { q = "", stage = "", tag = "" } = await searchParams;
   const entries = (await readEntries()).filter(
     (e) =>
+      e.type === "note" &&
       !e.deletedAt &&
       (owner || e.showInPortfolio) &&
       (!stage || e.stageId === stage) &&

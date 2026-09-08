@@ -9,33 +9,69 @@ import {
   saveNote,
   trashEntry,
 } from "@/lib/content/service";
+import { saveRecord, validateTopics } from "@/lib/content/learning-service";
 import { parseEntry } from "@/lib/content/format";
 import { readLearning } from "@/lib/content/read";
-import { progressInput } from "@/lib/schemas/content";
+import { progressInput, noteInput, type Kind } from "@/lib/schemas/content";
 import { AppError } from "@/lib/errors";
 import { jsonBody, sameOrigin, errorResponse } from "@/lib/http";
+import { searchIndex } from "@/lib/search";
+import { timeline } from "@/lib/content/timeline";
 type Context = { params: Promise<{ route: string[] }> };
+const kinds: Record<string, Kind> = {
+  notes: "note",
+  assignments: "assignment",
+  projects: "project",
+  "debug-journal": "debug",
+  daily: "daily",
+};
 export const dynamic = "force-dynamic";
 export async function GET(req: Request, context: Context) {
   try {
-    const [kind, id, sub] = (await context.params).route;
+    const segments = (await context.params).route;
+    if (segments.length > 3) throw new AppError(404, "接口不存在");
+    const [kind, id, sub] = segments;
     const repo = repository();
     const owner = isOwner(await identity());
+    const query = new URL(req.url).searchParams;
     if (kind === "roadmap")
       return NextResponse.json((await readLearning()).roadmap);
     if (kind === "progress") return NextResponse.json(await readLearning());
-    if (kind === "notes") {
+    if (kind === "search")
+      return NextResponse.json(
+        searchIndex(
+          await entries(repo),
+          (await readLearning()).roadmap,
+          query.get("q") || "",
+          owner,
+        ),
+      );
+    if (kind === "timeline")
+      return NextResponse.json(
+        timeline(
+          await entries(repo),
+          await repo.getCommitsForPath("data/progress.json"),
+          owner,
+        ),
+      );
+    if (kinds[kind]) {
       if (!id)
         return NextResponse.json(
           (await entries(repo)).filter(
-            (e) => !e.deletedAt && (owner || e.showInPortfolio),
+            (e) =>
+              e.type === kinds[kind] &&
+              !e.deletedAt &&
+              (owner || e.showInPortfolio),
           ),
         );
       const e = await findEntry(repo, id);
-      if (!owner && (e.deletedAt || !e.showInPortfolio))
+      if (
+        e.type !== kinds[kind] ||
+        (!owner && (e.deletedAt || !e.showInPortfolio))
+      )
         throw new AppError(404, "找不到学习记录");
       if (sub === "history") {
-        const ref = new URL(req.url).searchParams.get("ref");
+        const ref = query.get("ref");
         if (ref) {
           const file = await repo.getTextFileAtRef(e.path, ref);
           if (!file) throw new AppError(404, "找不到版本");
@@ -46,6 +82,7 @@ export async function GET(req: Request, context: Context) {
         }
         return NextResponse.json(await repo.getCommitsForPath(e.path));
       }
+      if (sub) throw new AppError(404, "接口不存在");
       return NextResponse.json(e);
     }
     throw new AppError(404, "接口不存在");
@@ -55,7 +92,9 @@ export async function GET(req: Request, context: Context) {
 }
 async function mutate(req: Request, context: Context) {
   try {
-    const [kind, id, sub] = (await context.params).route;
+    const segments = (await context.params).route;
+    if (segments.length > 3) throw new AppError(404, "接口不存在");
+    const [kind, id, sub] = segments;
     sameOrigin(req);
     if (kind === "test-session") {
       if (
@@ -75,18 +114,33 @@ async function mutate(req: Request, context: Context) {
     const repo = repository();
     const payload = await jsonBody(req);
     let result: unknown;
-    if (kind === "notes" && req.method === "POST" && !id)
-      result = await saveNote(repo, payload);
-    else if (kind === "notes" && id && req.method === "PUT")
-      result = await saveNote(repo, payload, id);
-    else if (kind === "notes" && id && req.method === "DELETE") {
+    if (
+      kinds[kind] &&
+      !sub &&
+      ((req.method === "POST" && !id) || (req.method === "PUT" && id))
+    ) {
+      if (kind === "notes") {
+        const parsed = noteInput.parse(payload);
+        await validateTopics(repo, parsed.stageId, parsed.topicIds);
+        result = await saveNote(repo, payload, id);
+      } else
+        result = await saveRecord(
+          repo,
+          kinds[kind] as Exclude<Kind, "note">,
+          payload,
+          id,
+        );
+    } else if (kinds[kind] && id && !sub && req.method === "DELETE") {
       if (payload.acknowledgedPublic !== true)
         throw new AppError(400, "请确认公开仓库提示");
+      const found = await findEntry(repo, id);
+      if (found.type !== kinds[kind]) throw new AppError(400, "记录类型不匹配");
       result = await trashEntry(repo, id, payload.sha, "delete");
     } else if (
       kind === "trash" &&
       id &&
-      ["restore", "permanent"].includes(sub)
+      ["restore", "permanent"].includes(sub) &&
+      req.method === "POST"
     ) {
       if (payload.acknowledgedPublic !== true)
         throw new AppError(400, "请确认公开仓库提示");
@@ -96,13 +150,32 @@ async function mutate(req: Request, context: Context) {
         payload.sha,
         sub as "restore" | "permanent",
       );
-    } else if (kind === "progress" && id && req.method === "PATCH") {
+    } else if (kind === "progress" && id && !sub && req.method === "PATCH") {
       const input = progressInput.parse(payload);
       const { roadmap, progress } = await readLearning();
       const stage = roadmap.stages.find((s) =>
         s.groups.some((g) => g.items.some((i) => i.id === id)),
       );
       if (!stage) throw new AppError(400, "知识点不存在");
+      if (input.evidence) {
+        const records = await entries(repo);
+        for (const e of input.evidence) {
+          if (e.type === "commit") {
+            if (!/^[a-f0-9]{40}$/.test(e.id))
+              throw new AppError(400, "Commit 证据需完整 SHA");
+            const exists = await repo.getTextFileAtRef(
+              "data/progress.json",
+              e.id,
+            );
+            if (!exists) throw new AppError(400, "Commit 不属于可验证学习历史");
+          } else if (
+            !records.some(
+              (r) => r.id === e.id && r.type === e.type && !r.deletedAt,
+            )
+          )
+            throw new AppError(400, "证据不存在或已删除");
+        }
+      }
       progress.items[id] = {
         completed: input.completed,
         completedAt: input.completed ? new Date().toISOString() : null,

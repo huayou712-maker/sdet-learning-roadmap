@@ -1,11 +1,29 @@
 import Link from "next/link";
-import roadmap from "@/data/roadmap.json";
-import progress from "@/data/progress.json";
-import projects from "@/data/projects.json";
-import { progressStats } from "@/lib/stats";
-import type { Progress } from "@/lib/models";
-export default function Home() {
-  const stats = progressStats(roadmap, progress as Progress);
+import { readLearning, readProjects, readEntries } from "@/lib/content/read";
+import { identity } from "@/lib/auth/session";
+import { isOwner } from "@/lib/github/authz";
+import { entryUrl } from "@/lib/content/catalog";
+import { progressStats, learningStats } from "@/lib/stats";
+export default async function Home() {
+  const [{ roadmap, progress }, projects, all, session] = await Promise.all([
+    readLearning(),
+    readProjects(),
+    readEntries(),
+    identity(),
+  ]);
+  const owner = isOwner(session);
+  const records = all.filter(
+    (e) => !e.deletedAt && (owner || e.showInPortfolio),
+  );
+  const stats = progressStats(roadmap, progress);
+  const activity = learningStats(records);
+  const current = roadmap.stages.find((s) =>
+    s.groups.some((g) => g.items.some((i) => !progress.items[i.id]?.completed)),
+  );
+  const today = records.find(
+    (e) =>
+      e.type === "daily" && e.date === new Date().toISOString().slice(0, 10),
+  );
   return (
     <>
       <section className="hero">
@@ -39,11 +57,19 @@ export default function Home() {
             "总体进度",
             stats.completed + " / " + stats.total + " 个知识点",
           ],
-          ["0", "连续学习天数", "从第一篇日课开始"],
-          ["0 h", "累计学习时间", "以日课记录为准"],
-          ["0 / 6", "项目完成", "每个项目都有验收标准"],
-          ["0", "学习笔记", "让理解可以回看"],
-          ["0", "作业提交", "以实战检验所学"],
+          [String(activity.streak), "连续学习天数", "按 UTC 日期计算"],
+          [
+            (activity.minutes / 60).toFixed(1) + " h",
+            "累计学习时间",
+            "仅汇总日课实际时长",
+          ],
+          [
+            activity.projects + " / " + projects.length,
+            "项目完成",
+            "每个项目都有验收标准",
+          ],
+          [String(activity.notes), "学习笔记", "让理解可以回看"],
+          [String(activity.assignments), "作业提交", "独立提交，不覆盖历史"],
         ].map(([value, label, detail]) => (
           <article key={label} className="paper stat">
             <small>{label}</small>
@@ -68,30 +94,55 @@ export default function Home() {
           </ol>
         </section>
         <section className="paper panel">
-          <p className="eyebrow">CURRENT CHAPTER / 01</p>
-          <h2>计算机基础</h2>
+          <p className="eyebrow">
+            CURRENT CHAPTER / {current?.order || "完成"}
+          </p>
+          <h2>{current?.title || "十阶路线已完成"}</h2>
           <p>不从头重学 Python。以项目驱动，缺什么补什么。</p>
           <div className="empty-illustration" aria-hidden="true">
             知 → 行 → 证
           </div>
-          <h3>第一份学习证据，留给今天。</h3>
-          <p>开始一篇笔记，记录你的理解、代码和仍待解决的问题。</p>
+          <h3>最近笔记</h3>
+          {records
+            .filter((e) => e.type === "note")
+            .slice(0, 3)
+            .map((e) => (
+              <p key={e.id}>
+                <Link href={entryUrl(e)}>{e.title}</Link>
+              </p>
+            ))}
+          {!activity.notes && (
+            <p>尚无可展示笔记。记录理解、代码和仍待解决的问题。</p>
+          )}
           <Link className="text-link" href="/notes">
             打开学习笔记 ↗
           </Link>
         </section>
         <aside className="ink panel">
           <p className="eyebrow">TODAY / 今日学习</p>
-          <h2>落笔，才算开始。</h2>
-          <p>今天还没有学习记录。给自己设一个可以完成的小目标。</p>
+          <h2>{today?.title || "落笔，才算开始。"}</h2>
+          <p>
+            {today
+              ? `计划 ${today.plannedMinutes} 分钟 · 实际 ${today.actualMinutes} 分钟`
+              : "今天还没有可展示日课。给自己设一个可以完成的小目标。"}
+          </p>
+          {today && <p>{today.body.slice(0, 160)}</p>}
           <Link className="button outline" href="/daily">
-            写今日计划 ↗
+            {owner ? "记录今日学习 ↗" : "查看日课 ↗"}
           </Link>
           <hr />
           <h3>需要复习</h3>
           <p>{stats.missingEvidence} 个已完成知识点待补证据。</p>
           <h3>最近动态</h3>
-          <p>学习活动将在保存后出现在这里。</p>
+          {records.slice(0, 3).map((e) => (
+            <p key={e.id}>
+              <Link href={entryUrl(e)}>{e.title}</Link>
+              <br />
+              <small>{e.updatedAt.slice(0, 10)}</small>
+            </p>
+          ))}
+          {!records.length && <p>学习活动将在提交到 GitHub 后出现在这里。</p>}
+          <Link href="/timeline">完整留痕时间线 ↗</Link>
         </aside>
       </div>
       <section className="paper panel">
@@ -108,7 +159,10 @@ export default function Home() {
             >
               <small>PROJECT / {String(p.projectNo).padStart(2, "0")}</small>
               <h3>{p.title}</h3>
-              <span className="badge">计划中</span>
+              <span className="badge">
+                {records.find((e) => e.type === "project" && e.id === p.id)
+                  ?.status || "planned"}
+              </span>
             </Link>
           ))}
         </div>

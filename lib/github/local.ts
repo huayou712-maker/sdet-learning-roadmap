@@ -6,9 +6,17 @@ import { safePath, writablePath } from "./paths";
 import type { Repository, CommitInfo } from "./types";
 const sha = (s: string | Buffer) => createHash("sha1").update(s).digest("hex");
 export function localRepository(writable = false): Repository {
-  if(process.env.NODE_ENV==='production'||process.env.E2E_ADAPTER!=='1'||!process.env.E2E_SECRET||process.env.GITHUB_WRITE_TOKEN||!writable)throw new AppError(503,'本地适配器仅允许隔离自动化测试使用');
-  if(!/^[a-z0-9-]+$/.test(process.env.E2E_RUN_ID||''))throw new AppError(503,'缺少隔离测试运行 ID');
-  const root = join(process.cwd(), ".e2e-data",process.env.E2E_RUN_ID!);
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.E2E_ADAPTER !== "1" ||
+    !process.env.E2E_SECRET ||
+    process.env.GITHUB_WRITE_TOKEN ||
+    !writable
+  )
+    throw new AppError(503, "本地适配器仅允许隔离自动化测试使用");
+  if (!/^[a-z0-9-]+$/.test(process.env.E2E_RUN_ID || ""))
+    throw new AppError(503, "缺少隔离测试运行 ID");
+  const root = join(process.cwd(), ".e2e-data", process.env.E2E_RUN_ID!);
   const historyRoot = join(root, ".history");
   async function get(path: string) {
     safePath(path);

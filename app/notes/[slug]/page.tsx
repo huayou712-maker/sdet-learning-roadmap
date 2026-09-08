@@ -14,7 +14,9 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const owner = isOwner(await identity());
-  const entry = (await readEntries()).find((e) => e.id === slug);
+  const entry = (await readEntries()).find(
+    (e) => e.id === slug && e.type === "note",
+  );
   if (!entry || (!owner && (entry.deletedAt || !entry.showInPortfolio)))
     notFound();
   const { saved } = await searchParams;

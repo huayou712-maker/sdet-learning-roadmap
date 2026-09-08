@@ -2,11 +2,18 @@ import { randomUUID } from "node:crypto";
 import type { Repository } from "@/lib/github/types";
 import { AppError } from "@/lib/errors";
 import { slug } from "@/lib/github/paths";
-import { idSchema, noteInput, type Entry } from "@/lib/schemas/content";
+import {
+  idSchema,
+  noteInput,
+  metaSchema,
+  type Entry,
+} from "@/lib/schemas/content";
 import { parseEntry, serializeEntry } from "./format";
 export async function entries(repo: Repository) {
-  const paths = (await repo.listDirectory("content/notes")).filter((p) =>
-    p.endsWith(".md"),
+  const paths = (await repo.listDirectory("content")).filter((p) =>
+    /^content\/(notes|assignments|project-submissions|daily|debug-journal)\/.+\.md$/.test(
+      p,
+    ),
   );
   const result: Entry[] = [];
   for (let i = 0; i < paths.length; i += 8) {
@@ -32,18 +39,19 @@ export async function saveNote(
   const input = noteInput.parse(payload);
   const now = new Date().toISOString();
   const old = id ? await findEntry(repo, id) : null;
+  if (old && old.type !== "note") throw new AppError(400, "记录类型不匹配");
   if (old?.deletedAt) throw new AppError(400, "请先从回收站恢复记录");
   if (old && !input.sha) throw new AppError(400, "缺少文件版本");
   const { body, sha, acknowledgedPublic, ...fields } = input;
   void acknowledgedPublic;
-  const meta = {
+  const meta = metaSchema.parse({
     ...fields,
     id: old?.id || randomUUID(),
     type: "note" as const,
     createdAt: old?.createdAt || now,
     updatedAt: now,
     deletedAt: null,
-  };
+  });
   const path =
     old?.path ||
     "content/notes/" +
