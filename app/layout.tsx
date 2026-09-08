@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/layout/nav";
 import "./globals.css";
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: {
     default: "SDET Learning OS · 行知",

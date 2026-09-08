@@ -1,4 +1,90 @@
 @import "tailwindcss";
+.editor-form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.editor-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 24px 0;
+}
+.editor-preview {
+  min-width: 0;
+  max-height: 650px;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.editor-input {
+  min-width: 0;
+}
+.editor-tabs {
+  display: none;
+}
+.public-notice {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--gold-600);
+  background: var(--paper-100);
+  margin: 20px 0;
+  font-size: 13px;
+}
+.public-notice input {
+  flex-shrink: 0;
+  width: 18px;
+  accent-color: var(--jade-700);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+.entry-card {
+  display: block;
+}
+.entry-card:hover {
+  border-color: var(--gold-600);
+}
+[role="alertdialog"] {
+  border: 1px solid var(--crimson-600);
+  padding: 20px;
+  margin-top: 20px;
+}
+@media (max-width: 767px) {
+  .form-grid,
+  .editor-split {
+    grid-template-columns: 1fr;
+  }
+  .editor-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  .view-editor .editor-preview {
+    display: none;
+  }
+  .view-preview .editor-input {
+    display: none;
+  }
+  .editor-form input,
+  .editor-form select {
+    width: 100%;
+  }
+}
 :root {
   --ink-950: #1f1b15;
   --ink-900: #2b251c;

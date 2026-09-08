@@ -1,8 +1,9 @@
-import roadmap from "@/data/roadmap.json";
-import progress from "@/data/progress.json";
-import type { Progress } from "@/lib/models";
 import { Checklist } from "@/components/roadmap/checklist";
-export default function Page() {
+import { readLearning } from "@/lib/content/read";
+import { identity } from "@/lib/auth/session";
+import { isOwner } from "@/lib/github/authz";
+export default async function Page() {
+  const data = await readLearning();
   return (
     <>
       <div className="page-heading">
@@ -10,7 +11,7 @@ export default function Page() {
         <h1>十阶进路</h1>
         <p>学习路线定义来自原始文档，完成状态独立保存。</p>
       </div>
-      <Checklist roadmap={roadmap} progress={progress as Progress} />
+      <Checklist {...data} owner={isOwner(await identity())} />
     </>
   );
 }
