@@ -106,6 +106,15 @@ export async function saveRecord(
         throw new AppError(400, "代码路径应位于 projects/");
     }
   }
+  if (kind === "debug" && input.projectId) {
+    const defs = await repo.getTextFile("data/projects.json");
+    if (
+      !(JSON.parse(defs?.content || "[]") as ProjectDefinition[]).some(
+        (p) => p.id === input.projectId,
+      )
+    )
+      throw new AppError(400, "关联项目不存在");
+  }
   if (kind === "debug")
     path =
       old?.path ||

@@ -11,6 +11,6 @@ export function safeError(error: unknown) {
     return { status: error.status, message: error.message };
   return {
     status: 503,
-    message: "GitHub API 暂时不可用，请稍后重试。当前草稿仍保留在本机。",
+    message: "GitHub API 暂时不可用，请保留或复制当前草稿后重试。",
   };
 }

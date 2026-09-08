@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Markdown } from "@/components/ui/markdown";
 import { PublicNotice } from "@/components/ui/public-notice";
+import { AssetUpload } from "@/components/notes/asset-upload";
 import {
   templates,
   kindRoute,
@@ -136,7 +137,11 @@ export function RecordEditor({
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
       setDirty(false);
-      localStorage.removeItem(key);
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* GitHub remains the source of truth. */
+      }
       setMessage("已保存 · Commit: " + data.commit.slice(0, 7));
       if (!entry)
         router.push(
@@ -171,7 +176,8 @@ export function RecordEditor({
           恢复本机草稿
         </button>
       </div>
-      <div className="editor-form">
+      <fieldset disabled={busy} className="editor-form">
+        <legend className="sr-only">学习记录内容</legend>
         <label>
           标题
           <input
@@ -412,8 +418,19 @@ export function RecordEditor({
             <Markdown body={form.body} />
           </div>
         </div>
-      </div>
+      </fieldset>
       <PublicNotice checked={ack} onChange={setAck} />
+      <AssetUpload
+        acknowledged={ack}
+        disabled={busy}
+        onInsert={(text) => {
+          setForm((current) => ({
+            ...current,
+            body: current.body + "\n\n" + text,
+          }));
+          setDirty(true);
+        }}
+      />
       <div className="actions">
         <button disabled={!ack || busy || !form.title.trim()} onClick={save}>
           {busy ? "正在提交…" : "保存并提交到 GitHub"}

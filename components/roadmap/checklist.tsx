@@ -126,6 +126,7 @@ export function Checklist({
   const [message, setMessage] = useState("");
   async function toggle(id: string, completed: boolean, evidence?: Evidence[]) {
     setBusy(true);
+    setMessage("正在提交到 GitHub…");
     try {
       const r = await fetch("/api/progress/" + id, {
         method: "PATCH",

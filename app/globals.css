@@ -747,3 +747,84 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.hero-foot span {
+  background: var(--paper-100);
+  padding: 3px 7px;
+}
+.editor-form {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.evidence {
+  margin: 0 0 16px 27px;
+  font-size: 13px;
+}
+.evidence summary,
+.attachment summary {
+  cursor: pointer;
+}
+.evidence input,
+.evidence select {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+}
+.evidence label {
+  display: block;
+  margin: 10px 0;
+}
+.attachment {
+  border-block: 1px solid var(--border);
+  padding: 16px 0;
+  margin: 20px 0;
+}
+.attachment p {
+  font-size: 14px;
+}
+.attachment input {
+  max-width: 100%;
+}
+.portfolio-projects {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.portfolio-note {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+}
+.markdown,
+.panel,
+.stage-groups > section {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.markdown table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+@media (max-width: 767px) {
+  .portfolio-projects {
+    grid-template-columns: 1fr;
+  }
+  .stage summary {
+    flex-wrap: wrap;
+  }
+  .stage-count {
+    margin-left: auto;
+  }
+  .attachment input {
+    width: 100%;
+  }
+}

@@ -24,7 +24,10 @@ export default async function Page({
   const owner = isOwner(await identity());
   const all = await readEntries();
   const entry = all.find(
-    (e) => e.id === id && e.type === "project" && (owner || e.showInPortfolio),
+    (e) =>
+      e.id === id &&
+      e.type === "project" &&
+      (owner || (e.showInPortfolio && !e.deletedAt)),
   );
   const { saved } = await searchParams;
   const related = all.filter(

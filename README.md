@@ -229,3 +229,53 @@ perf: add JMeter login scenario
 最终目标不是“收藏了多少课”，而是 GitHub 上能看到：
 
 > **学习记录 + 测试代码 + 自动化框架 + CI + 测试报告 + 对问题的分析。**
+
+---
+
+## SDET Learning OS Web App
+
+本仓库已增加 GitHub-backed 学习系统：十阶段路线、150 项知识点、学习笔记、独立作业迭代、六个项目档案、日课、问题复盘、证据关联、时间线、搜索和公开作品集。原始路线文档继续保留。
+
+![江湖视觉参考](docs/design/jianghu-ui-reference.png)
+
+暖纸、墨色与赭金的界面使用系统字体与 CSS 山形，不以整幅参考图充当网页背景。
+
+### 实际界面
+
+下图由隔离浏览器测试渲染，展示合成测试状态，不代表真实学习成果。
+
+![桌面首页](docs/design/dashboard-desktop.png)
+
+[查看手机首页截图](docs/design/dashboard-mobile.png)
+
+### 运行
+
+```powershell
+npm ci
+Copy-Item .env.example .env.local
+npm run dev
+```
+
+需要 Node.js 24；访问 `http://localhost:3000`。环境变量、GitHub OAuth App、Fine-grained PAT 和 Vercel 配置步骤见 [DEPLOYMENT.md](docs/DEPLOYMENT.md)。完整部署需要服务端，不使用 GitHub Pages。
+
+### 数据与权限
+
+- GitHub Repository 是唯一正式数据源；正常开发和生产都不使用本地业务文件后备存储。写入成功后显示 Git commit SHA。
+- localStorage 只保存未提交草稿。正式笔记、进度、项目、附件均提交到所配置的 GitHub 内容分支，默认 `main`。
+- 仅 `huayou712-maker` 可写；访客及其他登录账号只读，API 同样校验身份。
+- 当前仓库公开。作品集开关只是展示筛选，不代表私密；永久删除也不会消除 Git 历史。不得提交密码、Token 或个人敏感信息。
+- Web 状态以 `data/progress.json` 为准。原始 `docs/PROGRESS.md` 保留为迁移来源，不与 Web 进行双向同步。不要将两份清单当成两个正式状态源。
+
+### 架构与验证
+
+Next.js App Router + TypeScript + Tailwind；稳定版 next-auth 处理 GitHub OAuth；服务端 Octokit Adapter 统一 GitHub 读写；Zod 校验与 SHA 冲突保护；Markdown Front Matter 保存内容元数据。详见 [ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+
+```text
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+npm run test:e2e
+```
+
+CI 运行静态检查、单元/组件测试、构建和隔离浏览器测试，不向真实 GitHub 仓库写入测试数据。阶段提交依次为 V0.1、V0.2、V0.3、V1.0。

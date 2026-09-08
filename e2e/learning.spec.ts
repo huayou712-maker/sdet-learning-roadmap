@@ -80,7 +80,7 @@ test("owner creates, edits, views history, deletes, restores and updates progres
   await page.getByLabel(/当前仓库为公开仓库/).check();
   await page
     .getByRole("checkbox", { name: "理解网络分层", exact: true })
-    .check();
+    .click();
   await expect(page.getByRole("status")).toContainText("Commit:");
   await page.reload();
   await expect(

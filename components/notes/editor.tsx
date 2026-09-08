@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Markdown } from "@/components/ui/markdown";
 import { PublicNotice } from "@/components/ui/public-notice";
+import { AssetUpload } from "./asset-upload";
 import type { Entry } from "@/lib/schemas/content";
 import type { Roadmap } from "@/lib/models";
 export function Editor({
@@ -101,7 +102,11 @@ export function Editor({
       const result = await response.json();
       if (!response.ok) throw new Error(result.error);
       setDirty(false);
-      localStorage.removeItem(key);
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* Saving to GitHub does not depend on browser storage. */
+      }
       setMessage("已保存 · Commit: " + result.commit.slice(0, 7));
       if (!entry)
         router.push("/notes/" + result.id + "?saved=" + result.commit);
@@ -116,11 +121,16 @@ export function Editor({
     <section className="paper panel">
       <div className="toolbar">
         <h2>{entry ? "编辑笔记" : "新建笔记"}</h2>
-        <button type="button" onClick={restoreDraft}>
+        <button type="button" onClick={restoreDraft} disabled={saving}>
           恢复本机草稿
         </button>
       </div>
-      <div onChange={() => setDirty(true)} className="editor-form">
+      <fieldset
+        disabled={saving}
+        onChange={() => setDirty(true)}
+        className="editor-form"
+      >
+        <legend className="sr-only">笔记内容</legend>
         <label>
           标题
           <input
@@ -221,8 +231,16 @@ export function Editor({
             <Markdown body={body} />
           </div>
         </div>
-      </div>
+      </fieldset>
       <PublicNotice checked={ack} onChange={setAck} />
+      <AssetUpload
+        acknowledged={ack}
+        disabled={saving}
+        onInsert={(text) => {
+          setBody((old) => old + "\n\n" + text);
+          setDirty(true);
+        }}
+      />
       <div className="actions">
         <button onClick={save} disabled={saving || !ack || !title.trim()}>
           {saving ? "正在提交…" : "保存并提交到 GitHub"}

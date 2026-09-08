@@ -151,7 +151,7 @@ export default async function Home() {
           <Link href="/projects">查看全部 ↗</Link>
         </div>
         <div className="project-grid">
-          {projects.slice(0, 4).map((p) => (
+          {projects.map((p) => (
             <Link
               className="project-tile"
               href={"/projects/" + p.id}

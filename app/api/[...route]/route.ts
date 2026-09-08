@@ -16,7 +16,7 @@ import { progressInput, noteInput, type Kind } from "@/lib/schemas/content";
 import { AppError } from "@/lib/errors";
 import { jsonBody, sameOrigin, errorResponse } from "@/lib/http";
 import { searchIndex } from "@/lib/search";
-import { timeline } from "@/lib/content/timeline";
+import { buildTimeline } from "@/lib/content/timeline";
 type Context = { params: Promise<{ route: string[] }> };
 const kinds: Record<string, Kind> = {
   notes: "note",
@@ -47,13 +47,7 @@ export async function GET(req: Request, context: Context) {
         ),
       );
     if (kind === "timeline")
-      return NextResponse.json(
-        timeline(
-          await entries(repo),
-          await repo.getCommitsForPath("data/progress.json"),
-          owner,
-        ),
-      );
+      return NextResponse.json(await buildTimeline(repo, owner));
     if (kinds[kind]) {
       if (!id)
         return NextResponse.json(
@@ -80,7 +74,12 @@ export async function GET(req: Request, context: Context) {
             throw new AppError(404, "该版本未公开展示");
           return NextResponse.json(past);
         }
-        return NextResponse.json(await repo.getCommitsForPath(e.path));
+        const commits = await repo.getCommitsForPath(e.path);
+        return NextResponse.json(
+          owner
+            ? commits
+            : commits.map((c) => ({ ...c, message: "公开记录历史版本" })),
+        );
       }
       if (sub) throw new AppError(404, "接口不存在");
       return NextResponse.json(e);
@@ -178,7 +177,9 @@ async function mutate(req: Request, context: Context) {
       }
       progress.items[id] = {
         completed: input.completed,
-        completedAt: input.completed ? new Date().toISOString() : null,
+        completedAt: input.completed
+          ? progress.items[id]?.completedAt || new Date().toISOString()
+          : null,
         evidence: input.evidence ?? progress.items[id]?.evidence ?? [],
       };
       progress.updatedAt = new Date().toISOString();
@@ -190,10 +191,12 @@ async function mutate(req: Request, context: Context) {
           stage.id +
           "): " +
           (input.completed ? "complete " : "reopen ") +
-          id,
+          stage.groups.flatMap((g) => g.items).find((i) => i.id === id)!.title,
       );
       const file = await repo.getTextFile("data/progress.json");
-      result = { commit, progress, sha: file!.sha };
+      if (!file)
+        throw new AppError(503, "提交已完成，但读取最新版本失败，请刷新");
+      result = { commit, progress: JSON.parse(file.content), sha: file.sha };
     } else throw new AppError(405, "不支持此操作");
     revalidatePath("/", "layout");
     return NextResponse.json(result);

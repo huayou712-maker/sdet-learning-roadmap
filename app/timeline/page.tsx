@@ -1,21 +1,20 @@
 import Link from "next/link";
-import { readEntries } from "@/lib/content/read";
 import { repository } from "@/lib/github/contents";
 import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
-import { timeline } from "@/lib/content/timeline";
+import { buildTimeline } from "@/lib/content/timeline";
 export default async function Page() {
-  const items = timeline(
-    await readEntries(),
-    await repository().getCommitsForPath("data/progress.json"),
-    isOwner(await identity()),
-  );
+  const items = await buildTimeline(repository(), isOwner(await identity()));
   return (
     <>
       <div className="page-heading">
         <p className="eyebrow">A TRACE OF PRACTICE</p>
         <h1>学习时间线</h1>
         <p>每次正式保存，都是一次可以回看的进步。</p>
+        <small>
+          最近 30
+          条记录展开提交历史；较早记录显示最新活动。完整历史可在各记录页面查看。
+        </small>
       </div>
       <ol className="timeline">
         {items.map((i) => (
