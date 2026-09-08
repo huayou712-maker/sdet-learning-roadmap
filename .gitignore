@@ -11,3 +11,10 @@ allure-report/
 playwright-report/
 test-results/
 .DS_Store
+node_modules/
+.next/
+.env.*
+!.env.example
+*.tsbuildinfo
+coverage/
+.e2e-data/

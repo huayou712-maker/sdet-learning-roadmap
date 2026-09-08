@@ -1,0 +1,793 @@
+{
+  "version": 1,
+  "stages": [
+    {
+      "id": "stage-01",
+      "order": 1,
+      "title": "计算机基础",
+      "description": "计算机基础（只学与测开高度相关的部分）",
+      "groups": [
+        {
+          "id": "stage-01-bd7ed32e55",
+          "title": "网络",
+          "items": [
+            {
+              "id": "stage-01-0b41e82f20",
+              "title": "理解网络分层"
+            },
+            {
+              "id": "stage-01-48d95ce627",
+              "title": "理解 TCP / UDP"
+            },
+            {
+              "id": "stage-01-243330b9a1",
+              "title": "能解释三次握手 / 四次挥手"
+            },
+            {
+              "id": "stage-01-565eee1a46",
+              "title": "理解 DNS"
+            },
+            {
+              "id": "stage-01-a6237bd9eb",
+              "title": "掌握 HTTP 常见方法"
+            },
+            {
+              "id": "stage-01-f5fda5ebab",
+              "title": "掌握常见状态码"
+            },
+            {
+              "id": "stage-01-442d820312",
+              "title": "理解 Cookie / Session / Token"
+            }
+          ]
+        },
+        {
+          "id": "stage-01-67ab7f7926",
+          "title": "OS",
+          "items": [
+            {
+              "id": "stage-01-a53f5b9e04",
+              "title": "理解进程 / 线程"
+            },
+            {
+              "id": "stage-01-6118bfd641",
+              "title": "理解同步 / 互斥"
+            },
+            {
+              "id": "stage-01-0814e497e5",
+              "title": "理解死锁"
+            },
+            {
+              "id": "stage-01-4ce078ae9b",
+              "title": "理解虚拟内存"
+            },
+            {
+              "id": "stage-01-465f68d507",
+              "title": "知道 CPU / 内存 / I/O 常见故障表现"
+            }
+          ]
+        },
+        {
+          "id": "stage-01-fab7975e66",
+          "title": "算法",
+          "items": [
+            {
+              "id": "stage-01-e45a7e5f09",
+              "title": "数组"
+            },
+            {
+              "id": "stage-01-179c51b37b",
+              "title": "链表"
+            },
+            {
+              "id": "stage-01-8f453f13ca",
+              "title": "哈希"
+            },
+            {
+              "id": "stage-01-e36ea9ca3a",
+              "title": "栈 / 队列"
+            },
+            {
+              "id": "stage-01-abb76ada85",
+              "title": "二分"
+            },
+            {
+              "id": "stage-01-2d9efc24d2",
+              "title": "双指针"
+            },
+            {
+              "id": "stage-01-000d98ad76",
+              "title": "二叉树"
+            },
+            {
+              "id": "stage-01-cbe6a42a99",
+              "title": "DFS / BFS"
+            },
+            {
+              "id": "stage-01-72377a747c",
+              "title": "简单 DP"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-02",
+      "order": 2,
+      "title": "Python",
+      "description": "Python 核心能力（边写边补）",
+      "groups": [
+        {
+          "id": "stage-02-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-02-9648dc6a24",
+              "title": "list / tuple"
+            },
+            {
+              "id": "stage-02-c6b6e5a2db",
+              "title": "dict / set"
+            },
+            {
+              "id": "stage-02-8ac95c244a",
+              "title": "函数"
+            },
+            {
+              "id": "stage-02-dbce3c41f4",
+              "title": "参数 / 返回值"
+            },
+            {
+              "id": "stage-02-887b2fe6dd",
+              "title": "class"
+            },
+            {
+              "id": "stage-02-6ffbd6fbc6",
+              "title": "self / __init__"
+            },
+            {
+              "id": "stage-02-a57769effd",
+              "title": "异常"
+            },
+            {
+              "id": "stage-02-bda50bc3e6",
+              "title": "模块 / 包"
+            },
+            {
+              "id": "stage-02-508e2d82a1",
+              "title": "文件读写"
+            },
+            {
+              "id": "stage-02-542af18fee",
+              "title": "JSON"
+            },
+            {
+              "id": "stage-02-4d870eec40",
+              "title": "YAML"
+            },
+            {
+              "id": "stage-02-efa3c6432a",
+              "title": "pip / venv"
+            },
+            {
+              "id": "stage-02-df37968778",
+              "title": "logging"
+            },
+            {
+              "id": "stage-02-cb6b56f8ef",
+              "title": "完成 Python 小工具验收项目"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-03",
+      "order": 3,
+      "title": "工程基础",
+      "description": "工程基础",
+      "groups": [
+        {
+          "id": "stage-03-6061d7e666",
+          "title": "Linux",
+          "items": [
+            {
+              "id": "stage-03-6ccb1e9b0a",
+              "title": "文件操作"
+            },
+            {
+              "id": "stage-03-4c51afb332",
+              "title": "grep / find"
+            },
+            {
+              "id": "stage-03-6f2b00de38",
+              "title": "tail -f"
+            },
+            {
+              "id": "stage-03-d26f8b582c",
+              "title": "ps / top"
+            },
+            {
+              "id": "stage-03-0ea222bf04",
+              "title": "df / du / free"
+            },
+            {
+              "id": "stage-03-37932952eb",
+              "title": "curl"
+            },
+            {
+              "id": "stage-03-9c1539168d",
+              "title": "ss"
+            }
+          ]
+        },
+        {
+          "id": "stage-03-47f107ea28",
+          "title": "Git",
+          "items": [
+            {
+              "id": "stage-03-4e640fa0a3",
+              "title": "add / commit"
+            },
+            {
+              "id": "stage-03-2a5660dfa5",
+              "title": "branch"
+            },
+            {
+              "id": "stage-03-d4510559fc",
+              "title": "merge"
+            },
+            {
+              "id": "stage-03-37a6a63c26",
+              "title": "conflict"
+            },
+            {
+              "id": "stage-03-812630217f",
+              "title": "reset"
+            },
+            {
+              "id": "stage-03-ae8657e2be",
+              "title": "remote / push / pull"
+            },
+            {
+              "id": "stage-03-6af518ab46",
+              "title": "SSH"
+            },
+            {
+              "id": "stage-03-0dfc4818b9",
+              "title": "PR"
+            }
+          ]
+        },
+        {
+          "id": "stage-03-d8f043c53d",
+          "title": "MySQL",
+          "items": [
+            {
+              "id": "stage-03-fc05279036",
+              "title": "SELECT / WHERE"
+            },
+            {
+              "id": "stage-03-41d3b8a4bc",
+              "title": "ORDER BY"
+            },
+            {
+              "id": "stage-03-583ccda10b",
+              "title": "GROUP BY / HAVING"
+            },
+            {
+              "id": "stage-03-cdc595ec1d",
+              "title": "JOIN"
+            },
+            {
+              "id": "stage-03-813911011a",
+              "title": "INSERT / UPDATE / DELETE"
+            },
+            {
+              "id": "stage-03-c3c5600b72",
+              "title": "子查询"
+            },
+            {
+              "id": "stage-03-940391a79c",
+              "title": "事务"
+            },
+            {
+              "id": "stage-03-dca17ebc35",
+              "title": "索引基础"
+            }
+          ]
+        },
+        {
+          "id": "stage-03-94f9772339",
+          "title": "Redis",
+          "items": [
+            {
+              "id": "stage-03-59fd6dbd31",
+              "title": "String"
+            },
+            {
+              "id": "stage-03-13f811adcd",
+              "title": "Hash"
+            },
+            {
+              "id": "stage-03-fdc2339eb9",
+              "title": "List / Set"
+            },
+            {
+              "id": "stage-03-6aa0a4c9e4",
+              "title": "TTL"
+            },
+            {
+              "id": "stage-03-3cc72f2ac2",
+              "title": "缓存穿透 / 击穿 / 雪崩"
+            }
+          ]
+        },
+        {
+          "id": "stage-03-ac9929d124",
+          "title": "Docker",
+          "items": [
+            {
+              "id": "stage-03-2b51eec2c2",
+              "title": "image / container"
+            },
+            {
+              "id": "stage-03-4ee1819cd0",
+              "title": "run"
+            },
+            {
+              "id": "stage-03-68be9fea6a",
+              "title": "exec"
+            },
+            {
+              "id": "stage-03-4e7a6a217c",
+              "title": "logs"
+            },
+            {
+              "id": "stage-03-17bc805af2",
+              "title": "port"
+            },
+            {
+              "id": "stage-03-708adc7dae",
+              "title": "volume"
+            },
+            {
+              "id": "stage-03-e08b479bbe",
+              "title": "network"
+            },
+            {
+              "id": "stage-03-f63cbf76cd",
+              "title": "Dockerfile"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-04",
+      "order": 4,
+      "title": "测试理论",
+      "description": "测试理论与测试设计",
+      "groups": [
+        {
+          "id": "stage-04-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-04-f8e9367a3a",
+              "title": "测试流程"
+            },
+            {
+              "id": "stage-04-e27767a263",
+              "title": "测试用例结构"
+            },
+            {
+              "id": "stage-04-012272eb28",
+              "title": "Bug 生命周期"
+            },
+            {
+              "id": "stage-04-1804a5d48b",
+              "title": "等价类"
+            },
+            {
+              "id": "stage-04-46bd6ef748",
+              "title": "边界值"
+            },
+            {
+              "id": "stage-04-a151bd3af6",
+              "title": "判定表"
+            },
+            {
+              "id": "stage-04-4cb578b591",
+              "title": "因果图"
+            },
+            {
+              "id": "stage-04-c6f0a45c2b",
+              "title": "状态迁移"
+            },
+            {
+              "id": "stage-04-80c1e981ff",
+              "title": "场景法"
+            },
+            {
+              "id": "stage-04-104314f576",
+              "title": "错误推测"
+            },
+            {
+              "id": "stage-04-8f9fa5a1de",
+              "title": "完成 Project 0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-05",
+      "order": 5,
+      "title": "接口自动化",
+      "description": "接口测试与接口自动化（主线核心）",
+      "groups": [
+        {
+          "id": "stage-05-6d64be80df",
+          "title": "requests",
+          "items": [
+            {
+              "id": "stage-05-75c8100295",
+              "title": "GET"
+            },
+            {
+              "id": "stage-05-0acab8ae0a",
+              "title": "POST"
+            },
+            {
+              "id": "stage-05-d2a9e5208a",
+              "title": "PUT / PATCH"
+            },
+            {
+              "id": "stage-05-e573a063de",
+              "title": "DELETE"
+            },
+            {
+              "id": "stage-05-7d9326928d",
+              "title": "Header"
+            },
+            {
+              "id": "stage-05-1d41985714",
+              "title": "Query"
+            },
+            {
+              "id": "stage-05-f7186cedce",
+              "title": "JSON Body"
+            },
+            {
+              "id": "stage-05-c71146e988",
+              "title": "Token"
+            },
+            {
+              "id": "stage-05-a59db01e7b",
+              "title": "Session"
+            }
+          ]
+        },
+        {
+          "id": "stage-05-779e805d9c",
+          "title": "pytest",
+          "items": [
+            {
+              "id": "stage-05-3d08f85391",
+              "title": "assert"
+            },
+            {
+              "id": "stage-05-68c1884045",
+              "title": "fixture"
+            },
+            {
+              "id": "stage-05-5dc4fb9ea1",
+              "title": "conftest.py"
+            },
+            {
+              "id": "stage-05-20143f161d",
+              "title": "parametrize"
+            },
+            {
+              "id": "stage-05-391a05c79e",
+              "title": "mark"
+            },
+            {
+              "id": "stage-05-3cd3fce600",
+              "title": "pytest.ini"
+            },
+            {
+              "id": "stage-05-32c13e502d",
+              "title": "fixture scope"
+            },
+            {
+              "id": "stage-05-91a401c4de",
+              "title": "yield fixture"
+            }
+          ]
+        },
+        {
+          "id": "stage-05-b1616ca610",
+          "title": "框架",
+          "items": [
+            {
+              "id": "stage-05-85068f2bd5",
+              "title": "API 封装"
+            },
+            {
+              "id": "stage-05-de22209934",
+              "title": "Config"
+            },
+            {
+              "id": "stage-05-3ae65b827e",
+              "title": "YAML 数据"
+            },
+            {
+              "id": "stage-05-625ca700f3",
+              "title": "DB 校验"
+            },
+            {
+              "id": "stage-05-20bd76296b",
+              "title": "logging"
+            },
+            {
+              "id": "stage-05-ff11a6f3d9",
+              "title": "Allure"
+            },
+            {
+              "id": "stage-05-14760ef6e7",
+              "title": "完成 Project 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-06",
+      "order": 6,
+      "title": "UI 自动化",
+      "description": "Web UI 自动化",
+      "groups": [
+        {
+          "id": "stage-06-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-06-85a2733c3f",
+              "title": "Playwright 基础"
+            },
+            {
+              "id": "stage-06-5eec9b0fd0",
+              "title": "Locator"
+            },
+            {
+              "id": "stage-06-4da5e3ca98",
+              "title": "自动等待"
+            },
+            {
+              "id": "stage-06-c79416b043",
+              "title": "iframe / popup"
+            },
+            {
+              "id": "stage-06-aa29016b90",
+              "title": "fixture"
+            },
+            {
+              "id": "stage-06-ac92cbd04d",
+              "title": "POM"
+            },
+            {
+              "id": "stage-06-3ed995ead5",
+              "title": "登录状态复用"
+            },
+            {
+              "id": "stage-06-46c676eb36",
+              "title": "screenshot"
+            },
+            {
+              "id": "stage-06-896487ec30",
+              "title": "trace"
+            },
+            {
+              "id": "stage-06-ff4d0ea45a",
+              "title": "参数化"
+            },
+            {
+              "id": "stage-06-a8ffdb1707",
+              "title": "完成 Project 2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-07",
+      "order": 7,
+      "title": "性能",
+      "description": "性能测试",
+      "groups": [
+        {
+          "id": "stage-07-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-07-9f358b9c3a",
+              "title": "理解 TPS / QPS"
+            },
+            {
+              "id": "stage-07-8694a60939",
+              "title": "理解 P95 / P99"
+            },
+            {
+              "id": "stage-07-a4a4226130",
+              "title": "理解 Throughput"
+            },
+            {
+              "id": "stage-07-4f20cc0348",
+              "title": "JMeter Thread Group"
+            },
+            {
+              "id": "stage-07-ff4d0ea45a",
+              "title": "参数化"
+            },
+            {
+              "id": "stage-07-be18bb8e8e",
+              "title": "关联"
+            },
+            {
+              "id": "stage-07-eb509bd1b3",
+              "title": "断言"
+            },
+            {
+              "id": "stage-07-1e0ca20421",
+              "title": "HTML Report"
+            },
+            {
+              "id": "stage-07-6c7ec4e61c",
+              "title": "服务端监控"
+            },
+            {
+              "id": "stage-07-4c0f814610",
+              "title": "完成 Project 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-08",
+      "order": 8,
+      "title": "CI/CD",
+      "description": "CI/CD 与质量工程化",
+      "groups": [
+        {
+          "id": "stage-08-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-08-826b6b2f2e",
+              "title": "GitHub Actions workflow"
+            },
+            {
+              "id": "stage-08-bea66b1347",
+              "title": "trigger"
+            },
+            {
+              "id": "stage-08-3f889cc1e4",
+              "title": "job / step"
+            },
+            {
+              "id": "stage-08-e417a8a0ad",
+              "title": "secret"
+            },
+            {
+              "id": "stage-08-6aca9aba6d",
+              "title": "artifact"
+            },
+            {
+              "id": "stage-08-b55b4aa69e",
+              "title": "pytest 自动执行"
+            },
+            {
+              "id": "stage-08-6d3f4866f2",
+              "title": "完成 Project 4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-09",
+      "order": 9,
+      "title": "AI 辅助测试",
+      "description": "AI 辅助测试",
+      "groups": [
+        {
+          "id": "stage-09-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-09-81759a1228",
+              "title": "AI 辅助需求分析"
+            },
+            {
+              "id": "stage-09-2945979c9e",
+              "title": "AI 生成测试点后人工 Review"
+            },
+            {
+              "id": "stage-09-b121486abb",
+              "title": "AI 生成接口测试初稿"
+            },
+            {
+              "id": "stage-09-c88984cfad",
+              "title": "AI 辅助日志分析"
+            },
+            {
+              "id": "stage-09-e87c0b31ca",
+              "title": "AI 辅助 CI Debug"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-10",
+      "order": 10,
+      "title": "AI 应用测试",
+      "description": "AI 应用测试 / LLM Evaluation",
+      "groups": [
+        {
+          "id": "stage-10-core",
+          "title": "核心能力",
+          "items": [
+            {
+              "id": "stage-10-37d1630acf",
+              "title": "Dify 应用"
+            },
+            {
+              "id": "stage-10-75b27bec09",
+              "title": "Workflow"
+            },
+            {
+              "id": "stage-10-363943638b",
+              "title": "Knowledge Base"
+            },
+            {
+              "id": "stage-10-a94afb9ff8",
+              "title": "RAG"
+            },
+            {
+              "id": "stage-10-f82df9febf",
+              "title": "构建评测数据集"
+            },
+            {
+              "id": "stage-10-d75e4c5d1c",
+              "title": "Correctness"
+            },
+            {
+              "id": "stage-10-52034935ec",
+              "title": "Faithfulness"
+            },
+            {
+              "id": "stage-10-e48ae560da",
+              "title": "Retrieval Relevance"
+            },
+            {
+              "id": "stage-10-28a384d5a9",
+              "title": "Prompt Injection 测试"
+            },
+            {
+              "id": "stage-10-7b8fb49ac2",
+              "title": "pytest / CI Evaluation"
+            },
+            {
+              "id": "stage-10-5b3371baa0",
+              "title": "完成 Project 5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
