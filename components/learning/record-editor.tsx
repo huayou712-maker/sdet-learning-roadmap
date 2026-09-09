@@ -47,17 +47,19 @@ export function RecordEditor({
   roadmap,
   projects,
   definition,
+  initialAssignment,
 }: {
   kind: Exclude<Kind, "note">;
   entry?: Entry;
   roadmap: Roadmap;
   projects: ProjectDefinition[];
   definition?: ProjectDefinition;
+  initialAssignment?: string;
 }) {
   const router = useRouter();
   const initialProject =
     definition ||
-    projects.find((p) => p.id === entry?.assignmentId) ||
+    projects.find((p) => p.id === (entry?.assignmentId || initialAssignment)) ||
     projects[0];
   const key =
     "sdet-draft-" + kind + "-" + (entry?.id || definition?.id || "new");

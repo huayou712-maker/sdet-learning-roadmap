@@ -1,4 +1,143 @@
 /* V3 workflow layouts: intentionally quiet tools within the Jianghu shell. */
+.status-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  border-bottom: 1px solid #b9a276;
+  margin-bottom: 24px;
+}
+.status-tabs a {
+  flex-shrink: 0;
+  padding: 12px 18px;
+  border-bottom: 3px solid transparent;
+}
+.status-tabs a[aria-current="page"] {
+  color: #526147;
+  border-color: #526147;
+  font-weight: bold;
+}
+.submission-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.submission-table th {
+  font-weight: 600;
+  background: #deceb0;
+}
+.submission-table td,
+.submission-table th {
+  padding: 16px 12px;
+  border-bottom: 1px solid #b9a276;
+}
+.submission-table a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.submission-table tr:hover {
+  background: #eee4c7;
+}
+.detail-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+  gap: 40px;
+}
+.detail-workspace article {
+  min-width: 0;
+}
+.detail-workspace article > section {
+  padding: 22px 0;
+  border-bottom: 1px solid #b9a276;
+}
+.detail-metadata {
+  border-left: 1px solid #b9a276;
+  padding: 24px;
+  position: sticky;
+  top: 80px;
+  align-self: start;
+}
+.detail-metadata dd {
+  margin: 0 0 16px;
+}
+.detail-metadata dt {
+  font-size: 13px;
+  color: #68573b;
+}
+.version-timeline {
+  padding-left: 24px;
+  border-left: 2px solid #aa8747;
+  list-style: decimal;
+}
+.version-timeline li {
+  padding: 12px;
+}
+.workspace-projects {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.project-summary {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+progress {
+  accent-color: #526147;
+  max-width: 100%;
+}
+.project-document {
+  max-width: 960px;
+  padding: 16px 0;
+}
+.filter-sheet summary {
+  padding: 8px 0;
+}
+@media (max-width: 1050px) {
+  .workspace-projects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .detail-workspace,
+  .workspace-projects {
+    grid-template-columns: 1fr;
+  }
+  .detail-metadata {
+    position: static;
+    border: 0;
+    padding: 12px 0;
+    grid-row: 1;
+  }
+  .submission-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .submission-table,
+  .submission-table tbody,
+  .submission-table tr,
+  .submission-table td {
+    display: block;
+  }
+  .submission-table tr {
+    border: 1px solid #b9a276;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  .submission-table td {
+    border: 0;
+    padding: 6px;
+    overflow-wrap: anywhere;
+  }
+  .submission-table td:before {
+    content: attr(data-label);
+    display: inline-block;
+    min-width: 95px;
+    color: #68573b;
+  }
+}
 .knowledge-layout {
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr) 210px;

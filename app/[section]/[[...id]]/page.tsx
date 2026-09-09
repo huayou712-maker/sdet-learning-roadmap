@@ -7,12 +7,16 @@ import { sections, entryUrl } from "@/lib/content/catalog";
 import { RecordEditor } from "@/components/learning/record-editor";
 import { Markdown } from "@/components/ui/markdown";
 import { ContentActions, History } from "@/components/notes/actions";
+import {
+  AssignmentList,
+  AssignmentDetail,
+} from "@/components/learning/assignments";
 export default async function Page({
   params,
   searchParams,
 }: {
   params: Promise<{ section: string; id?: string[] }>;
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const { section, id = [] } = await params;
   const config = sections[section];
@@ -29,7 +33,13 @@ export default async function Page({
     (!entry || (!owner && (!entry.showInPortfolio || entry.deletedAt)))
   )
     notFound();
-  const { saved } = await searchParams;
+  const query = await searchParams;
+  const { saved, edit } = query;
+  const visible = all.filter(
+    (e) =>
+      e.type === config.kind && !e.deletedAt && (owner || e.showInPortfolio),
+  );
+  const projects = await readProjects();
   return (
     <>
       <div className="page-heading">
@@ -45,13 +55,28 @@ export default async function Page({
           </Link>
         )}
       </div>
-      {id.length ? (
+      {section === "assignments" && !id.length ? (
+        <AssignmentList
+          entries={visible}
+          projects={projects}
+          owner={owner}
+          query={query}
+        />
+      ) : section === "assignments" && entry && edit !== "1" ? (
+        <AssignmentDetail
+          entry={entry}
+          entries={visible}
+          definition={projects.find((p) => p.id === entry.assignmentId)}
+          owner={owner}
+        />
+      ) : id.length ? (
         owner && !entry?.deletedAt ? (
           <RecordEditor
             kind={config.kind as "assignment" | "debug" | "daily"}
             entry={entry}
             roadmap={(await readLearning()).roadmap}
-            projects={await readProjects()}
+            projects={projects}
+            initialAssignment={query.assignment}
           />
         ) : entry ? (
           <article className="paper panel">
