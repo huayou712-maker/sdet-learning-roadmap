@@ -118,9 +118,13 @@ export function Editor({
     }
   }
   return (
-    <section className="paper panel">
-      <div className="toolbar">
+    <section className="note-studio">
+      <div className="toolbar studio-toolbar">
         <h2>{entry ? "编辑笔记" : "新建笔记"}</h2>
+        <span>{dirty ? "未提交草稿" : "与已载入版本一致"}</span>
+        <button onClick={save} disabled={saving || !ack || !title.trim()}>
+          {saving ? "正在提交…" : "保存并提交到 GitHub"}
+        </button>
         <button type="button" onClick={restoreDraft} disabled={saving}>
           恢复本机草稿
         </button>
@@ -128,107 +132,111 @@ export function Editor({
       <fieldset
         disabled={saving}
         onChange={() => setDirty(true)}
-        className="editor-form"
+        className="editor-form studio-grid"
       >
         <legend className="sr-only">笔记内容</legend>
-        <label>
-          标题
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            maxLength={160}
-          />
-        </label>
-        <div className="form-grid">
+        <div className="studio-metadata">
           <label>
-            阶段
-            <select
-              value={stageId}
-              onChange={(e) => {
-                setStage(e.target.value);
-                setTopics([]);
-              }}
-            >
-              {roadmap.stages.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            标签（逗号分隔）
-            <input value={tags} onChange={(e) => setTags(e.target.value)} />
-          </label>
-          <label>
-            笔记耗时（分钟，不计入总日课时长）
+            标题
             <input
-              type="number"
-              min={0}
-              max={1440}
-              value={duration}
-              onChange={(e) => setDuration(Number(e.target.value))}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={160}
             />
           </label>
+          <div className="form-grid">
+            <label>
+              阶段
+              <select
+                value={stageId}
+                onChange={(e) => {
+                  setStage(e.target.value);
+                  setTopics([]);
+                }}
+              >
+                {roadmap.stages.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              标签（逗号分隔）
+              <input value={tags} onChange={(e) => setTags(e.target.value)} />
+            </label>
+            <label>
+              笔记耗时（分钟，不计入总日课时长）
+              <input
+                type="number"
+                min={0}
+                max={1440}
+                value={duration}
+                onChange={(e) => setDuration(Number(e.target.value))}
+              />
+            </label>
+            <label>
+              状态
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as typeof status)}
+              >
+                <option value="planned">计划中</option>
+                <option value="in_progress">进行中</option>
+                <option value="completed">已完成</option>
+              </select>
+            </label>
+          </div>
           <label>
-            状态
+            关联知识点
             <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as typeof status)}
+              multiple
+              value={topics}
+              onChange={(e) =>
+                setTopics([...e.target.selectedOptions].map((o) => o.value))
+              }
             >
-              <option value="planned">计划中</option>
-              <option value="in_progress">进行中</option>
-              <option value="completed">已完成</option>
+              {roadmap.stages
+                .find((s) => s.id === stageId)
+                ?.groups.flatMap((g) => g.items)
+                .map((i) => (
+                  <option key={i.id} value={i.id}>
+                    {i.title}
+                  </option>
+                ))}
             </select>
           </label>
-        </div>
-        <label>
-          关联知识点
-          <select
-            multiple
-            value={topics}
-            onChange={(e) =>
-              setTopics([...e.target.selectedOptions].map((o) => o.value))
-            }
-          >
-            {roadmap.stages
-              .find((s) => s.id === stageId)
-              ?.groups.flatMap((g) => g.items)
-              .map((i) => (
-                <option key={i.id} value={i.id}>
-                  {i.title}
-                </option>
-              ))}
-          </select>
-        </label>
-        <label className="check-row">
-          <input
-            type="checkbox"
-            checked={show}
-            onChange={(e) => setShow(e.target.checked)}
-          />
-          在作品集展示（不代表仓库中的数据私密）
-        </label>
-        <div className="editor-tabs">
-          <button type="button" onClick={() => setView("editor")}>
-            编辑
-          </button>
-          <button type="button" onClick={() => setView("preview")}>
-            预览
-          </button>
-        </div>
-        <div className={"editor-split view-" + view}>
-          <label className="editor-input">
-            Markdown 正文
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows={20}
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={show}
+              onChange={(e) => setShow(e.target.checked)}
             />
+            在作品集展示（不代表仓库中的数据私密）
           </label>
-          <div className="editor-preview">
-            <h3>预览</h3>
-            <Markdown body={body} />
+        </div>
+        <div className="studio-writing">
+          <div className="editor-tabs" role="group" aria-label="编辑器视图">
+            <button type="button" onClick={() => setView("editor")}>
+              编辑
+            </button>
+            <button type="button" onClick={() => setView("preview")}>
+              预览
+            </button>
+          </div>
+          <div className={"editor-split view-" + view}>
+            <label className="editor-input">
+              Markdown 正文
+              <textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                rows={20}
+              />
+            </label>
+            <div className="editor-preview">
+              <h3>预览</h3>
+              <Markdown body={body} />
+            </div>
           </div>
         </div>
       </fieldset>
@@ -242,11 +250,11 @@ export function Editor({
         }}
       />
       <div className="actions">
-        <button onClick={save} disabled={saving || !ack || !title.trim()}>
-          {saving ? "正在提交…" : "保存并提交到 GitHub"}
+        <button className="ghost" onClick={() => location.reload()}>
+          刷新远端版本
         </button>
-        <button onClick={() => location.reload()}>刷新远端版本</button>
         <button
+          className="ghost"
           onClick={async () => {
             try {
               await navigator.clipboard.writeText(body);
