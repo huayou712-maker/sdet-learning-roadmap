@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nav } from "@/components/layout/nav";
 import "./globals.css";
 import "./jianghu.css";
+import "./workflows.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: {

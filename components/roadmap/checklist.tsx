@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import type { Roadmap, Progress, Evidence } from "@/lib/models";
 import { kindRoute } from "@/lib/content/catalog";
 import type { Kind } from "@/lib/schemas/content";
-type Candidate = { id: string; type: Kind; title: string };
+type Candidate = { id: string; type: Kind; title: string; stageId?: string };
 function EvidenceEditor({
   current,
   candidates,
@@ -111,14 +112,26 @@ export function Checklist({
   owner = false,
   sha = "",
   entries = [],
+  initialStage,
+  initialFilter = "all",
 }: {
   roadmap: Roadmap;
   progress: Progress;
   owner?: boolean;
   sha?: string;
   entries?: Candidate[];
+  initialStage?: string;
+  initialFilter?: string;
 }) {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState(initialFilter);
+  const selected =
+    roadmap.stages.find((s) => s.id === initialStage) ||
+    roadmap.stages.find((s) =>
+      s.groups.some((g) =>
+        g.items.some((i) => !progress.items[i.id]?.completed),
+      ),
+    ) ||
+    roadmap.stages[0];
   const [state, setState] = useState(progress);
   const [version, setVersion] = useState(sha);
   const [ack, setAck] = useState(false);
@@ -155,7 +168,15 @@ export function Checklist({
       <div className="toolbar">
         <label>
           学习状态{" "}
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <select
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+              const url = new URL(location.href);
+              url.searchParams.set("status", e.target.value);
+              history.replaceState(null, "", url);
+            }}
+          >
             <option value="all">全部</option>
             <option value="completed">已完成</option>
             <option value="progress">待完成 / 进行中</option>
@@ -169,76 +190,116 @@ export function Checklist({
       {message && owner && (
         <button onClick={() => location.reload()}>刷新远端版本</button>
       )}
-      <div className="stage-list">
-        {roadmap.stages.map((stage) => {
-          const items = stage.groups.flatMap((g) => g.items);
-          const done = items.filter((i) => state.items[i.id]?.completed).length;
-          return (
-            <details
-              key={stage.id}
-              className="paper stage"
-              open={stage.order === 1}
-            >
-              <summary>
-                <span className="stage-number">
-                  {String(stage.order).padStart(2, "0")}
-                </span>
-                <span>
-                  <strong>{stage.title}</strong>
-                  <small>{stage.description}</small>
-                </span>
-                <span className="stage-count">
-                  {done} / {items.length} ·{" "}
-                  {Math.round((done / items.length) * 100)}%
-                </span>
-              </summary>
-              <div className="stage-groups">
-                {stage.groups.map((group) => (
-                  <section key={group.id}>
-                    <h3>{group.title}</h3>
-                    {group.items
-                      .filter(
-                        (i) =>
-                          filter === "all" ||
-                          (filter === "completed"
-                            ? state.items[i.id]?.completed
-                            : !state.items[i.id]?.completed),
-                      )
-                      .map((item) => (
-                        <div key={item.id}>
-                          <label className="check-row">
-                            <input
-                              type="checkbox"
-                              checked={state.items[item.id]?.completed ?? false}
-                              disabled={!owner || !ack || busy}
-                              onChange={(e) =>
-                                toggle(item.id, e.target.checked)
+      <div className="workflow">
+        <aside className="workflow-nav">
+          <nav aria-label="学习阶段">
+            {roadmap.stages.map((s) => {
+              const items = s.groups.flatMap((g) => g.items);
+              const done = items.filter(
+                (i) => state.items[i.id]?.completed,
+              ).length;
+              return (
+                <Link
+                  key={s.id}
+                  href={"/roadmap?stage=" + s.id + "&status=" + filter}
+                  aria-current={s.id === selected?.id ? "page" : undefined}
+                >
+                  {String(s.order).padStart(2, "0")} · {s.title}
+                  <small>
+                    {items.length ? Math.round((done / items.length) * 100) : 0}
+                    % · {done}/{items.length}
+                  </small>
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
+        {roadmap.stages
+          .filter((s) => s.id === selected?.id)
+          .map((stage) => {
+            const items = stage.groups.flatMap((g) => g.items);
+            const done = items.filter(
+              (i) => state.items[i.id]?.completed,
+            ).length;
+            return (
+              <section key={stage.id} className="stage-workspace">
+                <header>
+                  <span className="stage-number">
+                    {String(stage.order).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <h2>{stage.title}</h2>
+                    <p>{stage.description}</p>
+                  </span>
+                  <span className="stage-count">
+                    {done} / {items.length} ·{" "}
+                    {Math.round((done / items.length) * 100)}%
+                  </span>
+                </header>
+                <div className="stage-groups">
+                  {stage.groups.map((group) => (
+                    <section key={group.id}>
+                      <h3>{group.title}</h3>
+                      {group.items
+                        .filter(
+                          (i) =>
+                            filter === "all" ||
+                            (filter === "completed"
+                              ? state.items[i.id]?.completed
+                              : !state.items[i.id]?.completed),
+                        )
+                        .map((item) => (
+                          <div key={item.id}>
+                            <label className="check-row">
+                              <input
+                                type="checkbox"
+                                checked={
+                                  state.items[item.id]?.completed ?? false
+                                }
+                                disabled={!owner || !ack || busy}
+                                onChange={(e) =>
+                                  toggle(item.id, e.target.checked)
+                                }
+                                aria-label={item.title}
+                              />
+                              <span>{item.title}</span>
+                            </label>
+                            <EvidenceEditor
+                              current={state.items[item.id]?.evidence || []}
+                              candidates={entries}
+                              owner={owner}
+                              disabled={!ack || busy}
+                              onSave={(e) =>
+                                toggle(
+                                  item.id,
+                                  state.items[item.id]?.completed ?? false,
+                                  e,
+                                )
                               }
-                              aria-label={item.title}
                             />
-                            <span>{item.title}</span>
-                          </label>
-                          <EvidenceEditor
-                            current={state.items[item.id]?.evidence || []}
-                            candidates={entries}
-                            owner={owner}
-                            disabled={!ack || busy}
-                            onSave={(e) =>
-                              toggle(
-                                item.id,
-                                state.items[item.id]?.completed ?? false,
-                                e,
-                              )
-                            }
-                          />
-                        </div>
-                      ))}
-                  </section>
-                ))}
-              </div>
-            </details>
-          );
-        })}
+                          </div>
+                        ))}
+                    </section>
+                  ))}
+                </div>
+                <h3>关联学习记录</h3>
+                <ul className="related-list">
+                  {entries
+                    .filter((e) => e.stageId === stage.id)
+                    .map((e) => (
+                      <li key={e.id}>
+                        <Link href={"/" + kindRoute[e.type] + "/" + e.id}>
+                          {e.type} · {e.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+                {!entries.some((e) => e.stageId === stage.id) && (
+                  <p>本阶段尚无可展示关联记录。</p>
+                )}
+              </section>
+            );
+          })}
       </div>
     </>
   );

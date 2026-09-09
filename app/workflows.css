@@ -1,0 +1,113 @@
+/* V3 workflow layouts: intentionally quiet tools within the Jianghu shell. */
+.page-heading {
+  padding: 24px 0 20px;
+  margin-bottom: 12px;
+}
+.page-heading h1 {
+  font-size: clamp(26px, 3vw, 38px);
+}
+.hero {
+  height: 410px;
+}
+.featured-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.workflow {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.workflow-nav {
+  position: sticky;
+  top: 82px;
+  border-right: 1px solid #b9a276;
+  padding-right: 20px;
+}
+.workflow-nav nav {
+  display: grid;
+  gap: 6px;
+}
+.workflow-nav a {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+.workflow-nav a[aria-current="page"] {
+  background: #262219;
+  color: #eee4c7;
+  border-left: 3px solid #aa8747;
+}
+.workflow-nav small {
+  display: block;
+}
+.stage-workspace {
+  min-width: 0;
+}
+.stage-workspace .stage-groups {
+  padding: 0;
+}
+.stage-workspace h2 {
+  margin-top: 0;
+}
+.stage-workspace .stage-groups section {
+  border-top: 1px solid #b9a276;
+  padding: 18px 0;
+}
+.stage-workspace .check-row {
+  margin-bottom: 0;
+}
+.stage-workspace .evidence {
+  margin: 0 0 12px 30px;
+}
+.related-list {
+  list-style: none;
+  padding: 0;
+}
+.related-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #b9a276;
+}
+.current-stage {
+  font-size: 20px;
+  line-height: 1.65;
+}
+.button.secondary,
+button.secondary {
+  background: transparent;
+  color: #262219;
+  border: 1px solid #b9a276;
+  box-shadow: none;
+}
+.button.ghost,
+button.ghost {
+  background: transparent;
+  color: #526147;
+  border-color: transparent;
+  box-shadow: none;
+}
+@media (max-width: 767px) {
+  .workflow {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .workflow-nav {
+    position: static;
+    border: 0;
+    padding: 0;
+  }
+  .workflow-nav nav {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .workflow-nav a {
+    flex: 0 0 auto;
+  }
+  .hero {
+    height: auto;
+  }
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+}
