@@ -1,234 +1,60 @@
-# 测试开发 / 测试工程师学习路线（2026）
+# 测试开发 / SDET 学习路线（2026）
 
-> 面向：准备校招/实习的测试工程师、测试开发（SDET）方向学习者。  
-> 核心原则：**不从头重学 Python；以项目驱动，缺什么补什么。**  
-> 目标：从测试基础、接口自动化、UI 自动化、性能测试一路走到 CI/CD 与 AI 应用测试，最终形成可展示的 GitHub 项目。
+面向准备实习 / 校招的测试开发初学者。先诊断，再用小练习推进；没有编程基础就先补基础。完成标准是可复现的测试、代码与排障证据。
 
-## 路线总览
+## 今天从这里开始
 
-```mermaid
-flowchart TD
-    A[计算机基础\n网络 / OS / 算法] --> B[Python 核心补齐]
-    B --> C[工程基础\nLinux / Git / MySQL / Redis / Docker]
-    C --> D[测试理论与用例设计]
-    D --> E[接口测试\nrequests + pytest]
-    E --> F[接口自动化框架项目]
-    F --> G[Web UI 自动化\nPlaywright + pytest + POM]
-    F --> H[性能测试\nJMeter]
-    G --> I[CI/CD\nGitHub Actions / Jenkins]
-    H --> I
-    I --> J[AI 辅助测试]
-    J --> K[AI 应用测试\nDify + RAG Evaluation]
-    K --> L[简历 / 面试 / 投递]
-```
+1. [独立完成 Python 与环境诊断](projects/beginner-api-lab/DIAGNOSTIC.md)。
+2. [运行首组注册 API 练习](projects/beginner-api-lab/README.md)，只使用本机合成数据。
+3. [完成自己的测试与故障检出练习](projects/beginner-api-lab/EXERCISES.md)，再提交 GitHub 证据。
 
-## 学习优先级
+## 实践主线
 
-如果时间有限，按下面优先级执行：
+| 顺序 | 实践任务 | 过关依据 |
+|---|---|---|
+| 1 | Python、环境与 Git 诊断 | 独立修改函数、解释输出、能运行虚拟环境 |
+| 2 | 注册用例设计 + HTTP | 说明边界、状态码、响应体与设计理由 |
+| 3 | requests + pytest 首组测试 | 测试独立可重复；断言能发现错误实现 |
+| 4 | 尽早接入最小 CI | 有一次失败与修复记录，报告可下载 |
+| 5 | SQL、鉴权与数据隔离 | API / DB 一致，失败也清理，能定位异常 |
+| 6 | 2–3 个关键 UI 流程与作品 | 稳定定位、Trace、干净环境复现与复盘 |
 
-1. Python 核心能力（边做边补）
-2. 测试理论与测试用例设计
-3. HTTP / 网络基础
-4. Linux + Git + MySQL
-5. requests + pytest 接口自动化
-6. 一个完整可运行的接口自动化项目
-7. Playwright UI 自动化
-8. Docker + CI/CD
-9. JMeter 性能测试
-10. Redis
-11. AI 辅助测试 / LLM 应用评测
-12. 算法按校招笔试需求持续穿插
-
-> **不要把“看完课程”当完成标准。** 每一阶段必须有输出：代码、测试用例、报告、README、CI 运行记录或项目成果。
+每周根据实际耗时和验收结果调整计划，不设统一结业工期。计算机基础按需补，算法按目标岗位笔试要求穿插；性能、Redis、Docker 深入、Jenkins、AI / RAG 评测是后续选修。
 
 ## 课程入口
 
-完整课程、观看范围、跳过内容和验收标准见：
+- [初学者实践指南](docs/BEGINNER_PATH.md)：任务、交付物与执行命令
+- [十阶段知识目录](docs/ROADMAP.md)：查缺补漏，不是前置锁
+- [项目验收规范](docs/PROJECTS.md)：必做、选择组与加分分开
+- [免费课程资源](docs/RESOURCES.md)：按当前任务选择
+- [旧版进度导入资料](docs/PROGRESS.md)：保留作兼容来源，不再维护正式状态
 
-- [完整学习路线](docs/ROADMAP.md)
-- [免费课程资源清单](docs/RESOURCES.md)
-- [阶段验收与项目](docs/PROJECTS.md)
-- [学习进度 Checklist](docs/PROGRESS.md)
+主技术栈：Python → requests / pytest → GitHub Actions → MySQL → pytest-playwright。
+Python 先掌握条件、循环、函数、列表/字典、JSON 和异常，再逐步补类与封装。
+UI 主学 Playwright；Selenium 按目标团队旧项目需要补，不要求先刷两套长课。
 
-## 推荐主技术栈
+## 项目顺序与验收
 
-```text
-Python 3.x
-requests
-pytest
-Playwright
-MySQL
-Redis（基础）
-Linux
-Git / GitHub
-Docker
-JMeter
-GitHub Actions
-Allure
-Dify
-LangSmith Evaluation
-```
+先做 Project 0 用例设计，以 Project 1、Project 4、Project 2 形成基础作品：
 
-### Selenium 怎么处理？
+- Project 0：选一个业务，提交 test-cases.md 与可复现缺陷报告。
+- Project 1：API 测试 V0 先有 GET / POST、正常 / 异常输入和断言；V1 补 CRUD、鉴权、fixture 隔离；V2 在出现重复后抽象 API / Config，补数据库、日志和报告。最小 CI 在 V0 后接入。
+- Project 4：最小 CI，必须验证失败会阻断并保留报告；缓存与 matrix 是加分项。
+- Project 2：先写稳定的关键流程，再提取 POM、复用登录状态；失败保留截图和 Trace。
+- Project 3：性能测试，进阶选修；只在自有或明确授权的隔离环境进行。
+- Project 5：AI / RAG 评测，进阶选修；明确数据集、评判规则、版本与人工复核。
 
-主学 **Playwright**。Selenium 保留到“能看懂旧项目、能回答常见面试题”的程度即可：
+完整项目要求以 GitHub 中 data/projects.json 为准。选择组达到最低数量计 1 项；加分不计必做完成率。自评勾选不能代替复现验收。
 
-- WebDriver 基本原理
-- XPath / CSS Selector
-- 显式等待 / 隐式等待
-- POM
+## 正式进度与证据
 
-第一轮不要再完整刷一套 Selenium 长课。
+通过 Web 学习系统将进度、作业、笔记与排障记录提交 GitHub，并关联 commit / 项目证据。data/progress.json 是正式进度，content/ 保存学习记录；localStorage 仅用于未提交草稿与非关键 UI 偏好。
 
-## Python 学习原则
-
-这条路线假设你已经接触过 Python，不再从 `print()`、变量、`if/for` 开始。
-
-只补测试开发高频知识：
-
-```text
-list / dict / set / tuple
-函数与参数
-class / self / __init__
-异常处理
-模块与包
-文件操作
-JSON / YAML
-pip / venv
-logging
-requests
-pytest
-```
-
-遇到下面这种代码能自己写，就可以结束“纯 Python”阶段：
-
-```python
-import requests
-
-class UserApi:
-    def __init__(self, base_url: str):
-        self.base_url = base_url
-
-    def login(self, username: str, password: str):
-        payload = {"username": username, "password": password}
-        response = requests.post(
-            f"{self.base_url}/login",
-            json=payload,
-            timeout=5,
-        )
-        response.raise_for_status()
-        return response.json()
-```
-
-然后直接进入 `requests + pytest`。
-
-## 最终应产出的 GitHub 项目
-
-至少完成以下三个：
-
-### Project 1：API 自动化测试框架
-
-```text
-api-test-framework/
-├── api/
-├── tests/
-├── data/
-├── utils/
-├── conftest.py
-├── pytest.ini
-├── requirements.txt
-└── README.md
-```
-
-必须具备：
-
-- 登录 / Token 管理
-- CRUD 接口测试
-- fixture
-- 参数化
-- JSON / YAML 数据驱动
-- 数据库校验
-- 日志
-- Allure 报告
-- GitHub Actions 自动执行
-
-### Project 2：Web UI 自动化项目
-
-技术栈：
-
-```text
-Playwright + pytest + POM
-```
-
-必须具备：
-
-- 登录状态复用
-- Locator
-- 自动等待
-- Page Object
-- 参数化
-- 截图 / Trace
-- 失败日志
-- CI 执行
-
-### Project 3：AI 应用测试 / RAG Evaluation
-
-技术栈：
-
-```text
-Dify + Python + pytest + LangSmith（或同类评测工具）
-```
-
-至少测试：
-
-- RAG 检索召回
-- 答案正确性 / 忠实度
-- 无答案场景
-- Prompt 注入 / 越权边界
-- 数据集回归
-- Agent 工具调用成功 / 失败场景
-
-## 学习时间建议
-
-不是硬性工期。如果每天能投入约 2～3 小时，可以参考：
-
-| 阶段 | 建议时间 |
-|---|---:|
-| 计算机基础（选学） | 1～2 周，穿插进行 |
-| Python 核心补齐 | 3～7 天 |
-| Linux / Git / MySQL / Redis / Docker | 1～2 周 |
-| 测试理论 | 2～4 天 |
-| 接口测试 + pytest | 2～3 周 |
-| UI 自动化 | 1～2 周 |
-| 性能测试 | 3～7 天 |
-| CI/CD | 2～4 天 |
-| AI 辅助测试 / AI 应用测试 | 后期 1～2 周起步 |
-| 算法 | 全程每天 1～2 题 |
+不把本仓库维护者提供的演示代码和通过的测试冒充个人已完成成果。学习者需要提交自己的用例、解释、改进和运行记录。
 
 ## 参考路线
 
-本仓库是在以下公开路线基础上做的**校招/求职导向裁剪**，不是原项目镜像：
-
-- `zhoujinjian/ai-testing-guide`：https://github.com/zhoujinjian/ai-testing-guide
-
-原项目文档采用 CC BY-NC-SA 4.0；本仓库不复制其正文，只引用路线思想与公开链接。若后续直接摘录原项目内容，请保留原作者署名并遵守其许可证。
-
-## 使用方式
-
-建议每学完一个知识点就更新 [PROGRESS.md](docs/PROGRESS.md)，并在 GitHub commit 中留下学习轨迹，例如：
-
-```text
-feat(api): add login API tests
-feat(pytest): add fixtures and parametrization
-feat(db): verify user status with MySQL
-ci: run pytest on GitHub Actions
-feat(ui): add Playwright login page object
-perf: add JMeter login scenario
-```
-
-最终目标不是“收藏了多少课”，而是 GitHub 上能看到：
-
-> **学习记录 + 测试代码 + 自动化框架 + CI + 测试报告 + 对问题的分析。**
+本仓库参考 [zhoujinjian/ai-testing-guide](https://github.com/zhoujinjian/ai-testing-guide) 的公开路线思想，作求职导向裁剪，不是原项目镜像。原文档采用 CC BY-NC-SA 4.0；若后续直接摘录正文，应保留署名并遵守许可证。
 
 ---
 

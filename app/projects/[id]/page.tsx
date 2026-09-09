@@ -11,6 +11,7 @@ import {
 import { ContentActions, History } from "@/components/notes/actions";
 import { entryUrl } from "@/lib/content/catalog";
 import { statusLabel } from "@/lib/dashboard";
+import { projectChecks, projectAcceptance } from "@/lib/content/project-checks";
 export default async function Page({
   params,
   searchParams,
@@ -34,10 +35,8 @@ export default async function Page({
       (e.projectId === id ||
         (e.type === "note" && e.stageId === definition.stageId)),
   );
-  const checks = definition.checklist.map((title) => ({
-    title,
-    completed: !!entry?.checklist.find((c) => c.title === title)?.completed,
-  }));
+  const checks = projectChecks(definition, entry?.checklist);
+  const acceptance = projectAcceptance(definition, checks);
   return (
     <>
       <header className="page-heading section-head">
@@ -72,12 +71,12 @@ export default async function Page({
         <>
           <div className="project-summary">
             <p>
-              验收 {checks.filter((c) => c.completed).length}/{checks.length}
+              必做自评 {acceptance.completed}/{acceptance.total}
             </p>
             <progress
               aria-label="项目验收进度"
-              max={checks.length || 1}
-              value={checks.filter((c) => c.completed).length}
+              max={acceptance.total || 1}
+              value={acceptance.completed}
             />
             <p>{entry?.tags.join(" / ")}</p>
             {entry?.externalRepository && (
@@ -120,7 +119,7 @@ export default async function Page({
             )}
             {tab === "checklist" && (
               <>
-                <ProjectChecklist items={checks} />
+                <ProjectChecklist items={checks} definition={definition} />
                 {owner && !entry?.deletedAt && (
                   <Link
                     className="button secondary"

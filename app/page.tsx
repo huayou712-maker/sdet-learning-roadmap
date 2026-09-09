@@ -11,6 +11,7 @@ import { Hero, Thumbnail, InkDecoration } from "@/components/dashboard/media";
 import { Icon } from "@/components/ui/icon";
 import { Journey } from "@/components/dashboard/journey";
 import styles from "@/components/dashboard/workspace.module.css";
+import { nextBeginnerTask, nextLearningTopic } from "@/lib/learning-path";
 export default async function Home() {
   const [{ roadmap, progress }, projects, all, session, commits] =
     await Promise.all([
@@ -25,12 +26,16 @@ export default async function Home() {
     (e) => !e.deletedAt && (owner || e.showInPortfolio),
   );
   const stats = progressStats(roadmap, progress);
+  const task = nextBeginnerTask(roadmap, progress);
+  const recommended = nextLearningTopic(roadmap, progress);
   const current =
+    recommended?.stage ||
     roadmap.stages.find((s) =>
       s.groups.some((g) =>
         g.items.some((i) => !progress.items[i.id]?.completed),
       ),
-    ) || roadmap.stages[roadmap.stages.length - 1];
+    ) ||
+    roadmap.stages[roadmap.stages.length - 1];
   const next = current?.groups
     .flatMap((g) => g.items)
     .find((i) => !progress.items[i.id]?.completed);
@@ -64,11 +69,17 @@ export default async function Home() {
         <div className="hero-copy">
           <p className="eyebrow">行知有迹 / SDET LEARNING JOURNAL</p>
           <h1>SDET Learning OS</h1>
-          <h2>当前阶段 · {current?.title}</h2>
+          <h2>
+            {task ? "入门主线 · " + task.title : "当前阶段 · " + current?.title}
+          </h2>
           <p>{owner ? "GitHub Owner · 学习工作区" : "公开只读 · 学习与作品"}</p>
           <Link
             className="button hero-cta"
-            href={"/roadmap?stage=" + current?.id}
+            href={
+              task
+                ? "/roadmap#task-" + task.id
+                : "/roadmap?stage=" + current?.id
+            }
           >
             继续学习路线 <span aria-hidden="true">→</span>
           </Link>
@@ -139,15 +150,34 @@ export default async function Home() {
         <section className="paper panel roadmap-overview">
           <InkDecoration />
           <div className="section-head">
-            <h2>当前学习阶段</h2>
+            <h2>{task ? "下一项实践任务" : "当前学习阶段"}</h2>
             <Link href="/roadmap">查看全部 →</Link>
           </div>
           <div className="current-stage">
-            <p className="eyebrow">STAGE {current?.order}</p>
-            <h3>{current?.title}</h3>
-            <p>{current?.description}</p>
-            <p>下一步：{next?.title || "本阶段已完成，回顾学习证据。"}</p>
-            <Link href={"/roadmap?stage=" + current?.id}>进入阶段工作区 →</Link>
+            <p className="eyebrow">
+              {task ? "PRACTICE FIRST" : "STAGE " + current?.order}
+            </p>
+            <h3>{task?.title || current?.title}</h3>
+            <p>{task?.summary || current?.description}</p>
+            <p>
+              {task
+                ? "交付：" + task.deliverable
+                : "下一步：" + (next?.title || "本阶段已完成，回顾学习证据。")}
+            </p>
+            <Link
+              href={
+                task
+                  ? "/roadmap#task-" + task.id
+                  : "/roadmap?stage=" + current?.id
+              }
+            >
+              进入阶段工作区 →
+            </Link>
+            {task && (
+              <p>
+                <Link href="/guide/beginner">第一组练习与执行命令 →</Link>
+              </p>
+            )}
           </div>
           <p className="evidence-reminder">
             {stats.missingEvidence} 个已完成知识点待补证据

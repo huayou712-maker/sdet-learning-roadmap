@@ -46,4 +46,10 @@ export type ProjectDefinition = {
   body: string;
   checklist: string[];
   stageId: string;
+  acceptance?: {
+    version: number;
+    required: string[];
+    optional: string[];
+    choices: { title: string; minimum: number; items: string[] }[];
+  };
 };

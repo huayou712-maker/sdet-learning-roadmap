@@ -50,12 +50,36 @@ describe("original learning data", () => {
       );
       const key = Object.keys(initial.items)[0];
       initial.items[key].completed = true;
+      initial.items[key].evidence = [{ type: "commit", id: "a".repeat(40) }];
       initial.updatedAt = "2026-09-08T00:00:00Z";
       writeFileSync(join(dir, "data/progress.json"), JSON.stringify(initial));
+      const localCourse = JSON.parse(
+        readFileSync(join(dir, "data/roadmap.json"), "utf8"),
+      );
+      localCourse.version = 99;
+      localCourse.beginnerPath[0].title = "Preserve later course edits";
+      writeFileSync(
+        join(dir, "data/roadmap.json"),
+        JSON.stringify(localCourse),
+      );
+      const localProjects = JSON.parse(
+        readFileSync(join(dir, "data/projects.json"), "utf8"),
+      );
+      localProjects[0].body = "Preserve later project edits";
+      writeFileSync(
+        join(dir, "data/projects.json"),
+        JSON.stringify(localProjects),
+      );
       run();
       expect(
         JSON.parse(readFileSync(join(dir, "data/progress.json"), "utf8")),
       ).toEqual(initial);
+      expect(
+        JSON.parse(readFileSync(join(dir, "data/roadmap.json"), "utf8")),
+      ).toEqual(localCourse);
+      expect(
+        JSON.parse(readFileSync(join(dir, "data/projects.json"), "utf8")),
+      ).toEqual(localProjects);
     } finally {
       const rel = relative(tmpdir(), dir);
       if (

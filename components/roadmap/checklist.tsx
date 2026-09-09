@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { Roadmap, Progress, Evidence } from "@/lib/models";
 import { kindRoute } from "@/lib/content/catalog";
 import type { Kind } from "@/lib/schemas/content";
+import { BeginnerPath } from "./beginner-path";
+import { nextLearningTopic } from "@/lib/learning-path";
 type Candidate = { id: string; type: Kind; title: string; stageId?: string };
 function EvidenceEditor({
   current,
@@ -126,6 +128,7 @@ export function Checklist({
   const [filter, setFilter] = useState(initialFilter);
   const selected =
     roadmap.stages.find((s) => s.id === initialStage) ||
+    nextLearningTopic(roadmap, progress)?.stage ||
     roadmap.stages.find((s) =>
       s.groups.some((g) =>
         g.items.some((i) => !progress.items[i.id]?.completed),
@@ -164,6 +167,7 @@ export function Checklist({
   }
   return (
     <>
+      {!initialStage && <BeginnerPath roadmap={roadmap} progress={state} />}
       {owner && <PublicNotice checked={ack} onChange={setAck} />}
       <div className="toolbar">
         <label>

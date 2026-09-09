@@ -4,6 +4,7 @@ import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
 import { Thumbnail } from "@/components/dashboard/media";
 import { statusLabel } from "@/lib/dashboard";
+import { projectAcceptance } from "@/lib/content/project-checks";
 export default async function Page({
   searchParams,
 }: {
@@ -54,6 +55,7 @@ export default async function Page({
               (e) =>
                 e.id === p.id && !e.deletedAt && (owner || e.showInPortfolio),
             );
+            const acceptance = projectAcceptance(p, e?.checklist);
             return (
               <Link
                 className="paper panel project-tile"
@@ -65,12 +67,11 @@ export default async function Page({
                 <h2>{p.title}</h2>
                 <progress
                   aria-label={p.title + " 验收进度"}
-                  max={p.checklist.length || 1}
-                  value={e?.checklist.filter((c) => c.completed).length || 0}
+                  max={acceptance.total || 1}
+                  value={acceptance.completed}
                 />
                 <p>
-                  {e?.checklist.filter((c) => c.completed).length || 0} /{" "}
-                  {p.checklist.length} 项验收
+                  {acceptance.completed} / {acceptance.total} 项必做自评
                 </p>
                 <span className="badge">
                   {statusLabel[e?.status || "planned"]}

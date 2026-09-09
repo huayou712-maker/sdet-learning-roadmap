@@ -1,5 +1,129 @@
 {
-  "version": 1,
+  "version": 2,
+  "beginnerPath": [
+    {
+      "id": "start",
+      "title": "环境与 Python 诊断",
+      "summary": "先检验能否独立运行、修改和解释小程序。不会的语法在这一关补齐，不限定几天学完。",
+      "topicIds": [
+        "stage-02-efa3c6432a",
+        "stage-02-9648dc6a24",
+        "stage-02-c6b6e5a2db",
+        "stage-02-8ac95c244a",
+        "stage-02-dbce3c41f4",
+        "stage-02-542af18fee",
+        "stage-03-4e640fa0a3",
+        "stage-03-2a5660dfa5"
+      ],
+      "deliverable": "诊断答案、修改后的统计函数、运行命令和一条自己的 Git commit。",
+      "acceptance": [
+        "独立统计合成测试结果中的 pass / fail，处理空列表并解释循环与返回值。",
+        "能建立虚拟环境、运行 pytest，并说明当前文件和分支；卡住则先补对应语法。"
+      ],
+      "guidePath": "projects/beginner-api-lab/DIAGNOSTIC.md"
+    },
+    {
+      "id": "design",
+      "title": "测试设计 + HTTP",
+      "summary": "复用一个注册业务：先说明预期行为，再写代码验证。",
+      "topicIds": [
+        "stage-04-e27767a263",
+        "stage-04-1804a5d48b",
+        "stage-04-46bd6ef748",
+        "stage-04-012272eb28",
+        "stage-05-75c8100295",
+        "stage-05-0acab8ae0a",
+        "stage-05-f7186cedce"
+      ],
+      "deliverable": "Project 0：注册测试用例表与一份有复现步骤的缺陷报告。",
+      "acceptance": [
+        "至少覆盖合法输入、18 岁边界、未成年、缺字段、重复注册和错误 JSON。",
+        "写明状态码、响应体和失败后不产生脏数据的预期；能解释用例选择。"
+      ],
+      "guidePath": "projects/beginner-api-lab/README.md"
+    },
+    {
+      "id": "api",
+      "title": "第一组 requests + pytest",
+      "summary": "先写可信断言和独立测试，再讨论框架分层。",
+      "topicIds": [
+        "stage-05-3d08f85391",
+        "stage-05-68c1884045",
+        "stage-05-5dc4fb9ea1",
+        "stage-05-20143f161d",
+        "stage-05-91a401c4de",
+        "stage-02-a57769effd"
+      ],
+      "deliverable": "自己的注册 API 测试、一次失败定位记录与 Project 1 的 V0 作业提交。",
+      "acceptance": [
+        "正常 / 异常 / 边界 / 重复请求都有精确断言；每个请求设置超时。",
+        "单独执行、连续执行两次都通过；测试数据彼此隔离，失败请求不改变状态。"
+      ],
+      "guidePath": "projects/beginner-api-lab/EXERCISES.md"
+    },
+    {
+      "id": "ci",
+      "title": "尽早接入最小 CI",
+      "summary": "测试能运行就接 CI，用失败产物学习排障。",
+      "topicIds": [
+        "stage-08-826b6b2f2e",
+        "stage-08-bea66b1347",
+        "stage-08-3f889cc1e4",
+        "stage-08-6aca9aba6d",
+        "stage-08-b55b4aa69e",
+        "stage-03-0dfc4818b9"
+      ],
+      "deliverable": "Project 4：一次失败和一次修复后的 CI 链接、可下载的 JUnit 报告。",
+      "acceptance": [
+        "PR 自动执行测试，断言错误会使任务失败；失败时仍能查看报告。",
+        "能从 traceback 区分依赖 / 环境 / 测试代码 / 被测行为问题。"
+      ],
+      "guidePath": "docs/BEGINNER_PATH.md"
+    },
+    {
+      "id": "data",
+      "title": "SQL 校验与接口可靠性",
+      "summary": "围绕创建、查询、权限和清理补工程基础；Redis、Docker 全家桶不作为前置。",
+      "topicIds": [
+        "stage-03-fc05279036",
+        "stage-03-cdc595ec1d",
+        "stage-03-813911011a",
+        "stage-03-940391a79c",
+        "stage-03-37932952eb",
+        "stage-03-6f2b00de38",
+        "stage-05-c71146e988",
+        "stage-05-32c13e502d",
+        "stage-05-625ca700f3"
+      ],
+      "deliverable": "Project 1 的 V1：合成数据 SQL 脚本、数据库断言、鉴权反例与清理证据。",
+      "acceptance": [
+        "查询结果与 API 响应一致，参数化 SQL，失败也清理隔离数据。",
+        "复现一次 401/403 或数据不一致，提供定位过程；不用重试掩盖错误。"
+      ],
+      "guidePath": "docs/BEGINNER_PATH.md"
+    },
+    {
+      "id": "ui",
+      "title": "关键 UI 流程与综合作品",
+      "summary": "在自己的隔离测试站点完成 2–3 个流程，练定位和失败证据。",
+      "topicIds": [
+        "stage-06-85a2733c3f",
+        "stage-06-5eec9b0fd0",
+        "stage-06-4da5e3ca98",
+        "stage-06-aa29016b90",
+        "stage-06-896487ec30",
+        "stage-06-46c676eb36",
+        "stage-06-ac92cbd04d",
+        "stage-06-3ed995ead5"
+      ],
+      "deliverable": "Project 2：注册/登录/查询关键流程、Trace 与 README；整理 API + CI 排障案例。",
+      "acceptance": [
+        "使用 Python pytest-playwright 和稳定定位，独立登录状态、自动等待、失败 Trace。",
+        "从干净环境按 README 复现，能解释测试层次与覆盖边界；再按岗位选择性能 / AI 测试。"
+      ],
+      "guidePath": "docs/BEGINNER_PATH.md"
+    }
+  ],
   "stages": [
     {
       "id": "stage-01",

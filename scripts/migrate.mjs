@@ -52,42 +52,23 @@ for (const s of stages) {
   );
   s.description = match?.[1] ?? s.title;
 }
-const projects = read("docs/PROJECTS.md")
-  .split(/(?=^# Project \d+：)/m)
-  .filter((p) => p.startsWith("# Project"))
-  .map((p) => {
-    const m = p.match(/^# Project (\d+)：(.+)/);
-    const number = Number(m[1]);
-    let checklist = [...p.matchAll(/^- \[ \] (.+)$/gm)].map((m) => m[1]);
-    if (!checklist.length)
-      checklist = [...p.matchAll(/^- (.+)$/gm)].map((m) => m[1]);
-    return {
-      id: "project-" + number,
-      projectNo: number,
-      title: m[2],
-      body: p,
-      checklist,
-      stageId: [
-        "stage-04",
-        "stage-05",
-        "stage-06",
-        "stage-07",
-        "stage-08",
-        "stage-10",
-      ][number],
-    };
-  });
-mkdirSync("data", { recursive: true });
-writeFileSync(
-  "data/roadmap.json",
-  JSON.stringify({ version: 1, stages }, null, 2) + "\n",
+// Initialization only: never infer acceptance semantics from Markdown bullets.
+const projects = JSON.parse(
+  readFileSync(new URL("../data/projects.json", import.meta.url), "utf8"),
 );
+const course = JSON.parse(
+  readFileSync(new URL("../data/roadmap.json", import.meta.url), "utf8"),
+);
+mkdirSync("data", { recursive: true });
+if (!existsSync("data/roadmap.json"))
+  writeFileSync("data/roadmap.json", JSON.stringify(course, null, 2) + "\n");
 if (!existsSync("data/progress.json"))
   writeFileSync(
     "data/progress.json",
     JSON.stringify({ version: 1, updatedAt: null, items }, null, 2) + "\n",
   );
-writeFileSync("data/projects.json", JSON.stringify(projects, null, 2) + "\n");
+if (!existsSync("data/projects.json"))
+  writeFileSync("data/projects.json", JSON.stringify(projects, null, 2) + "\n");
 if (!existsSync("data/profile.json"))
   writeFileSync(
     "data/profile.json",

@@ -21,4 +21,17 @@ export type Stage = {
     items: { id: string; title: string }[];
   }[];
 };
-export type Roadmap = { version: number; stages: Stage[] };
+export type BeginnerTask = {
+  id: string;
+  title: string;
+  summary: string;
+  topicIds: string[];
+  deliverable: string;
+  acceptance: string[];
+  guidePath: string;
+};
+export type Roadmap = {
+  version: number;
+  stages: Stage[];
+  beginnerPath?: BeginnerTask[];
+};

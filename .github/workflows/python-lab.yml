@@ -1,0 +1,29 @@
+name: Python beginner lab
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  registration-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: projects/beginner-api-lab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --index-url https://pypi.org/simple -r requirements.txt
+      - run: python -m pytest -q --junitxml=test-results/junit.xml
+      - run: python selfcheck.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: beginner-lab-junit
+          path: projects/beginner-api-lab/test-results/
+          retention-days: 7

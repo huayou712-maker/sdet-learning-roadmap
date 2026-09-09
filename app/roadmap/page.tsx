@@ -18,7 +18,9 @@ export default async function Page({
       <div className="page-heading">
         <p className="eyebrow">THE LEARNING PATH</p>
         <h1>十阶进路</h1>
-        <p>学习路线定义来自原始文档，完成状态独立保存。</p>
+        <p>
+          先按实践主线推进，十阶段目录随用随查。课程与正式进度均以 GitHub 为准。
+        </p>
       </div>
       <Checklist
         {...data}
