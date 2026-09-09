@@ -9,6 +9,7 @@ import {
   type Entry,
 } from "@/lib/schemas/content";
 import { parseEntry, serializeEntry } from "./format";
+import { assertNoCredentials } from "@/lib/security/credentials";
 export async function entries(repo: Repository) {
   const paths = (await repo.listDirectory("content")).filter((p) =>
     /^content\/(notes|assignments|project-submissions|daily|debug-journal)\/.+\.md$/.test(
@@ -37,6 +38,7 @@ export async function saveNote(
   id?: string,
 ) {
   const input = noteInput.parse(payload);
+  assertNoCredentials(input);
   const now = new Date().toISOString();
   const old = id ? await findEntry(repo, id) : null;
   if (old && old.type !== "note") throw new AppError(400, "记录类型不匹配");
@@ -85,7 +87,7 @@ export async function trashEntry(
       commit: await repo.deleteFile(
         old.path,
         sha,
-        "content: permanently delete " + old.title,
+        "content: permanently delete " + old.id,
       ),
     };
   }

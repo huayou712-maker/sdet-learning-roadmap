@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { AppError } from "@/lib/errors";
 import { safePath, writablePath } from "./paths";
 import type { Repository, CommitInfo } from "./types";
+import { HISTORY_PAGE_SIZE, historyPage } from "./history-policy";
 const sha = (s: string | Buffer) => createHash("sha1").update(s).digest("hex");
 export function localRepository(writable = false): Repository {
   if (
@@ -93,7 +94,14 @@ export function localRepository(writable = false): Repository {
     createBinaryFile: (p, b, m) => put(p, b, m),
     updateTextFile: (p, s, c, m) => put(p, Buffer.from(c), m, s),
     deleteFile: (p, s, m) => put(p, null, m, s),
-    getCommitsForPath: history,
+    async getCommitsForPath(path, page = 1) {
+      safePath(path);
+      historyPage(String(page));
+      return (await history(path)).slice(
+        (page - 1) * HISTORY_PAGE_SIZE,
+        page * HISTORY_PAGE_SIZE,
+      );
+    },
     async getTextFileAtRef(path, ref) {
       if (
         !/^[a-f0-9]{40}$/.test(ref) ||

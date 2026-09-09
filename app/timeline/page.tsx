@@ -19,7 +19,10 @@ export default async function Page({
         <p className="eyebrow">LEARNING ACTIVITY</p>
         <h1>学习时间线</h1>
         <p>按 UTC 日期排列的学习提交与进展。</p>
-        <small>最近 30 条记录展开提交历史；更早版本可在记录详情查看。</small>
+        <small>
+          最近 30 次进度提交及 30 条记录（每条最近 30
+          次提交）；记录更早版本可在详情分页查看。
+        </small>
       </header>
       <nav className="status-tabs" aria-label="活动类型">
         {[

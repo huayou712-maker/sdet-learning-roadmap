@@ -6,6 +6,7 @@ import { entries, findEntry } from "./service";
 import { serializeEntry } from "./format";
 import { AppError } from "@/lib/errors";
 import { slug, safePath } from "@/lib/github/paths";
+import { assertNoCredentials } from "@/lib/security/credentials";
 export async function validateTopics(
   repo: Repository,
   stageId: string,
@@ -32,6 +33,7 @@ export async function saveRecord(
   id?: string,
 ) {
   const input = recordInput.parse(payload);
+  assertNoCredentials(input);
   await validateTopics(repo, input.stageId, input.topicIds);
   const old = id ? await findEntry(repo, id) : null;
   if (old && (old.type !== kind || old.deletedAt))

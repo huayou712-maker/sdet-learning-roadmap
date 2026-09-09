@@ -20,7 +20,8 @@ export interface Repository {
     message: string,
   ): Promise<string>;
   deleteFile(path: string, sha: string, message: string): Promise<string>;
-  getCommitsForPath(path: string): Promise<CommitInfo[]>;
+  // One bounded page, newest first. Callers must explicitly request older pages.
+  getCommitsForPath(path: string, page?: number): Promise<CommitInfo[]>;
   getTextFileAtRef(path: string, ref: string): Promise<TextFile | null>;
   createBinaryFile(
     path: string,

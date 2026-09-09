@@ -6,6 +6,7 @@ export function clearReads() {
 export async function cachedRead<T>(
   key: string,
   read: () => Promise<T>,
+  ttlMs = 15000,
 ): Promise<T> {
   const hit = reads.get(key);
   if (hit && hit.until > Date.now()) return hit.value as Promise<T>;
@@ -14,6 +15,6 @@ export async function cachedRead<T>(
     reads.delete(key);
     throw error;
   });
-  reads.set(key, { until: Date.now() + 15000, value });
+  reads.set(key, { until: Date.now() + ttlMs, value });
   return value;
 }

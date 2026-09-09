@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { AppError, safeError } from "@/lib/errors";
+import { ReadBudgetError } from "@/lib/security/read-budget";
 export async function boundedBody(request: Request, limit: number) {
   if (Number(request.headers.get("content-length")) > limit)
     throw new AppError(413, "内容过大");
@@ -55,5 +56,17 @@ export function errorResponse(error: unknown) {
           message: "内容格式错误，请检查标题、阶段、标签与必填字段",
         }
       : safeError(error);
-  return NextResponse.json({ error: e.message }, { status: e.status });
+  return NextResponse.json(
+    { error: e.message },
+    {
+      status: e.status,
+      headers:
+        error instanceof ReadBudgetError
+          ? {
+              "Retry-After": String(error.retryAfter),
+              "Cache-Control": "no-store",
+            }
+          : undefined,
+    },
+  );
 }

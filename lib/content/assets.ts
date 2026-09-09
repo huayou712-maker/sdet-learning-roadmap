@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { AppError } from "@/lib/errors";
 import type { Repository } from "@/lib/github/types";
+import { assertNoCredentials } from "@/lib/security/credentials";
 export const MAX_ASSET_BYTES = 4 * 1024 * 1024;
 const types: Record<string, string[]> = {
   png: ["image/png"],
@@ -18,6 +19,7 @@ const types: Record<string, string[]> = {
   jmx: ["application/xml", "text/xml", "text/plain"],
 };
 export function validateAsset(name: string, mime: string, bytes: Buffer) {
+  assertNoCredentials(name);
   if (
     !/^[^\\/:\x00-\x1f]{1,160}$/.test(name) ||
     name.startsWith(".") ||
@@ -56,12 +58,7 @@ export function validateAsset(name: string, mime: string, bytes: Buffer) {
     const text = bytes.toString("utf8");
     if (bytes.includes(0) || !Buffer.from(text).equals(bytes))
       throw new AppError(415, "文本附件必须为 UTF-8");
-    if (
-      /-----BEGIN [A-Z ]*PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}/.test(
-        text,
-      )
-    )
-      throw new AppError(400, "检测到疑似凭据，不能提交到公开仓库");
+    assertNoCredentials(text);
     if (ext === "json") {
       try {
         JSON.parse(text);
