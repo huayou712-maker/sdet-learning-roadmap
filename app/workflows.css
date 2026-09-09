@@ -1,4 +1,176 @@
 /* V3 workflow layouts: intentionally quiet tools within the Jianghu shell. */
+.date-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+.date-strip a {
+  display: grid;
+  text-align: center;
+  min-width: 85px;
+  padding: 12px;
+  border-bottom: 3px solid #b9a276;
+}
+.date-strip strong {
+  font-size: 30px;
+}
+.date-strip a[aria-current="page"] {
+  background: #262219;
+  color: #eee4c7;
+  border-color: #aa8747;
+}
+.daily-page {
+  max-width: 850px;
+  padding: 20px 0;
+}
+.incident-list article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: 24px;
+  padding: 22px 0;
+  border-top: 1px solid #b9a276;
+}
+.debug-document {
+  max-width: 850px;
+  margin: 28px auto;
+}
+.debug-steps {
+  border-left: 2px solid #aa8747;
+  padding-left: 34px;
+  list-style: decimal;
+}
+.debug-steps li {
+  padding: 10px 0 24px;
+}
+.activity-feed {
+  max-width: 1000px;
+}
+.activity-day {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 30px;
+  padding: 24px 0;
+}
+.activity-day h2 {
+  font-size: 20px;
+}
+.activity-day ol {
+  list-style: none;
+  padding-left: 24px;
+  border-left: 2px solid #b9a276;
+  margin: 0;
+}
+.activity-day li {
+  display: flex;
+  gap: 20px;
+  padding: 0 0 25px;
+  position: relative;
+}
+.activity-day li:before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #526147;
+  position: absolute;
+  left: -29px;
+  top: 8px;
+}
+.activity-day li > time {
+  font-size: 13px;
+  min-width: 45px;
+}
+.activity-day h3 {
+  margin: 10px 0;
+}
+.command-search {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0 36px;
+}
+.command-search label {
+  flex: 1;
+  min-width: 200px;
+}
+.command-search input {
+  display: block;
+  width: 100%;
+  font-size: 22px;
+  padding: 18px;
+}
+.command-search small {
+  width: 100%;
+}
+.search-group {
+  margin: 30px 0;
+}
+.search-group > ul {
+  list-style: none;
+  padding: 0;
+}
+.search-result {
+  display: block;
+  border-top: 1px solid #b9a276;
+  padding: 18px 0;
+}
+.search-result h2 {
+  font-size: 23px;
+  margin: 8px 0;
+}
+.search-result:hover {
+  background: #eee4c7;
+}
+.settings-workspace {
+  max-width: 1100px;
+}
+.settings-workspace section {
+  padding: 20px 0 28px;
+  border-bottom: 1px solid #b9a276;
+  scroll-margin-top: 90px;
+}
+.resource-library > section {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 12px 24px;
+  border-top: 1px solid #b9a276;
+  padding: 24px 0;
+}
+.resource-library h2 {
+  font-size: 22px;
+}
+.resource-library ul {
+  margin: 0;
+  padding-left: 20px;
+  overflow-wrap: anywhere;
+}
+.resource-library details {
+  grid-column: 2;
+}
+.resource-original {
+  margin: 30px 0;
+}
+@media (max-width: 767px) {
+  .activity-day {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .incident-list article,
+  .resource-library > section {
+    grid-template-columns: 1fr;
+  }
+  .resource-library details {
+    grid-column: 1;
+  }
+  .activity-day li {
+    gap: 10px;
+  }
+  .date-strip a {
+    min-width: 66px;
+    padding: 10px;
+  }
+}
 .status-tabs {
   display: flex;
   gap: 8px;

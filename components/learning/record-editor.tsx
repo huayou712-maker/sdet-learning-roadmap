@@ -48,6 +48,7 @@ export function RecordEditor({
   projects,
   definition,
   initialAssignment,
+  initialDate,
 }: {
   kind: Exclude<Kind, "note">;
   entry?: Entry;
@@ -55,6 +56,7 @@ export function RecordEditor({
   projects: ProjectDefinition[];
   definition?: ProjectDefinition;
   initialAssignment?: string;
+  initialDate?: string;
 }) {
   const router = useRouter();
   const initialProject =
@@ -73,7 +75,11 @@ export function RecordEditor({
       entry?.status || (kind === "assignment" ? "submitted" : "in_progress"),
     showInPortfolio: entry?.showInPortfolio || false,
     assignmentId: entry?.assignmentId || initialProject?.id || "project-0",
-    date: entry?.date || new Date().toISOString().slice(0, 10),
+    date:
+      entry?.date ||
+      (initialDate && /^\d{4}-\d{2}-\d{2}$/.test(initialDate)
+        ? initialDate
+        : new Date().toISOString().slice(0, 10)),
     plannedMinutes: entry?.plannedMinutes || 0,
     actualMinutes: entry?.actualMinutes || 0,
     durationMinutes: entry?.durationMinutes || 0,

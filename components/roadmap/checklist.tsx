@@ -249,7 +249,7 @@ export function Checklist({
                               : !state.items[i.id]?.completed),
                         )
                         .map((item) => (
-                          <div key={item.id}>
+                          <div key={item.id} id={item.id}>
                             <label className="check-row">
                               <input
                                 type="checkbox"
