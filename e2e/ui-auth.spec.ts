@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { expectImageLoaded } from "./helpers/images";
 const origin = "http://127.0.0.1:3100";
 test("public login is visible outside drawer and explains missing configuration", async ({
   page,
@@ -66,14 +67,18 @@ test("owner header and supplied assets remain usable on mobile", async ({
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await expect(page.locator(".hero-image")).toBeVisible();
-    await page.evaluate(async () => {
-      await Promise.all(
-        Array.from(document.images)
-          .filter((i) => i.getAttribute("src")?.includes("jianghu"))
-          .map((i) => i.decode().catch(() => undefined)),
-      );
-    });
+    const hero = page.locator(".hero-image");
+    await hero.scrollIntoViewIfNeeded();
+    await expectImageLoaded(hero);
+    for (const selector of [
+      ".recent-notes .note-thumbnail img",
+      ".featured-grid .project-thumbnail img",
+    ]) {
+      const thumbnail = page.locator(selector).first();
+      await thumbnail.scrollIntoViewIfNeeded();
+      await expectImageLoaded(thumbnail);
+    }
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
     await page
       .getByRole("heading", { name: "SDET Learning OS", exact: true })
       .click();

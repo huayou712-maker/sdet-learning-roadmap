@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import definitions from "../data/projects.json";
+import { prepareContentScreenshot } from "./helpers/images";
 const origin = "http://127.0.0.1:3100";
 test("page-specific workflows, public reading, responsive layouts and V3 screenshots", async ({
   page,
@@ -121,13 +122,7 @@ test("page-specific workflows, public reading, responsive layouts and V3 screens
   for (const [name, url] of routes) {
     await page.goto(url);
     await expect(page.locator("main h1").first()).toBeVisible();
-    await page.evaluate(async () => {
-      await Promise.all(
-        Array.from(document.images).map((i) =>
-          i.decode().catch(() => undefined),
-        ),
-      );
-    });
+    await prepareContentScreenshot(page);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -163,11 +158,7 @@ test("page-specific workflows, public reading, responsive layouts and V3 screens
   await page.getByRole("button", { name: "预览", exact: true }).click();
   await expect(page.locator(".editor-preview")).toBeVisible();
   await page.goto("/portfolio");
-  await page.evaluate(async () => {
-    await Promise.all(
-      Array.from(document.images).map((i) => i.decode().catch(() => undefined)),
-    );
-  });
+  await prepareContentScreenshot(page);
   await page.screenshot({ path: "docs/design/v3/mobile.png", fullPage: true });
   expect(hydrationErrors).toEqual([]);
 });
