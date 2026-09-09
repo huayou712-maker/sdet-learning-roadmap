@@ -120,7 +120,7 @@ test("desktop and mobile layouts fit; resources and portfolio render", async ({
         path:
           "docs/design/dashboard-" +
           (width === 1440 ? "desktop" : "mobile") +
-          ".png",
+          "-v2.png",
         fullPage: true,
       });
   }

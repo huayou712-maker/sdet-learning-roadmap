@@ -2,6 +2,7 @@ import Link from "next/link";
 import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
 import { readEntries } from "@/lib/content/read";
+import { Thumbnail } from "@/components/dashboard/media";
 export default async function Page({
   searchParams,
 }: {
@@ -48,12 +49,13 @@ export default async function Page({
         <button>筛选</button>
       </form>
       {entries.length ? (
-        entries.map((e) => (
+        entries.map((e, i) => (
           <Link
             href={"/notes/" + e.id}
             key={e.id}
             className="paper panel entry-card"
           >
+            <Thumbnail kind="note" index={i} />
             <small>
               {e.stageId} · {e.updatedAt.slice(0, 10)}
             </small>

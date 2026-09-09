@@ -1,7 +1,7 @@
 name: Web CI
 on:
   push:
-    branches: [main, feat/learning-os-web]
+    branches: [main, feat/learning-os-web, "fix/**"]
   pull_request:
     branches: [main]
 permissions:

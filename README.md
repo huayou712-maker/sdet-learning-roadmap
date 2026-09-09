@@ -238,15 +238,15 @@ perf: add JMeter login scenario
 
 ![江湖视觉参考](docs/design/jianghu-ui-reference.png)
 
-暖纸、墨色与赭金的界面使用系统字体与 CSS 山形，不以整幅参考图充当网页背景。
+暖纸、墨色与赭金的界面采用楷体字体栈和提供的江湖 WebP / PNG 素材，不上传字体，也不以整幅参考图充当网页背景。Header 提供独立 GitHub 登录与账户菜单。
 
 ### 实际界面
 
 下图由隔离浏览器测试渲染，展示合成测试状态，不代表真实学习成果。
 
-![桌面首页](docs/design/dashboard-desktop.png)
+![桌面首页](docs/design/dashboard-desktop-v2.png)
 
-[查看手机首页截图](docs/design/dashboard-mobile.png)
+[查看手机首页截图](docs/design/dashboard-mobile-v2.png)
 
 ### 运行
 

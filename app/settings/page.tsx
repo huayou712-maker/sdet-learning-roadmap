@@ -3,13 +3,10 @@ import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
 import { sourceLabel } from "@/lib/github/contents";
 import { SignIn } from "@/components/ui/sign-in";
+import { authConfiguration } from "@/lib/auth/configuration";
 export default async function Page() {
   const session = await identity();
-  const configured = !!(
-    process.env.AUTH_SECRET &&
-    process.env.AUTH_GITHUB_ID &&
-    process.env.AUTH_GITHUB_SECRET
-  );
+  const { configured, missing } = authConfiguration();
   return (
     <section className="paper panel document">
       <h1>连接与设置</h1>
@@ -19,9 +16,18 @@ export default async function Page() {
       </p>
       <p>数据来源：{sourceLabel()}</p>
       <p>OAuth：{configured ? "已配置" : "待配置"}</p>
+      {!configured && (
+        <p className="error">
+          缺少：{missing.join("、")}
+          。请在服务端环境配置后重新部署，不要将密钥填写在学习内容中。
+        </p>
+      )}
+      <p>数据分支：{process.env.GITHUB_CONTENT_BRANCH || "main"}</p>
       <p>
         服务器 GitHub 写权限：
-        {process.env.GITHUB_WRITE_TOKEN ? "已配置" : "待配置"}
+        {process.env.GITHUB_WRITE_TOKEN
+          ? "令牌已配置（实际权限以 GitHub 响应为准）"
+          : "待配置 GITHUB_WRITE_TOKEN"}
       </p>
       <SignIn loggedIn={!!session} configured={configured} />
       <hr />

@@ -108,10 +108,8 @@
   --success: #476348;
   --warning: #80551e;
   --danger: #8f382b;
-  --font-display: "Songti SC", "STSong", "Noto Serif SC", serif;
-  --font-ui:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Microsoft YaHei", sans-serif;
+  --font-ui: "KaiTi", "STKaiti", "Kaiti SC", "BiauKai", serif;
+  --font-display: var(--font-ui);
   --font-mono: Consolas, monospace;
 }
 * {
@@ -280,61 +278,6 @@ summary {
   font-family: var(--font-display);
   font-size: 17px;
 }
-.landscape {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 55%;
-  height: 100%;
-  z-index: -1;
-}
-.sun {
-  position: absolute;
-  right: 23%;
-  top: 16%;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background: #f5dfa2;
-  box-shadow: 0 0 70px #f5dfa280;
-}
-.ridge {
-  position: absolute;
-  inset: 32% -3% -10%;
-  clip-path: polygon(
-    0 65%,
-    10% 57%,
-    21% 69%,
-    34% 23%,
-    41% 38%,
-    53% 14%,
-    62% 48%,
-    70% 32%,
-    83% 64%,
-    90% 46%,
-    100% 55%,
-    100% 100%,
-    0 100%
-  );
-}
-.ridge-back {
-  background: #6f704762;
-  transform: translateY(-30px);
-}
-.ridge-front {
-  background: linear-gradient(#58563b94, #494531cc);
-  transform: translate(35px, 45px);
-}
-.vertical {
-  position: absolute;
-  right: 9%;
-  top: 20%;
-  writing-mode: vertical-rl;
-  font: 38px var(--font-display);
-  letter-spacing: 12px;
-  color: var(--ink-800);
-  opacity: 0.7;
-}
 .hero-foot {
   display: flex;
   justify-content: space-between;
@@ -428,7 +371,7 @@ button:disabled {
   gap: 18px;
 }
 .route-mini li span {
-  font: 12px var(--font-mono);
+  font: 12px var(--font-ui);
   color: var(--sand-600);
   padding-top: 6px;
 }
@@ -543,7 +486,7 @@ textarea {
 .stage-count {
   margin-left: auto;
   white-space: nowrap;
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
 }
 .stage-groups {
   border-top: 1px solid var(--border);
