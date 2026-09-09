@@ -86,31 +86,31 @@
   }
 }
 :root {
-  --ink-950: #1f1b15;
-  --ink-900: #2b251c;
-  --ink-800: #362d20;
-  --paper-50: #f1e7d3;
-  --paper-100: #e8dbc2;
-  --paper-200: #deceb0;
-  --paper-300: #d0be9d;
+  --ink-950: #233c35;
+  --ink-900: #283b33;
+  --ink-800: #374b40;
+  --paper-50: #fafaf4;
+  --paper-100: #eef0e9;
+  --paper-200: #e2e6dc;
+  --paper-300: #cbd2c3;
   --sand-400: #a08c69;
   --sand-500: #826e4d;
   --sand-600: #68573b;
-  --gold-500: #b58a3b;
+  --gold-500: #b8955c;
   --gold-600: #9b712d;
   --crimson-600: #8f382b;
   --crimson-700: #742b22;
-  --jade-600: #526651;
-  --jade-700: #364a3b;
-  --jade-800: #2c3d32;
-  --muted: #655c4e;
-  --border: rgba(54, 45, 32, 0.24);
+  --jade-600: #5b7b67;
+  --jade-700: #44685a;
+  --jade-800: #2d5143;
+  --muted: #626d63;
+  --border: rgba(55, 75, 64, 0.16);
   --success: #476348;
   --warning: #80551e;
   --danger: #8f382b;
   --font-ui: "KaiTi", "STKaiti", "Kaiti SC", "BiauKai", serif;
   --font-display: var(--font-ui);
-  --font-mono: Consolas, monospace;
+  --font-mono: "Cascadia Code", Consolas, monospace;
 }
 * {
   box-sizing: border-box;

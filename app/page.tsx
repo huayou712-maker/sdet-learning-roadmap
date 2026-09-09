@@ -9,6 +9,8 @@ import { timeline } from "@/lib/content/timeline";
 import { repository } from "@/lib/github/contents";
 import { Hero, Thumbnail, InkDecoration } from "@/components/dashboard/media";
 import { Icon } from "@/components/ui/icon";
+import { Journey } from "@/components/dashboard/journey";
+import styles from "@/components/dashboard/workspace.module.css";
 export default async function Home() {
   const [{ roadmap, progress }, projects, all, session, commits] =
     await Promise.all([
@@ -41,7 +43,23 @@ export default async function Home() {
   );
   return (
     <>
-      <section className="hero">
+      <div className={styles.heading}>
+        <div>
+          <p>行知 / LEARNING WORKSPACE</p>
+          <h2>{owner ? "继续今天的进路" : "学习与作品总览"}</h2>
+        </div>
+        <div className={styles.actions}>
+          <Link href={owner ? "/notes/new" : "/notes"}>
+            {owner ? "写学习笔记" : "阅读笔记"}{" "}
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href={owner ? "/daily" : "/portfolio"}>
+            {owner ? "记录日课" : "查看作品集"}{" "}
+            <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
+      </div>
+      <section className={"hero " + styles.chapter}>
         <Hero />
         <div className="hero-copy">
           <p className="eyebrow">行知有迹 / SDET LEARNING JOURNAL</p>
@@ -59,6 +77,7 @@ export default async function Home() {
           行有所学 · 学有所证
         </span>
       </section>
+      <Journey roadmap={roadmap} progress={progress} currentId={current?.id} />
       <section className="stats core-stats" aria-label="核心学习指标">
         <article className="paper stat progress-stat">
           <div
