@@ -7,12 +7,21 @@ import { sections, entryUrl } from "@/lib/content/catalog";
 import { RecordEditor } from "@/components/learning/record-editor";
 import { Markdown } from "@/components/ui/markdown";
 import { ContentActions, History } from "@/components/notes/actions";
+import {
+  DailyJournal,
+  DebugLibrary,
+  DebugDocument,
+} from "@/components/learning/journals";
+import {
+  AssignmentList,
+  AssignmentDetail,
+} from "@/components/learning/assignments";
 export default async function Page({
   params,
   searchParams,
 }: {
   params: Promise<{ section: string; id?: string[] }>;
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const { section, id = [] } = await params;
   const config = sections[section];
@@ -29,7 +38,13 @@ export default async function Page({
     (!entry || (!owner && (!entry.showInPortfolio || entry.deletedAt)))
   )
     notFound();
-  const { saved } = await searchParams;
+  const query = await searchParams;
+  const { saved, edit } = query;
+  const visible = all.filter(
+    (e) =>
+      e.type === config.kind && !e.deletedAt && (owner || e.showInPortfolio),
+  );
+  const projects = await readProjects();
   return (
     <>
       <div className="page-heading">
@@ -45,13 +60,55 @@ export default async function Page({
           </Link>
         )}
       </div>
-      {id.length ? (
+      {section === "daily" && !id.length ? (
+        <DailyJournal entries={visible} date={query.date} owner={owner} />
+      ) : section === "debug-journal" && !id.length ? (
+        <DebugLibrary entries={visible} query={query} />
+      ) : entry && edit !== "1" && section !== "assignments" ? (
+        <>
+          {owner && !entry.deletedAt && (
+            <Link
+              className="button secondary"
+              href={"/" + section + "/" + entry.id + "?edit=1"}
+            >
+              编辑记录
+            </Link>
+          )}
+          {section === "debug-journal" ? (
+            <DebugDocument entry={entry} />
+          ) : (
+            <article className="daily-page">
+              <p>
+                预计 {entry.plannedMinutes} 分钟 · 实际 {entry.actualMinutes}{" "}
+                分钟
+              </p>
+              <Markdown body={entry.body} />
+            </article>
+          )}
+        </>
+      ) : section === "assignments" && !id.length ? (
+        <AssignmentList
+          entries={visible}
+          projects={projects}
+          owner={owner}
+          query={query}
+        />
+      ) : section === "assignments" && entry && edit !== "1" ? (
+        <AssignmentDetail
+          entry={entry}
+          entries={visible}
+          definition={projects.find((p) => p.id === entry.assignmentId)}
+          owner={owner}
+        />
+      ) : id.length ? (
         owner && !entry?.deletedAt ? (
           <RecordEditor
             kind={config.kind as "assignment" | "debug" | "daily"}
             entry={entry}
             roadmap={(await readLearning()).roadmap}
-            projects={await readProjects()}
+            projects={projects}
+            initialAssignment={query.assignment}
+            initialDate={query.date}
           />
         ) : entry ? (
           <article className="paper panel">

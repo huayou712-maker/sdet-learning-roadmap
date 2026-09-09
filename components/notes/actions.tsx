@@ -94,7 +94,7 @@ export function History({ id, kind = "notes" }: { id: string; kind?: string }) {
     <section className="paper panel">
       <button onClick={() => load()}>查看历史版本</button>
       <p role="status">{error}</p>
-      <ul>
+      <ol className="history-feed">
         {commits.map((c) => (
           <li key={c.sha}>
             <button onClick={() => load(c.sha)}>
@@ -103,7 +103,7 @@ export function History({ id, kind = "notes" }: { id: string; kind?: string }) {
             <time>{c.date}</time>
           </li>
         ))}
-      </ul>
+      </ol>
       {body && <Markdown body={body} />}
     </section>
   );

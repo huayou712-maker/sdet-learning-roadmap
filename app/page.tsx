@@ -4,7 +4,7 @@ import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
 import { entryUrl } from "@/lib/content/catalog";
 import { progressStats, learningStats } from "@/lib/stats";
-import { chapterGroups, statusLabel, excerpt } from "@/lib/dashboard";
+import { statusLabel, excerpt } from "@/lib/dashboard";
 import { timeline } from "@/lib/content/timeline";
 import { repository } from "@/lib/github/contents";
 import { Hero, Thumbnail, InkDecoration } from "@/components/dashboard/media";
@@ -23,6 +23,15 @@ export default async function Home() {
     (e) => !e.deletedAt && (owner || e.showInPortfolio),
   );
   const stats = progressStats(roadmap, progress);
+  const current =
+    roadmap.stages.find((s) =>
+      s.groups.some((g) =>
+        g.items.some((i) => !progress.items[i.id]?.completed),
+      ),
+    ) || roadmap.stages[roadmap.stages.length - 1];
+  const next = current?.groups
+    .flatMap((g) => g.items)
+    .find((i) => !progress.items[i.id]?.completed);
   const activity = learningStats(records);
   const notes = records.filter((e) => e.type === "note").slice(0, 3);
   const events = timeline(records, commits, owner).slice(0, 5);
@@ -37,13 +46,12 @@ export default async function Home() {
         <div className="hero-copy">
           <p className="eyebrow">行知有迹 / SDET LEARNING JOURNAL</p>
           <h1>SDET Learning OS</h1>
-          <h2>测试开发学习与作品留痕系统</h2>
-          <p>
-            以代码为剑，以测试为眼。
-            <br />
-            留下每一步可验证的行迹。
-          </p>
-          <Link className="button hero-cta" href="/roadmap">
+          <h2>当前阶段 · {current?.title}</h2>
+          <p>{owner ? "GitHub Owner · 学习工作区" : "公开只读 · 学习与作品"}</p>
+          <Link
+            className="button hero-cta"
+            href={"/roadmap?stage=" + current?.id}
+          >
             继续学习路线 <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -112,32 +120,16 @@ export default async function Home() {
         <section className="paper panel roadmap-overview">
           <InkDecoration />
           <div className="section-head">
-            <h2>学习路线</h2>
+            <h2>当前学习阶段</h2>
             <Link href="/roadmap">查看全部 →</Link>
           </div>
-          <ol className="chapter-timeline">
-            {chapterGroups(roadmap, progress).map((g) => (
-              <li
-                key={g.title}
-                className={
-                  g.percent === 100
-                    ? "completed"
-                    : g.completed
-                      ? "in_progress"
-                      : "planned"
-                }
-              >
-                <div>
-                  <h3>{g.title}</h3>
-                  <span>{g.percent}%</span>
-                </div>
-                <p>{g.description}</p>
-                <small>
-                  {g.completed} / {g.total} 项
-                </small>
-              </li>
-            ))}
-          </ol>
+          <div className="current-stage">
+            <p className="eyebrow">STAGE {current?.order}</p>
+            <h3>{current?.title}</h3>
+            <p>{current?.description}</p>
+            <p>下一步：{next?.title || "本阶段已完成，回顾学习证据。"}</p>
+            <Link href={"/roadmap?stage=" + current?.id}>进入阶段工作区 →</Link>
+          </div>
           <p className="evidence-reminder">
             {stats.missingEvidence} 个已完成知识点待补证据
           </p>
@@ -244,7 +236,7 @@ export default async function Home() {
           <Link href="/projects">查看全部 →</Link>
         </div>
         <div className="project-grid featured-grid">
-          {projects.slice(0, 4).map((p, i) => {
+          {projects.slice(0, 3).map((p, i) => {
             const record = records.find(
               (e) => e.type === "project" && e.id === p.id,
             );
