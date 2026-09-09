@@ -57,6 +57,7 @@ test("owner creates, edits, views history, deletes, restores and updates progres
   await page.getByRole("button", { name: "保存并提交到 GitHub" }).click();
   await expect(page).toHaveURL(/\/notes\/[a-z0-9-]+\?saved=/);
   await expect(page.getByText(/已保存 · Commit:/).first()).toBeVisible();
+  await page.getByRole("link", { name: "编辑笔记", exact: true }).click();
   await page.getByLabel("标题", { exact: true }).fill("E2E edited fixture");
   await page.getByLabel(/当前仓库为公开仓库/).check();
   await page.getByRole("button", { name: "保存并提交到 GitHub" }).click();
@@ -68,7 +69,14 @@ test("owner creates, edits, views history, deletes, restores and updates progres
     page.getByRole("button", { name: /notes\(stage-01\): update/ }),
   ).toBeVisible();
   await page.getByRole("button", { name: "移入回收站" }).click();
+  const deleted = page.waitForResponse(
+    (r) => r.request().method() === "DELETE" && r.url().includes("/api/notes/"),
+  );
   await page.getByRole("button", { name: "确认", exact: true }).click();
+  expect((await deleted).ok()).toBeTruthy();
+  await expect(
+    page.getByRole("button", { name: "恢复记录", exact: true }),
+  ).toBeVisible();
   await page.goto("/trash");
   await expect(
     page.getByRole("heading", { name: "E2E edited fixture" }),

@@ -4,6 +4,7 @@ import { isOwner } from "@/lib/github/authz";
 import { readEntries, readLearning } from "@/lib/content/read";
 import { Thumbnail } from "@/components/dashboard/media";
 import { excerpt, statusLabel } from "@/lib/dashboard";
+import { ResponsivePanel } from "@/components/ui/responsive-panel";
 export default async function Page({
   searchParams,
 }: {
@@ -58,35 +59,37 @@ export default async function Page({
         )}
       </header>
       <div className="knowledge-layout">
-        <details className="knowledge-sidebar" open>
-          <summary>知识目录</summary>
-          <nav aria-label="笔记知识目录">
-            <Link
-              href="/notes"
-              aria-current={!stage && !tag ? "page" : undefined}
-            >
-              全部笔记
-            </Link>
-            <Link href={url({ sort: "recent" })}>最近更新</Link>
-            {roadmap.stages.map((s) => (
+        <ResponsivePanel title="知识目录">
+          <details className="knowledge-sidebar" open>
+            <summary>知识目录</summary>
+            <nav aria-label="笔记知识目录">
               <Link
-                key={s.id}
-                href={url({ stage: s.id })}
-                aria-current={s.id === stage ? "page" : undefined}
+                href="/notes"
+                aria-current={!stage && !tag ? "page" : undefined}
               >
-                {s.order}. {s.title}{" "}
-                <small>{all.filter((e) => e.stageId === s.id).length}</small>
+                全部笔记
               </Link>
-            ))}
-            <h3>标签</h3>
-            {Array.from(new Set(all.flatMap((e) => e.tags))).map((t) => (
-              <Link key={t} href={url({ tag: t })}>
-                # {t}
-              </Link>
-            ))}
-            {owner && <Link href="/trash">回收站</Link>}
-          </nav>
-        </details>
+              <Link href={url({ sort: "recent" })}>最近更新</Link>
+              {roadmap.stages.map((s) => (
+                <Link
+                  key={s.id}
+                  href={url({ stage: s.id })}
+                  aria-current={s.id === stage ? "page" : undefined}
+                >
+                  {s.order}. {s.title}{" "}
+                  <small>{all.filter((e) => e.stageId === s.id).length}</small>
+                </Link>
+              ))}
+              <h3>标签</h3>
+              {Array.from(new Set(all.flatMap((e) => e.tags))).map((t) => (
+                <Link key={t} href={url({ tag: t })}>
+                  # {t}
+                </Link>
+              ))}
+              {owner && <Link href="/trash">回收站</Link>}
+            </nav>
+          </details>
+        </ResponsivePanel>
         <section className="knowledge-main">
           <div className="section-head">
             <p>{entries.length} 篇匹配笔记</p>

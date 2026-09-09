@@ -73,7 +73,7 @@ export default async function Page({
                 {entry.updatedAt.slice(0, 10)}
               </small>
             </header>
-            <Markdown body={entry.body} />
+            <Markdown body={entry.body} anchors />
             <section>
               <h2>关联证据</h2>
               <ul>

@@ -45,9 +45,9 @@ test("owner header and supplied assets remain usable on mobile", async ({
   ).toBeVisible();
   await expect(
     page.locator(".featured-grid .project-thumbnail img"),
-  ).toHaveCount(4);
+  ).toHaveCount(3);
   await expect(page.locator(".core-stats>article")).toHaveCount(4);
-  await expect(page.locator(".chapter-timeline>li")).toHaveCount(4);
+  await expect(page.locator(".current-stage")).toContainText("下一步");
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     const account = page.getByLabel("GitHub 账户 huayou712-maker");
@@ -79,7 +79,7 @@ test("owner header and supplied assets remain usable on mobile", async ({
       .click();
     await page.screenshot({
       path:
-        "docs/design/dashboard-" +
+        "test-results/dashboard-" +
         (width === 1440 ? "desktop" : "mobile") +
         "-v2.png",
       fullPage: true,

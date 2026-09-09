@@ -118,7 +118,7 @@ test("desktop and mobile layouts fit; resources and portfolio render", async ({
     if (width !== 768)
       await page.screenshot({
         path:
-          "docs/design/dashboard-" +
+          "test-results/dashboard-" +
           (width === 1440 ? "desktop" : "mobile") +
           "-v2.png",
         fullPage: true,
@@ -127,7 +127,7 @@ test("desktop and mobile layouts fit; resources and portfolio render", async ({
   await page.goto("/portfolio");
   await expect(page.getByRole("heading", { name: "精选项目" })).toBeVisible();
   await page.goto("/resources");
-  await expect(page.locator(".markdown")).toContainText("资源");
+  await expect(page.getByRole("heading", { name: "课程资源库" })).toBeVisible();
   await page.request.post("/api/test-session", {
     headers: { origin, "x-e2e-secret": "isolated-local-e2e-only" },
   });

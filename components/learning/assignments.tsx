@@ -3,6 +3,7 @@ import type { Entry } from "@/lib/schemas/content";
 import type { ProjectDefinition } from "@/lib/content/catalog";
 import { Markdown } from "@/components/ui/markdown";
 import { statusLabel } from "@/lib/dashboard";
+import { ResponsivePanel } from "@/components/ui/responsive-panel";
 export function AssignmentList({
   entries,
   projects,
@@ -39,32 +40,36 @@ export function AssignmentList({
           </Link>
         ))}
       </nav>
-      <details className="filter-sheet" open>
-        <summary>筛选作业</summary>
-        <form className="toolbar">
-          <label>
-            阶段
-            <select name="stage" defaultValue={stage}>
-              <option value="">全部</option>
-              {Array.from(new Set(projects.map((p) => p.stageId))).map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            状态
-            <select name="status" defaultValue={status}>
-              <option value="">全部</option>
-              {Object.entries(statusLabel).map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button className="secondary">筛选</button>
-        </form>
-      </details>
+      <ResponsivePanel title="筛选作业" side="bottom">
+        <details className="filter-sheet" open>
+          <summary>筛选作业</summary>
+          <form className="toolbar">
+            <label>
+              阶段
+              <select name="stage" defaultValue={stage}>
+                <option value="">全部</option>
+                {Array.from(new Set(projects.map((p) => p.stageId))).map(
+                  (s) => (
+                    <option key={s}>{s}</option>
+                  ),
+                )}
+              </select>
+            </label>
+            <label>
+              状态
+              <select name="status" defaultValue={status}>
+                <option value="">全部</option>
+                {Object.entries(statusLabel).map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button className="secondary">筛选</button>
+          </form>
+        </details>
+      </ResponsivePanel>
       <table className="submission-table">
         <caption className="sr-only">作业提交记录</caption>
         <thead>

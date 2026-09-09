@@ -23,3 +23,8 @@ Only dashboard and Portfolio get large imagery; production tools stay quiet.
 4. Daily/debug/timeline/resources/search/settings: same checks; commit.
 5. Portfolio/mobile/a11y: same checks, E2E and ten inspected screenshots.
 Filters use URL parameters. No synthetic production data or new persistence.
+
+## Implemented review
+Milestones 1–4 passed lint, typecheck, unit tests and build before their commits.
+Milestone 5 adds public Portfolio, native mobile panels, regression coverage and
+the V3 screenshot review. See v3/README.md for architecture, corrections and limits.

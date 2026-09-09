@@ -60,7 +60,7 @@ export default async function Page({
                 key={p.id}
                 href={"/projects/" + p.id}
               >
-                <Thumbnail kind="project" index={i} />
+                <Thumbnail kind="project" index={i} eager={i === 0} />
                 <small>PROJECT {p.projectNo}</small>
                 <h2>{p.title}</h2>
                 <progress

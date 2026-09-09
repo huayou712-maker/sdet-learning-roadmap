@@ -20,6 +20,7 @@ export function SearchCommand({ query }: { query: string }) {
       }
     }
     document.addEventListener("keydown", onKey);
+    input.current?.setAttribute("data-shortcuts", "ready");
     return () => document.removeEventListener("keydown", onKey);
   }, []);
   return (

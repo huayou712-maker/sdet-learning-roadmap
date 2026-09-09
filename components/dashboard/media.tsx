@@ -18,9 +18,11 @@ export function Hero() {
 export function Thumbnail({
   kind,
   index,
+  eager = false,
 }: {
   kind: "note" | "project";
   index: number;
+  eager?: boolean;
 }) {
   return (
     <div className={"thumbnail " + kind + "-thumbnail"}>
@@ -39,7 +41,7 @@ export function Thumbnail({
             ? "(max-width: 767px) 120px, 100px"
             : "(max-width: 767px) 100vw, (max-width: 1199px) 45vw, 300px"
         }
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
       />
     </div>
   );

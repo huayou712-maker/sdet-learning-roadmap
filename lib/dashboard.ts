@@ -24,6 +24,9 @@ export const statusLabel: Record<string, string> = {
 };
 export function excerpt(body: string) {
   return body
+    .replace(/^\s*\|?\s*:?-{3,}.*$/gm, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\|/g, " ")
     .replace(/```[\s\S]*?```/g, "")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/[#*`>\[\]]/g, "")

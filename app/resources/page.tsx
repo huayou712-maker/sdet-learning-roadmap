@@ -17,7 +17,7 @@ export default async function Page({
     (r) =>
       (!stage || r.stage === stage) &&
       (!topic || r.title === topic) &&
-      (!type || r.types.some(value => value === type)),
+      (!type || r.types.some((value) => value === type)),
   );
   return (
     <>
