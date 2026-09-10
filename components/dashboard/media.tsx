@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { imageQuality, imageSizes, type ThumbnailSlot } from "./image-sizes";
 export function Hero() {
   return (
     <div className="hero-visual">
@@ -6,8 +7,9 @@ export function Hero() {
         src="/images/jianghu/hero-jianghu.webp"
         alt="夕阳下的荒漠、关隘与远行者"
         fill
-        priority
-        sizes="(max-width: 1440px) 100vw, 1440px"
+        preload
+        quality={imageQuality}
+        sizes={imageSizes.hero}
         className="hero-image"
       />
       <div className="hero-shade" />
@@ -18,10 +20,12 @@ export function Hero() {
 export function Thumbnail({
   kind,
   index,
+  slot,
   eager = false,
 }: {
   kind: "note" | "project";
   index: number;
+  slot: ThumbnailSlot;
   eager?: boolean;
 }) {
   return (
@@ -36,11 +40,9 @@ export function Thumbnail({
         }
         alt={kind === "note" ? "学习笔记配图" : "项目档案配图"}
         fill
-        sizes={
-          kind === "note"
-            ? "(max-width: 767px) 120px, 100px"
-            : "(max-width: 767px) 100vw, (max-width: 1199px) 45vw, 300px"
-        }
+        sizes={imageSizes[slot]}
+        quality={imageQuality}
+        data-image-slot={slot}
         loading={eager ? "eager" : "lazy"}
       />
     </div>
@@ -53,7 +55,8 @@ export function InkDecoration() {
       alt=""
       aria-hidden="true"
       fill
-      sizes="400px"
+      sizes={imageSizes.ink}
+      quality={imageQuality}
       className="ink-decoration"
     />
   );
