@@ -192,20 +192,37 @@ test("training denies anonymous access and remains usable on mobile and keyboard
     ).status(),
   ).toBe(403);
   await page.emulateMedia({ reducedMotion: "reduce" });
+  const practice = page.getByRole("form", { name: "提交独立练习" });
+  // Next.js can stream this form inside a hidden Suspense container first.
+  // Locator.focus() alone does not wait for visibility or establish focus there.
+  await expect(practice).toBeVisible();
+  const commitInput = practice.getByLabel("独立测试的 commit SHA");
+  const normalResult = practice.getByRole("combobox", {
+    name: "正常实现的测试结果",
+    exact: true,
+  });
   for (const width of [1440, 390, 320]) {
-    await page.setViewportSize({ width, height: 1000 });
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await page.getByLabel("独立测试的 commit SHA").focus();
-    await page.keyboard.press("Tab");
-    await expect(page.getByLabel("正常实现的测试结果")).toBeFocused();
-    await prepareContentScreenshot(page);
-    await page.screenshot({
-      path: testInfo.outputPath("training-" + width + ".png"),
-      fullPage: true,
+    await test.step(`visible form and keyboard order at ${width}px`, async () => {
+      await page.setViewportSize({ width, height: 1000 });
+      await expect(commitInput).toBeVisible();
+      await expect(commitInput).toBeEnabled();
+      await commitInput.scrollIntoViewIfNeeded();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await commitInput.focus();
+      await expect(commitInput).toBeFocused();
+      await page.keyboard.press("Tab");
+      await expect(normalResult).toBeFocused();
+      await page.keyboard.press("Shift+Tab");
+      await expect(commitInput).toBeFocused();
+      await prepareContentScreenshot(page);
+      await page.screenshot({
+        path: testInfo.outputPath("training-" + width + ".png"),
+        fullPage: true,
+      });
     });
   }
   expect(
