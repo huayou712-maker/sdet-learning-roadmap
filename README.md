@@ -64,15 +64,19 @@ UI 主学 Playwright；Selenium 按目标团队旧项目需要补，不要求先
 
 ![江湖视觉参考](docs/design/jianghu-ui-reference.png)
 
-暖纸、墨色与赭金的界面采用楷体字体栈和提供的江湖 WebP / PNG 素材，不上传字体，也不以整幅参考图充当网页背景。Header 提供独立 GitHub 登录与账户菜单。
+暖纸、墨色与赭金的界面保留江湖主题和高清 WebP / PNG 素材。艺术字体只用于首屏诗句，章节标题、阅读正文和代码分别使用展示、无衬线与等宽字体栈；不分发字体文件，也不以整幅参考图充当网页背景。Header 提供独立 GitHub 登录与账户菜单。
+
+- [R3 · 艺术字体与首屏约束](docs/design/ART_TYPOGRAPHY_R3.md)
+- [R4 · 学习入口、专注阅读与项目案例](docs/design/LEARNING_EXPERIENCE_R4.md)
+- [R5 · 训练台结果反馈与公共状态](docs/design/TRAINING_FEEDBACK_R5.md)
 
 ### 实际界面
 
 下图由隔离浏览器测试渲染，展示合成测试状态，不代表真实学习成果。
 
-![桌面首页](docs/design/dashboard-desktop-v2.png)
+![桌面首页](docs/design/v4/dashboard.png)
 
-[查看手机首页截图](docs/design/dashboard-mobile-v2.png)
+[查看手机首页截图](docs/design/v4/mobile.png)
 
 ### 运行
 

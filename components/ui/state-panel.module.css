@@ -1,0 +1,100 @@
+.panel {
+  margin: 36px 0;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold-600);
+  border-radius: 8px;
+  background: var(--paper-50);
+  max-width: 900px;
+  overflow-wrap: anywhere;
+}
+.panel[data-kind="error"] {
+  border-top-color: var(--crimson-600);
+}
+.label {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.panel h1 {
+  margin: 0 0 18px;
+  font-size: clamp(25px, 3vw, 36px);
+  line-height: 1.5;
+}
+.description {
+  max-width: 68ch;
+  color: var(--ink-800);
+  font-size: 16px;
+  line-height: 1.8;
+}
+.description p {
+  margin: 12px 0;
+}
+.description ul {
+  padding-left: 22px;
+}
+.description li {
+  margin: 8px 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 24px;
+}
+.actions a,
+.actions button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+.actions a:not(:global(.button)) {
+  color: var(--jade-700);
+  text-underline-offset: 5px;
+}
+.actions a:hover {
+  text-decoration: underline;
+}
+.panel[data-compact="true"] {
+  margin: 20px 0;
+  padding: 22px;
+  border-top-width: 1px;
+  max-width: none;
+}
+.panel[data-compact="true"] h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+.panel[data-compact="true"] .description {
+  font-size: 14px;
+}
+.skeleton {
+  display: grid;
+  gap: 12px;
+  margin-top: 32px;
+  max-width: 620px;
+}
+.skeleton span {
+  height: 12px;
+  border-radius: 3px;
+  background: var(--paper-200);
+}
+.skeleton span:nth-child(2) {
+  width: 85%;
+}
+.skeleton span:nth-child(3) {
+  width: 62%;
+}
+@media (max-width: 767px) {
+  .panel {
+    margin-block: 24px;
+    padding: 24px 20px;
+  }
+  .panel[data-compact="true"] {
+    padding: 18px;
+  }
+}

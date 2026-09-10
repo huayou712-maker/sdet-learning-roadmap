@@ -8,6 +8,7 @@ import {
 } from "@/lib/training/schema";
 import { sourceFor, nextReview, type ReviewSource } from "@/lib/training/rules";
 import styles from "./training.module.css";
+import { StatePanel } from "@/components/ui/state-panel";
 type Save = (command: TrainingCommand) => Promise<boolean>;
 function ReviewCard({
   card,
@@ -69,6 +70,15 @@ function ReviewCard({
       <p>
         下次复习：{card.due}（UTC） · 已记录 {card.history.length} 次
       </p>
+      {!available && source && (
+        <p className={styles.reviewStatus}>
+          {card.suspended
+            ? "这张卡已暂停；恢复后将按原到期日继续安排。"
+            : card.history.some((h) => h.ratedAt.slice(0, 10) === today)
+              ? "今天已记录自评。可以查看历史，下一次到期后再独立作答。"
+              : "尚未到复习日期。可以先回顾来源记录，当前不会重复记一次成绩。"}
+        </p>
+      )}
       {available && (
         <div className={styles.form}>
           <label>
@@ -229,9 +239,19 @@ export function Reviews({
         <h2>复习队列</h2>
         <p>先回答，再核对。每张卡每天最多记一次；代码题需要实际重做。</p>
         {!cards.length && (
-          <p className="empty">
-            还没有复习卡。从一篇笔记或排障记录中挑一个易错点开始。
-          </p>
+          <StatePanel
+            compact
+            title="还没有复习卡"
+            actions={
+              live.length ? (
+                <a href="#create-review">从已有记录提取问题 →</a>
+              ) : (
+                <Link href="/notes/new">先写一篇学习笔记 →</Link>
+              )
+            }
+          >
+            <p>从一篇笔记或排障记录中挑一个易错点，写出问题和可核对的答案。</p>
+          </StatePanel>
         )}
         {sorted.map((card) => (
           <ReviewCard
@@ -244,7 +264,7 @@ export function Reviews({
           />
         ))}
       </section>
-      <aside className={styles.ledger}>
+      <aside className={styles.ledger} id="create-review">
         <h2>从已有记录提取问题</h2>
         <p>每篇来源最多一张卡。问题和答案由你确认；不是 AI 自动生成。</p>
         {!live.length ? (

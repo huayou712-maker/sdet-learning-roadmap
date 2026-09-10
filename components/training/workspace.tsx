@@ -5,9 +5,10 @@ import type { Progress, Roadmap } from "@/lib/models";
 import { PublicNotice } from "@/components/ui/public-notice";
 import { Practice } from "./practice";
 import { Reviews } from "./reviews";
+import { StatePanel } from "@/components/ui/state-panel";
+import { SyncFeedback } from "./sync-feedback";
 import {
   mutationSchema,
-  REPOSITORY_URL,
   type TrainingCommand,
   type TrainingSnapshot,
 } from "@/lib/training/schema";
@@ -37,6 +38,7 @@ export function TrainingWorkspace({
   const [sources, setSources] = useState(initialSources);
   const [ack, setAck] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [operation, setOperation] = useState<"read" | "write">("read");
   const locked = useRef(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -46,6 +48,7 @@ export function TrainingWorkspace({
   const active = ["practice", "review"].includes(tab) ? tab : "today";
   async function save(command: TrainingCommand) {
     if (locked.current) return false;
+    setOperation("write");
     setError("");
     setMessage("");
     setCommit("");
@@ -87,10 +90,12 @@ export function TrainingWorkspace({
   }
   async function refresh() {
     if (locked.current) return;
+    setOperation("read");
     locked.current = true;
     setBusy(true);
     setError("");
     setCommit("");
+    setMessage("");
     try {
       const response = await fetch("/api/training", { cache: "no-store" });
       const data = await response.json();
@@ -145,23 +150,13 @@ export function TrainingWorkspace({
           获取最新版本（保留输入）
         </button>
       </div>
-      <div role="status" aria-live="polite">
-        {busy ? "正在与 GitHub 同步…" : message}
-        {commit && (
-          <>
-            {" "}
-            · Commit:{" "}
-            <a href={REPOSITORY_URL + "/commit/" + commit}>
-              {commit.slice(0, 7)}
-            </a>
-          </>
-        )}
-      </div>
-      {error && (
-        <p role="alert" className={styles.warning}>
-          {error}
-        </p>
-      )}
+      <SyncFeedback
+        busy={busy}
+        operation={operation}
+        error={error}
+        message={message}
+        commit={commit}
+      />
       <p className={styles.hint}>
         正式记录只保存在
         GitHub；本页未提交输入仅留在内存，关闭或刷新页面会丢失。公开仓库不是私密存储。
@@ -215,9 +210,22 @@ export function TrainingWorkspace({
           ))}
         </ol>
         {!plan.length && (
-          <p className="empty">
-            当前没有可安排任务。可调整时间、创建复习卡或回顾已有作品；不会凭空生成学习成绩。
-          </p>
+          <StatePanel
+            compact
+            title={budget === 0 ? "先安排一点可用时间" : "当前没有可安排任务"}
+            actions={
+              <>
+                <Link href="/training?tab=review">查看或创建复习卡 →</Link>
+                <Link href="/roadmap">回顾学习路线 →</Link>
+              </>
+            }
+          >
+            <p>
+              {budget === 0
+                ? "当前时间预算为 0 分钟。调整上方可用时间后，按原规则显示可安排任务。"
+                : "可调整时间、创建复习卡或回顾已有作品；没有任务不代表已经完成全部学习。"}
+            </p>
+          </StatePanel>
         )}
         <p>
           本次安排 {plan.reduce((sum, p) => sum + p.minutes, 0)} / {budget}{" "}
