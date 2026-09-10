@@ -69,6 +69,7 @@ UI 主学 Playwright；Selenium 按目标团队旧项目需要补，不要求先
 - [R3 · 艺术字体与首屏约束](docs/design/ART_TYPOGRAPHY_R3.md)
 - [R4 · 学习入口、专注阅读与项目案例](docs/design/LEARNING_EXPERIENCE_R4.md)
 - [R5 · 训练台结果反馈与公共状态](docs/design/TRAINING_FEEDBACK_R5.md)
+- [R6 · 六站功法长卷与笔记学习关联](docs/design/LEARNING_CONNECTIONS_R6.md)
 
 ### 实际界面
 

@@ -47,7 +47,8 @@
   margin-inline: auto;
 }
 .reader[data-focused="true"] :global(.reading-nav),
-.reader[data-focused="true"] :global(.reading-aside) {
+.reader[data-focused="true"] :global(.reading-aside),
+.reader[data-focused="true"] :global(.reading-connections) {
   display: none;
 }
 .reader[data-focused="true"] :global(.markdown h2),

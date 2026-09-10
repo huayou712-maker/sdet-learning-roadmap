@@ -1,0 +1,117 @@
+.connections {
+  scroll-margin-top: 100px;
+}
+.connections .eyebrow {
+  font: 12px/1.8 var(--font-ui);
+  color: var(--gold-600);
+  margin-bottom: 12px;
+}
+.connections h2 {
+  font: 500 clamp(23px, 2vw, 28px)/1.5 var(--font-display);
+  margin-bottom: 12px;
+}
+.intro {
+  font-size: 14px;
+  line-height: 1.85;
+}
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 28px;
+}
+.columns > div {
+  min-width: 0;
+}
+.connections h3 {
+  font: 500 17px/1.6 var(--font-display);
+  margin-bottom: 14px;
+}
+.connections ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tasks a {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--jade-800);
+}
+.tasks a > span:last-child {
+  flex-shrink: 0;
+}
+.connections a {
+  overflow-wrap: anywhere;
+}
+.connections a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.topics {
+  margin: 16px 0;
+  border-block: 1px solid var(--border);
+}
+.topics summary {
+  padding: 12px 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+.topics li {
+  margin: 0 0 14px;
+}
+.topics a {
+  display: inline-block;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--jade-800);
+}
+.topics small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+.records > li {
+  border-top: 1px solid var(--border);
+  padding: 12px 0 16px;
+}
+.records a {
+  display: block;
+  font-size: 15px;
+  padding: 4px 0;
+  color: var(--ink-900);
+}
+.records small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.kind {
+  font-size: 12px;
+  color: var(--gold-600);
+}
+.connections .empty {
+  font-size: 14px;
+  line-height: 1.85;
+}
+.more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--jade-800);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+@media (max-width: 1100px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}
