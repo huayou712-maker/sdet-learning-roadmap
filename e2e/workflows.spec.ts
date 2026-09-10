@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
 import definitions from "../data/projects.json";
-import { prepareContentScreenshot } from "./helpers/images";
+import {
+  contentScreenshotOptions,
+  prepareContentScreenshot,
+} from "./helpers/images";
 const origin = "http://127.0.0.1:3100";
 test("page-specific workflows, public reading, responsive layouts and V4 screenshots", async ({
   page,
@@ -130,6 +133,7 @@ test("page-specific workflows, public reading, responsive layouts and V4 screens
       name,
     ).toBe(true);
     await page.screenshot({
+      ...contentScreenshotOptions,
       path: "docs/design/v4/" + name + ".png",
       fullPage: true,
     });
@@ -160,6 +164,7 @@ test("page-specific workflows, public reading, responsive layouts and V4 screens
   await page.goto("/portfolio");
   await prepareContentScreenshot(page);
   await page.screenshot({
+    ...contentScreenshotOptions,
     path: "docs/design/v4/portfolio-mobile.png",
     fullPage: true,
   });

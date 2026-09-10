@@ -1,5 +1,11 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
+// Playwright's default caret hiding writes inline styles to every input,
+// including hidden fields. During streamed hydration those mutations can be
+// mistaken for application mismatches. Preserve DOM attributes while capturing.
+// https://playwright.dev/docs/api/class-page#page-screenshot-option-caret
+export const contentScreenshotOptions = { caret: "initial" as const };
+
 /** Call only after the image has entered the viewport and triggered lazy loading. */
 export async function expectImageLoaded(image: Locator) {
   await expect(image).toBeVisible();

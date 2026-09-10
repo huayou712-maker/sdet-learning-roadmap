@@ -1,6 +1,9 @@
 import { test, expect, type APIRequestContext } from "@playwright/test";
 import roadmap from "../data/roadmap.json";
-import { prepareContentScreenshot } from "./helpers/images";
+import {
+  contentScreenshotOptions,
+  prepareContentScreenshot,
+} from "./helpers/images";
 
 const origin = "http://127.0.0.1:3100";
 const headers = { origin };
@@ -89,10 +92,12 @@ test("six-chapter journey supports hashes, keyboard, history and no-JS without w
     );
     await prepareContentScreenshot(page);
     await path.screenshot({
+      ...contentScreenshotOptions,
       path: testInfo.outputPath("journey-" + width + ".png"),
       style: ".topbar { visibility: hidden; }",
     });
     await path.locator("#task-ci").screenshot({
+      ...contentScreenshotOptions,
       path: testInfo.outputPath("chapter-" + width + ".png"),
       style: ".topbar { visibility: hidden; }",
     });
@@ -239,6 +244,7 @@ test("note links and roadmap RSC respect owner/public/deleted visibility and foc
         ),
       ).toBe(true);
       await connections.screenshot({
+        ...contentScreenshotOptions,
         path: testInfo.outputPath("connections-" + width + ".png"),
         style: ".topbar { visibility: hidden; }",
       });
@@ -337,6 +343,7 @@ test("unlinked notes show an honest fallback and long titles fit a 320px reading
     ),
   ).toBe(true);
   await connections.screenshot({
+    ...contentScreenshotOptions,
     path: testInfo.outputPath("fallback-long-title-320.png"),
     style: ".topbar { visibility: hidden; }",
   });

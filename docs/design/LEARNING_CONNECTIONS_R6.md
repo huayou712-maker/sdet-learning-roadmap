@@ -72,10 +72,20 @@ GitHub Repository 仍是唯一正式数据源。不得把正式记录保存到�
 
 真实 Chrome 的 1440/390/320px 截图已复核：路线导航与章节排版、正文末尾关联、超长中文标题与空态、专注模式收起恢复。复核时把证据计数澄清为“已自评并附证据”，沿用原计数规则。字体仍遵守 R3 分工，未新增字体或生产媒体资源。
 
-完整 E2E 为 35/35；新增 3 项，原 32 项未删改、未 skip/fixme，未增大 timeout。首轮完整回归通过后，截图复核修正“没有知识点却提示已有知识点可查阅”的空态文案，并加入断言；最终代码再次完整跑过 lint、typecheck、225 项单元、build、35 项 E2E（3.6 分钟），最后再次生产构建通过。浏览交互未产生业务写请求或浏览器持久化，原进度保持不变；HTTP HTML 与 RSC 都验证了本轮关联和路线不发送私有/已删除记录的 ID、标题。
+32abf22 的本地完整 E2E 为 35/35；新增 3 项，原 32 项验收完整保留、未 skip/fixme，未增大 timeout。首轮完整回归通过后，截图复核修正“没有知识点却提示已有知识点可查阅”的空态文案，并加入断言；代码再次完整跑过 lint、typecheck、225 项单元、build、35 项 E2E（3.6 分钟），最后再次生产构建通过。浏览交互未产生业务写请求或浏览器持久化，原进度保持不变；HTTP HTML 与 RSC 都验证了本轮关联和路线不发送私有/已删除记录的 ID、标题。
 
 截图由 `e2e/learning-connections.spec.ts` 在隔离合成数据上生成到 `test-results/`，组件裁图隐藏固定站头防遮挡，原站头与高清图片验收完整保留。旧版 `docs/design/v4` 的测试重生成图恢复为本轮开始时的基线，避免合成记录和日期变化混入代码提交。
 
 既有开发模式的 Vite 配置、图片 LCP 建议、关闭/跳转时的 stream 提示不影响上述测试结论；本轮未扩展为全站性能修复。真实网络性能、原生浏览器 200% 缩放及跨设备字体仍需上线前人工验收。
 
 课程、正式 content/data、训练 API/服务、安全防护、依赖和部署配置无改动。交付继续使用 Draft PR #7，远端结果以该 PR 的当前提交检查及验收记录为准，不把旧提交的绿灯当作本版结果，不自动合并。
+
+## CI 截图回归修复
+
+32abf22 的 [Web CI #25](https://github.com/huayou712-maker/sdet-learning-roadmap/actions/runs/34445911306) 中，checks、Python、Vercel 通过，E2E 为 34/35。失败在 workflows.spec.ts 的 hydrationErrors 空数组断言；日志差异仅指向截图期间被临时写入的 input 内联 `caret-color: transparent`，不是图片 decode 超时。
+
+安装版 Playwright 的 coreBundle.js 证实默认截图遍历 input/textarea/contenteditable 并写入、恢复 caret-color。隔离 DOM 的 MutationObserver 诊断记录默认截图产生 8 次 style 变更，使用 `caret: initial` 后为 0。该选项的行为与 [Playwright 官方文档](https://playwright.dev/docs/api/class-page#page-screenshot-option-caret) 一致。
+
+仅对 workflows 和本轮学习关联截图使用共享 contentScreenshotOptions，保留光标原始行为，不给生产组件添加抑制 hydration 的标记、不忽略日志、不改超时。新增 screenshot-safety.spec.ts 检查页面和组件截图均不改变隐藏字段、文本框、Markdown 式 checkbox、textarea、contenteditable 的 style 属性，且原焦点和内容不变。原图片 complete/naturalWidth、lazy loading、布局与 hydration 断言全部保留。
+
+修复后截图 DOM 回归连续 5 次通过，原 workflows 针对性复跑 1/1 通过。重新执行 lint、typecheck、225/225 单元、生产 build、完整 36/36 E2E（3.8 分钟），Python 37/37 与三项故障检测均通过。保留全部原测试，只新增 1 项截图安全回归；本次 CI 修复不改任何生产组件。远端以追加修复提交对应的 PR 检查和验收记录为准，32abf22 的 34/35 失败记录保留用于追溯，不自动合并。
