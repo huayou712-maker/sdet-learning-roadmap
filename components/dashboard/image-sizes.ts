@@ -4,7 +4,7 @@
  */
 export const imageQuality = 85;
 export const imageSizes = {
-  hero: "(max-width: 767px) max(100vw, 516px), 1100px",
+  hero: "(max-width: 767px) max(100vw, 516px), 900px",
   ink: "(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 440px",
   noteRow: "(max-width: 767px) 126px, 115px",
   noteEmpty:

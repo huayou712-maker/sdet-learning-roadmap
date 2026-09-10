@@ -14,7 +14,8 @@
 .ledger {
   padding: 24px;
   border-top: 3px solid var(--gold-600);
-  background: var(--paper-200);
+  background: var(--paper-50);
+  border-radius: 6px;
 }
 .form label {
   display: flex;
@@ -29,7 +30,7 @@
 }
 .form legend {
   margin-top: 16px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 20px;
 }
 .form :is(input, select, textarea) {
@@ -39,6 +40,8 @@
 }
 .form textarea {
   resize: vertical;
+  font-family: var(--font-ui);
+  line-height: 28px;
 }
 .form :is(button, a):focus-visible,
 .workspace :is(button, input, textarea, select, a, summary):focus-visible {
@@ -76,7 +79,8 @@
   margin: 12px 0 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 23px;
 }
 .results {
   margin: 16px 0;

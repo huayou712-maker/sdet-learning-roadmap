@@ -7,6 +7,7 @@ import { Editor } from "@/components/notes/editor";
 import { ContentActions, History } from "@/components/notes/actions";
 import { Markdown } from "@/components/ui/markdown";
 import { documentSections } from "@/lib/presentation";
+import { ResponsivePanel } from "@/components/ui/responsive-panel";
 export default async function Page({
   params,
   searchParams,
@@ -100,26 +101,28 @@ export default async function Page({
             </section>
           </article>
           <aside className="reading-aside">
-            <details open>
-              <summary>目录与元信息</summary>
-              <nav aria-label="文章目录">
-                {sections.map((s) => (
-                  <a key={s.id} href={"#" + s.id}>
-                    {s.title}
-                  </a>
-                ))}
-              </nav>
-              <p>
-                {entry.durationMinutes} 分钟 · {entry.status}
-              </p>
-            </details>
-            <h3>相关笔记</h3>
-            {related.map((e) => (
-              <p key={e.id}>
-                <Link href={"/notes/" + e.id}>{e.title}</Link>
-              </p>
-            ))}
-            {!related.length && <p>暂无相关笔记。</p>}
+            <ResponsivePanel title="目录与元信息" side="bottom">
+              <details open>
+                <summary>目录与元信息</summary>
+                <nav aria-label="文章目录">
+                  {sections.map((s) => (
+                    <a key={s.id} href={"#" + s.id}>
+                      {s.title}
+                    </a>
+                  ))}
+                </nav>
+                <p>
+                  {entry.durationMinutes} 分钟 · {entry.status}
+                </p>
+              </details>
+              <h3>相关笔记</h3>
+              {related.map((e) => (
+                <p key={e.id}>
+                  <Link href={"/notes/" + e.id}>{e.title}</Link>
+                </p>
+              ))}
+              {!related.length && <p>暂无相关笔记。</p>}
+            </ResponsivePanel>
           </aside>
         </div>
       )}

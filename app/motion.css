@@ -10,7 +10,7 @@ body:has(dialog[open]) {
   min-width: 0;
 }
 .brand > span:last-child {
-  font-family: "Segoe UI", var(--font-ui);
+  font-family: var(--font-brand);
   font-size: 14px;
 }
 .topbar {
@@ -38,12 +38,12 @@ body:has(dialog[open]) {
   right: 0;
   height: 2px;
   border-radius: 2px;
-  background: #bbd0a4;
+  background: var(--gold-500);
   transform: scaleX(0);
   transition: transform 180ms ease-out;
 }
 .desktop-nav a[aria-current="page"] {
-  color: #dfebce;
+  color: #e4bb6b;
 }
 .desktop-nav a[aria-current="page"]::after {
   transform: scaleX(1);
@@ -63,7 +63,7 @@ body:has(dialog[open]) {
   background: #ffffff0c;
 }
 .project-tile {
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
 }
 .note-row {
@@ -124,7 +124,7 @@ body:has(dialog[open]) {
   background-size: 200% 100%;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .page-enter {
+  .hero-copy {
     animation: page-arrive 240ms ease-out;
   }
   .mobile-panel[open] {

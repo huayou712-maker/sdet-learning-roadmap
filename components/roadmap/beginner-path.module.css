@@ -3,7 +3,7 @@
   padding: clamp(18px, 3vw, 32px);
   background: var(--paper-50);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 8px;
 }
 .path > header {
   max-width: 780px;
@@ -31,7 +31,9 @@
 }
 .path summary {
   cursor: pointer;
-  font-size: 21px;
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 500;
 }
 .path summary small {
   display: block;

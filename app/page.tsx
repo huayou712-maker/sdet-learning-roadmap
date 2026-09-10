@@ -48,45 +48,55 @@ export default async function Home() {
   );
   return (
     <>
-      <div className={styles.heading}>
+      <section className={"hero " + styles.chapter}>
+        <Hero />
+        <div className="hero-copy">
+          <p className="eyebrow">行知 · 测试开发学习与作品档案</p>
+          <h1>SDET Learning OS</h1>
+          <p className="hero-poem">
+            <span>以代码为剑</span>
+            <span>以测试为眼</span>
+          </p>
+          <p className="hero-note">
+            {owner ? "GitHub Owner · 学习工作区" : "公开只读 · 学习与作品"}
+          </p>
+          <div className={styles.heroActions}>
+            <Link
+              className="button hero-cta"
+              href={
+                task
+                  ? "/roadmap#task-" + task.id
+                  : "/roadmap?stage=" + current?.id
+              }
+            >
+              {owner ? "继续学习" : "查看学习路线"}{" "}
+              <span aria-hidden="true">→</span>
+            </Link>
+            <Link className={styles.portfolioLink} href="/portfolio">
+              查看作品集 →
+            </Link>
+          </div>
+        </div>
+        <span className="hero-caption" aria-hidden="true">
+          行有所学 · 学有所证
+        </span>
+      </section>
+      <section className={styles.heading} aria-label="当前学习入口">
         <div>
-          <p>行知 / LEARNING WORKSPACE</p>
-          <h2>{owner ? "继续今天的进路" : "学习与作品总览"}</h2>
+          <p>{owner ? "继续今天的进路" : "学习与作品总览"}</p>
+          <h2>
+            {task ? "入门主线 · " + task.title : "当前阶段 · " + current?.title}
+          </h2>
         </div>
         <div className={styles.actions}>
           <Link href={owner ? "/notes/new" : "/notes"}>
             {owner ? "写学习笔记" : "阅读笔记"}{" "}
             <span aria-hidden="true">↗</span>
           </Link>
-          <Link href={owner ? "/daily" : "/portfolio"}>
-            {owner ? "记录日课" : "查看作品集"}{" "}
-            <span aria-hidden="true">↗</span>
+          <Link href={owner ? "/daily" : "/timeline"}>
+            {owner ? "记录日课" : "查看动态"} <span aria-hidden="true">↗</span>
           </Link>
         </div>
-      </div>
-      <section className={"hero " + styles.chapter}>
-        <Hero />
-        <div className="hero-copy">
-          <p className="eyebrow">行知有迹 / SDET LEARNING JOURNAL</p>
-          <h1>SDET Learning OS</h1>
-          <h2>
-            {task ? "入门主线 · " + task.title : "当前阶段 · " + current?.title}
-          </h2>
-          <p>{owner ? "GitHub Owner · 学习工作区" : "公开只读 · 学习与作品"}</p>
-          <Link
-            className="button hero-cta"
-            href={
-              task
-                ? "/roadmap#task-" + task.id
-                : "/roadmap?stage=" + current?.id
-            }
-          >
-            继续学习路线 <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-        <span className="hero-caption" aria-hidden="true">
-          行有所学 · 学有所证
-        </span>
       </section>
       <Journey roadmap={roadmap} progress={progress} currentId={current?.id} />
       <section className="stats core-stats" aria-label="核心学习指标">
