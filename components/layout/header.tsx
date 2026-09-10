@@ -5,19 +5,8 @@ import { usePathname } from "next/navigation";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { Icon } from "@/components/ui/icon";
-export const navLinks = [
-  ["/", "总览"],
-  ["/roadmap", "学习路线"],
-  ["/notes", "学习笔记"],
-  ["/assignments", "作业"],
-  ["/projects", "项目"],
-  ["/timeline", "时间线"],
-  ["/daily", "日课"],
-  ["/debug-journal", "排障"],
-  ["/portfolio", "作品集"],
-  ["/resources", "资源"],
-  ["/settings", "设置"],
-];
+import { CommandPalette } from "@/components/ui/command-palette";
+import { navLinks } from "./navigation";
 function AccountAvatar({ login }: { login: string }) {
   const [failed, setFailed] = useState(false);
   return (
@@ -90,6 +79,7 @@ export function Header({
         <Link className="header-search" href="/search" aria-label="搜索">
           <Icon name="search" />
         </Link>
+        <CommandPalette owner={owner} />
         {login ? (
           <details
             className="account-menu"

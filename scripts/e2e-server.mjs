@@ -7,6 +7,7 @@ const root = join(process.cwd(), ".e2e-data", runId);
 await mkdir(join(root, "data"), { recursive: true });
 await mkdir(join(root, "docs"), { recursive: true });
 await copyFile("docs/RESOURCES.md", join(root, "docs", "RESOURCES.md"));
+await copyFile("docs/BEGINNER_PATH.md", join(root, "docs", "BEGINNER_PATH.md"));
 for (const name of ["roadmap.json", "projects.json"])
   await copyFile(join("data", name), join(root, "data", name));
 const roadmap = JSON.parse(await readFile("data/roadmap.json", "utf8"));

@@ -9,6 +9,7 @@ import type { Repository, TextFile } from "@/lib/github/types";
 import { createHash } from "node:crypto";
 import roadmap from "@/data/roadmap.json";
 import projects from "@/data/projects.json";
+import { projectChecks, projectAcceptance } from "@/lib/content/project-checks";
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
 }));
@@ -35,6 +36,79 @@ function repo(): Repository {
     createBinaryFile: async () => "",
   };
 }
+it("explicitly saves an upgraded legacy project without losing checks, content or association", async () => {
+  const r = await seeded();
+  const definition = projects[4];
+  const legacy = projects.map((p) =>
+    p.id === definition.id
+      ? {
+          ...p,
+          acceptance: undefined,
+          checklist: p.acceptance.optional,
+        }
+      : p,
+  );
+  let defs = (await r.getTextFile("data/projects.json"))!;
+  await r.updateTextFile(
+    defs.path,
+    defs.sha,
+    JSON.stringify(legacy),
+    "legacy seed",
+  );
+  const payload = {
+    title: "CI old record",
+    body: "Preserve learner explanation",
+    stageId: "stage-08",
+    projectNo: 4,
+    topicIds: ["stage-08-826b6b2f2e"],
+    tags: ["learner"],
+    acknowledgedPublic: true,
+    checklist: definition.acceptance.optional.map((title) => ({
+      title,
+      completed: true,
+    })),
+  };
+  const result = await saveRecord(r, "project", payload);
+  const old = (await entries(r)).find((e) => e.id === result.id)!;
+  defs = (await r.getTextFile("data/projects.json"))!;
+  await r.updateTextFile(
+    defs.path,
+    defs.sha,
+    JSON.stringify(projects),
+    "course upgrade",
+  );
+  const untouched = (await r.getTextFile(old.path))!;
+  expect(untouched.sha).toBe(old.sha);
+  const checks = projectChecks(definition, old.checklist);
+  await saveRecord(
+    r,
+    "project",
+    { ...payload, sha: old.sha, checklist: checks },
+    old.id,
+  );
+  const saved = (await entries(r)).find((e) => e.id === old.id)!;
+  expect(saved.id).toBe(old.id);
+  expect(saved.createdAt).toBe(old.createdAt);
+  expect(saved.body).toBe(old.body);
+  expect(saved.topicIds).toEqual(old.topicIds);
+  expect(saved.checklist.filter((c) => c.completed)).toEqual(old.checklist);
+  expect(projectAcceptance(definition, saved.checklist).completed).toBe(0);
+  await expect(
+    saveRecord(
+      r,
+      "project",
+      {
+        ...payload,
+        sha: saved.sha,
+        checklist: [
+          ...checks,
+          { title: "invented criterion", completed: true },
+        ],
+      },
+      old.id,
+    ),
+  ).rejects.toThrow("项目验收清单");
+});
 async function seeded() {
   const r = repo();
   await r.createTextFile("data/roadmap.json", JSON.stringify(roadmap), "seed");

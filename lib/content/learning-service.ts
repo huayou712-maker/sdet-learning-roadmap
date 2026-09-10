@@ -6,6 +6,8 @@ import { entries, findEntry } from "./service";
 import { serializeEntry } from "./format";
 import { AppError } from "@/lib/errors";
 import { slug, safePath } from "@/lib/github/paths";
+import { assertNoCredentials } from "@/lib/security/credentials";
+import { projectChecks } from "./project-checks";
 export async function validateTopics(
   repo: Repository,
   stageId: string,
@@ -32,6 +34,7 @@ export async function saveRecord(
   id?: string,
 ) {
   const input = recordInput.parse(payload);
+  assertNoCredentials(input);
   await validateTopics(repo, input.stageId, input.topicIds);
   const old = id ? await findEntry(repo, id) : null;
   if (old && (old.type !== kind || old.deletedAt))
@@ -91,8 +94,12 @@ export async function saveRecord(
     if (
       !definition ||
       definition.stageId !== input.stageId ||
-      input.checklist.length !== definition.checklist.length ||
-      input.checklist.some((c, i) => c.title !== definition.checklist[i])
+      input.checklist.length !==
+        projectChecks(definition, old?.checklist).length ||
+      input.checklist.some(
+        (c, i) =>
+          c.title !== projectChecks(definition, old?.checklist)[i]?.title,
+      )
     )
       throw new AppError(400, "项目验收清单与路线定义不一致");
     if (old && old.projectNo !== projectNo)

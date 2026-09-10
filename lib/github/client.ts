@@ -4,6 +4,8 @@ import { AppError } from "@/lib/errors";
 import { safePath, writablePath } from "./paths";
 import type { Repository, TextFile } from "./types";
 import { cachedRead, clearReads } from "./read-cache";
+import { HISTORY_PAGE_SIZE, historyPage } from "./history-policy";
+import { consumeHistoryRead } from "@/lib/security/read-budget";
 export function githubRepository(): Repository {
   const owner = process.env.GITHUB_OWNER || "huayou712-maker";
   const repo = process.env.GITHUB_REPO || "sdet-learning-roadmap";
@@ -17,6 +19,9 @@ export function githubRepository(): Repository {
     auth: process.env.GITHUB_WRITE_TOKEN || undefined,
     log: { debug() {}, info() {}, warn() {}, error() {} },
     request: { timeout: 15000 },
+    // A history cache miss must not turn into automatic retry/throttle requests.
+    retry: { enabled: false },
+    throttle: { enabled: false },
   });
   const write = () => {
     if (!process.env.GITHUB_WRITE_TOKEN)
@@ -40,10 +45,15 @@ export function githubRepository(): Repository {
       throw new AppError(503, "GitHub API 暂时不可用，请稍后重试");
     }
   };
-  async function get(path: string, ref = branch): Promise<TextFile | null> {
+  async function get(
+    path: string,
+    ref = branch,
+    historical = false,
+  ): Promise<TextFile | null> {
     safePath(path);
     return cachedRead(branch + ":file:" + ref + ":" + path, () =>
       wrap(async () => {
+        if (historical) consumeHistoryRead();
         try {
           const { data } = await api.rest.repos.getContent({
             owner,
@@ -139,30 +149,36 @@ export function githubRepository(): Repository {
         return data.commit.sha!;
       });
     },
-    async getCommitsForPath(path) {
+    async getCommitsForPath(path, page = 1) {
       safePath(path);
-      return cachedRead(branch + ":history:" + path, () =>
-        wrap(async () => {
-          const commits = await api.paginate(api.rest.repos.listCommits, {
-            owner,
-            repo,
-            path,
-            sha: branch,
-            per_page: 100,
-          });
-          return commits.map((c) => ({
-            sha: c.sha,
-            message: c.commit.message,
-            date: c.commit.committer?.date || "",
-            url: c.html_url,
-          }));
-        }),
+      historyPage(String(page));
+      return cachedRead(
+        branch + ":history:" + path + ":" + page,
+        () =>
+          wrap(async () => {
+            consumeHistoryRead();
+            const { data: commits } = await api.rest.repos.listCommits({
+              owner,
+              repo,
+              path,
+              sha: branch,
+              per_page: HISTORY_PAGE_SIZE,
+              page,
+            });
+            return commits.map((c) => ({
+              sha: c.sha,
+              message: c.commit.message,
+              date: c.commit.committer?.date || "",
+              url: c.html_url,
+            }));
+          }),
+        60000,
       );
     },
     getTextFileAtRef(path, ref) {
       if (!/^[a-f0-9]{40}$/.test(ref))
         throw new AppError(400, "版本号格式错误");
-      return get(path, ref);
+      return get(path, ref, true);
     },
   };
 }

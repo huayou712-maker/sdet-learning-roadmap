@@ -85,6 +85,11 @@ test("owner creates, edits, views history, deletes, restores and updates progres
   await page.getByRole("button", { name: "确认", exact: true }).click();
   await expect(page.getByText("回收站为空。")).toBeVisible();
   await page.goto("/roadmap");
+  await page
+    .getByRole("navigation", { name: "学习阶段" })
+    .getByRole("link", { name: /计算机基础/ })
+    .click();
+  await expect(page).toHaveURL(/stage=stage-01/);
   await page.getByLabel(/当前仓库为公开仓库/).check();
   await page
     .getByRole("checkbox", { name: "理解网络分层", exact: true })

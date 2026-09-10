@@ -1,78 +1,51 @@
-# 阶段验收与项目
+# 项目验收规范
 
-学习路线以“能做出来”为完成标准。
-
----
+权威结构化清单为 `data/projects.json`。本文由同一份定义同步生成。选择组按达到最低数量计 1 项；加分项不计必做分母。状态是学习者自评，验收需结合代码、报告与复现。
 
 # Project 0：测试用例设计
 
-## 被测对象
+课程清单 v2：必做项与选做组计入验收，加分项不计入分母。旧勾选按原名称保留；新增要求从未完成开始。
 
-任选一个：
+## 起点
 
-- 登录
-- 注册
-- 商品搜索
-- 购物车
-- 下单
+第一组练习选“注册”。接口契约与可运行服务在 projects/beginner-api-lab/；先写用例再运行自动化。输出放 projects/manual-testing/，用例需要前置条件、步骤、预期、优先级与设计理由。
 
-## 输出
+## 必做
 
-创建：
+- [ ] 正常流程
+- [ ] 等价类
+- [ ] 边界值
+- [ ] 异常输入
+- [ ] 状态变化
+- [ ] 权限
+- [ ] 重复操作
+- [ ] 网络异常
+- [ ] test-cases.md：前置条件、步骤、预期结果与设计理由
+- [ ] bug-report-example.md：复现步骤、实际/预期与证据
 
-```text
-projects/manual-testing/
-├── test-cases.md
-└── bug-report-example.md
-```
+## 被测业务（任选 1 个即可，可多做）
 
-### test-cases.md 至少覆盖
+- [ ] 登录
+- [ ] 注册
+- [ ] 商品搜索
+- [ ] 购物车
+- [ ] 下单
 
-- 正常流程
-- 等价类
-- 边界值
-- 异常输入
-- 状态变化
-- 权限
-- 重复操作
-- 网络异常
+## 提交与验收证据
 
-### 验收
-
-能解释为什么设计这些测试，而不是只有用例数量。
+提交可复现命令、代码路径、结果摘要和一次失败定位记录。通过学习系统保存到 GitHub 并关联 commit / 作业；维护者测试通过不代表学习者已完成。
 
 ---
 
 # Project 1：API 自动化测试框架（核心）
 
-## 推荐目录
+课程清单 v2：必做项与选做组计入验收，加分项不计入分母。旧勾选按原名称保留；新增要求从未完成开始。
 
-```text
-projects/api-test-framework/
-├── api/
-│   ├── auth_api.py
-│   ├── user_api.py
-│   └── order_api.py
-├── tests/
-│   ├── test_auth.py
-│   ├── test_user.py
-│   └── test_order.py
-├── data/
-│   ├── auth.yaml
-│   └── user.yaml
-├── utils/
-│   ├── config.py
-│   ├── db.py
-│   └── logger.py
-├── config/
-│   └── config.example.yaml
-├── conftest.py
-├── pytest.ini
-├── requirements.txt
-└── README.md
-```
+## 实施顺序
 
-## 必做功能
+V0：先在 beginner-api-lab 写 GET / POST、正常/异常输入与精确断言。V1：补 CRUD、Token、fixture 隔离、参数化与失败排查。V2：在重复代码出现后提取 API / Config / 数据层，接 MySQL、日志、报告；最小 CI 在 V0 后接入，不等框架结束。下面是最终项目清单，不是第一天任务。
+
+## 必做
 
 - [ ] GET 请求
 - [ ] POST 请求
@@ -91,7 +64,7 @@ projects/api-test-framework/
 - [ ] Allure 报告
 - [ ] GitHub Actions
 
-## 加分
+## 加分（不影响必做完成率）
 
 - [ ] JSON Schema
 - [ ] Mock
@@ -99,35 +72,19 @@ projects/api-test-framework/
 - [ ] retry 策略
 - [ ] Docker 化
 
-## README 必须解释
+## 提交与验收证据
 
-- 为什么这样分层
-- 如何安装
-- 如何运行
-- 如何配置环境
-- 测试数据怎么管理
-- CI 怎么执行
-- 一次失败案例怎么排查
+提交可复现命令、代码路径、结果摘要和一次失败定位记录。通过学习系统保存到 GitHub 并关联 commit / 作业；维护者测试通过不代表学习者已完成。
 
 ---
 
 # Project 2：Playwright Web 自动化
 
-## 推荐目录
+课程清单 v2：必做项与选做组计入验收，加分项不计入分母。旧勾选按原名称保留；新增要求从未完成开始。
 
-```text
-projects/web-ui-test/
-├── pages/
-│   ├── login_page.py
-│   └── home_page.py
-├── tests/
-│   ├── test_login.py
-│   └── test_search.py
-├── data/
-├── conftest.py
-├── pytest.ini
-└── README.md
-```
+## 实施顺序
+
+先完成 2–3 个稳定的关键流程，再提取 POM。Python 使用 pytest-playwright；使用 Locator / 自动等待，失败保留 Trace。不要录制后直接交作业。
 
 ## 必做
 
@@ -144,123 +101,112 @@ projects/web-ui-test/
 - [ ] 失败自动截图
 - [ ] CI 执行
 
-## 验收
+## 提交与验收证据
 
-不能只是“录制生成脚本”；要能够自己写 Page Object 和测试逻辑。
+提交可复现命令、代码路径、结果摘要和一次失败定位记录。通过学习系统保存到 GitHub 并关联 commit / 作业；维护者测试通过不代表学习者已完成。
 
 ---
 
 # Project 3：性能测试
 
-## 被测对象
+课程清单 v2：必做项与选做组计入验收，加分项不计入分母。旧勾选按原名称保留；新增要求从未完成开始。
 
-优先复用前面的 API 服务。
+## 选修边界
 
-## 场景
+完成接口测试与 CI 后再学。只压测自己拥有或明确授权的隔离环境；入门练习 HTTP 服务不作为性能基准。记录环境、负载与瓶颈证据，不能只交截图。
 
-至少 2 个：
+## 必做
 
-- 登录接口
-- 查询接口
-- 创建订单 / 创建资源
+- [ ] 压测环境
+- [ ] 并发数
+- [ ] 持续时间
+- [ ] 数据量
+- [ ] 平均响应时间
+- [ ] P95 / P99
+- [ ] TPS / QPS
+- [ ] Error Rate
+- [ ] CPU / 内存
+- [ ] 观察到的瓶颈
+- [ ] 下一步优化建议
+- [ ] test-plan.md 与 result-analysis.md 可复现
 
-## 输出
+## 压测场景（至少 2 个）
 
-```text
-projects/performance-test/
-├── jmeter/
-│   └── test-plan.jmx
-├── report/
-├── test-plan.md
-└── result-analysis.md
-```
+- [ ] 登录接口
+- [ ] 查询接口
+- [ ] 创建订单 / 创建资源
 
-## result-analysis.md 包含
+## 提交与验收证据
 
-- 压测环境
-- 并发数
-- 持续时间
-- 数据量
-- 平均响应时间
-- P95 / P99
-- TPS / QPS
-- Error Rate
-- CPU / 内存
-- 观察到的瓶颈
-- 下一步优化建议
+提交可复现命令、代码路径、结果摘要和一次失败定位记录。通过学习系统保存到 GitHub 并关联 commit / 作业；维护者测试通过不代表学习者已完成。
 
 ---
 
 # Project 4：CI/CD
 
-把 Project 1 或 Project 2 接入 GitHub Actions。
+课程清单 v2：必做项与选做组计入验收，加分项不计入分母。旧勾选按原名称保留；新增要求从未完成开始。
 
-## 最低要求
+## 最小流水线
 
-`.github/workflows/test.yml`
+把 Project 1 的首组测试接入 GitHub Actions。可参考 .github/workflows/python-lab.yml。刻意制造一次断言失败，确认流水线失败且能下载报告，再修复；不使用 continue-on-error 掩盖失败。
 
-逻辑：
+## 必做
 
-```text
-push / pull_request
-→ checkout
-→ setup Python
-→ install requirements
-→ run pytest
-→ upload artifact
-```
+- [ ] push / pull_request 触发
+- [ ] checkout
+- [ ] setup Python
+- [ ] install requirements
+- [ ] run pytest（失败时 CI 失败）
+- [ ] upload artifact（失败时也保留报告）
 
-## 加分
+## 加分（不影响必做完成率）
 
-- 缓存 pip
-- matrix 多 Python 版本
-- 定时回归
-- 测试失败通知
+- [ ] 缓存 pip
+- [ ] matrix 多 Python 版本
+- [ ] 定时回归
+- [ ] 测试失败通知
+
+## 提交与验收证据
+
+提交可复现命令、代码路径、结果摘要和一次失败定位记录。通过学习系统保存到 GitHub 并关联 commit / 作业；维护者测试通过不代表学习者已完成。
 
 ---
 
 # Project 5：AI / RAG Evaluation
 
-## 被测系统
+课程清单 v2：必做项与选做组计入验收，加分项不计入分母。旧勾选按原名称保留；新增要求从未完成开始。
 
-用 Dify 构建一个小型知识库，例如：
+## 进阶选修
 
-- 学校规章问答
-- 软件测试知识库
-- 某开源项目文档助手
+接口、数据隔离与 CI 稳定后再做。选择一个知识库，用合成公开问题；记录模型与评测集版本、判分规则和人工复核结果。不要上传真实凭据或私人文档。
 
-## 构建评测集
+## 必做
 
-```text
-question
-expected_answer
-expected_source
-category
-```
+- [ ] 正确答案
+- [ ] 文档中不存在答案
+- [ ] 相似问题
+- [ ] 歧义问题
+- [ ] 错误前提
+- [ ] Prompt Injection
+- [ ] 返回文本
+- [ ] 引用
+- [ ] 延迟
+- [ ] Correctness
+- [ ] Faithfulness
+- [ ] Retrieval Relevance
+- [ ] Format / Policy
+- [ ] pytest / CI 回归入口与评测集版本
 
-场景至少包括：
+## 被测业务（任选 1 个即可，可多做）
 
-- 正确答案
-- 文档中不存在答案
-- 相似问题
-- 歧义问题
-- 错误前提
-- Prompt Injection
+- [ ] 学校规章问答
+- [ ] 软件测试知识库
+- [ ] 某开源项目文档助手
 
-## 自动化
+## 加分（不影响必做完成率）
 
-Python 调用被测 AI API，记录：
+- [ ] token（能获取时）
 
-- 返回文本
-- 引用
-- 延迟
-- token（能获取时）
+## 提交与验收证据
 
-使用 Evaluator 评估：
-
-- Correctness
-- Faithfulness
-- Retrieval Relevance
-- Format / Policy
-
-最终接入 pytest 或 CI 做回归。
+提交可复现命令、代码路径、结果摘要和一次失败定位记录。通过学习系统保存到 GitHub 并关联 commit / 作业；维护者测试通过不代表学习者已完成。

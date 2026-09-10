@@ -1,0 +1,248 @@
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 28px 0 20px;
+}
+.heading p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.heading h2 {
+  font-size: 25px;
+  margin: 3px 0 0;
+}
+.actions {
+  display: flex;
+  gap: 9px;
+}
+.actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--paper-50);
+  padding: 8px 14px;
+  font-size: 14px;
+  transition:
+    border-color 150ms,
+    background-color 150ms;
+}
+.actions a:hover {
+  border-color: var(--jade-700);
+  background: #e3eae1;
+}
+.actions span {
+  color: var(--jade-700);
+}
+.chapter {
+  margin: 0;
+  border-radius: 18px;
+  height: 340px;
+  min-height: 340px;
+  padding: 44px;
+  box-shadow: 0 10px 25px #172c3412;
+}
+.chapter h1 {
+  font-size: clamp(32px, 3.5vw, 48px);
+  letter-spacing: -0.7px;
+}
+.chapter h2 {
+  font-size: 21px;
+  margin-bottom: 12px;
+}
+.chapter :global(.hero-caption) {
+  font-size: 12px;
+  right: 28px;
+  bottom: 28px;
+}
+.chapter :global(.hero-cta) {
+  min-height: 44px;
+  border-radius: 7px;
+  background: #e8eccc;
+  color: #243a30;
+  padding-inline: 20px;
+}
+.chapter :global(.hero-cta):hover {
+  background: #f8f6df;
+}
+.chapter :global(.hero-cta) span {
+  transition: transform 180ms;
+}
+.chapter :global(.hero-cta):hover span {
+  transform: translateX(4px);
+}
+.journey {
+  padding: 22px 24px;
+  margin: 18px 0 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--paper-50);
+}
+.journeyHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.journeyHeading > span {
+  font-size: 17px;
+}
+.journeyHeading small {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+.journey ol {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.journey li {
+  min-width: 0;
+  position: relative;
+}
+.journey li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: calc(50% + 19px);
+  right: calc(-50% + 19px);
+  top: 16px;
+  height: 1px;
+  background: var(--paper-300);
+}
+.journey a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  border-radius: 7px;
+  padding: 0 3px 5px;
+}
+.node {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border: 1px solid var(--paper-300);
+  border-radius: 50%;
+  color: var(--muted);
+  background: var(--paper-50);
+  font: 11px var(--font-mono);
+  transition:
+    background-color 180ms,
+    box-shadow 180ms;
+}
+.journey a[aria-current="step"] .node {
+  background: var(--jade-700);
+  color: var(--paper-50);
+  border-color: var(--jade-700);
+  box-shadow: 0 0 0 4px #44685a18;
+}
+.journey a[data-completed] .node {
+  color: var(--jade-700);
+  background: #e3eae1;
+}
+.journey a:hover .node {
+  box-shadow: 0 0 0 5px #44685a18;
+}
+.stageTitle {
+  font-size: 12px;
+  line-height: 1.5;
+  min-height: 36px;
+}
+.journey a small {
+  font: 10px var(--font-mono);
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.journey a[aria-current="step"] small {
+  color: var(--jade-700);
+}
+@media (max-width: 1000px) {
+  .journey ol {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    row-gap: 18px;
+  }
+  .journey li:nth-child(5)::after {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .heading {
+    padding: 22px 0 15px;
+    align-items: end;
+  }
+  .heading h2 {
+    font-size: 21px;
+  }
+  .heading p {
+    font-size: 10px;
+  }
+  .actions a {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .actions a + a {
+    display: none;
+  }
+  .chapter {
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 225px 22px 25px;
+    border-radius: 12px;
+  }
+  .chapter :global(.hero-visual) {
+    height: 235px;
+  }
+  .chapter :global(.hero-caption) {
+    top: 20px;
+    bottom: auto;
+    right: 18px;
+  }
+  .chapter h1 {
+    font-size: 28px;
+  }
+  .chapter h2 {
+    font-size: 18px;
+  }
+  .chapter :global(.hero-cta) {
+    width: 100%;
+  }
+  .journey {
+    padding: 18px 10px;
+    margin: 14px 0;
+  }
+  .journeyHeading {
+    padding-inline: 6px;
+    gap: 5px;
+  }
+  .journeyHeading small {
+    font-size: 9px;
+  }
+  .stageTitle {
+    font-size: 10px;
+    min-height: 42px;
+  }
+  .journey a small {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter :global(.hero-cta):hover span {
+    transform: none;
+  }
+  .actions a,
+  .node,
+  .chapter :global(.hero-cta) span {
+    transition: none;
+  }
+}

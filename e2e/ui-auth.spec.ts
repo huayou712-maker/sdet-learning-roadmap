@@ -48,7 +48,15 @@ test("owner header and supplied assets remain usable on mobile", async ({
     page.locator(".featured-grid .project-thumbnail img"),
   ).toHaveCount(3);
   await expect(page.locator(".core-stats>article")).toHaveCount(4);
-  await expect(page.locator(".current-stage")).toContainText("下一步");
+  await expect(page.locator(".current-stage")).toContainText(
+    "环境与 Python 诊断",
+  );
+  await expect(page.locator(".current-stage")).toContainText("交付：");
+  await expect(
+    page
+      .locator(".current-stage")
+      .getByRole("link", { name: "进入阶段工作区" }),
+  ).toHaveAttribute("href", "/roadmap#task-start");
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     const account = page.getByLabel("GitHub 账户 huayou712-maker");

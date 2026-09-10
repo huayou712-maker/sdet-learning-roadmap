@@ -3,6 +3,7 @@ import { Nav } from "@/components/layout/nav";
 import "./globals.css";
 import "./jianghu.css";
 import "./workflows.css";
+import "./motion.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: {

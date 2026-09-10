@@ -1,4 +1,4 @@
-import { it, expect, vi, afterEach } from "vitest";
+import { it, expect, vi, afterEach, beforeEach } from "vitest";
 import { localRepository } from "@/lib/github/local";
 import { githubRepository } from "@/lib/github/client";
 import { clearReads } from "@/lib/github/read-cache";
@@ -17,7 +17,13 @@ vi.mock("octokit", () => ({
     paginate = api.paginate;
   },
 }));
+let testClock = Date.UTC(2100, 0, 1);
+beforeEach(() => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime((testClock += 3600001));
+});
 afterEach(() => {
+  vi.useRealTimers();
   vi.unstubAllEnvs();
   vi.clearAllMocks();
   clearReads();
@@ -73,4 +79,81 @@ it("translates GitHub SHA conflicts into a safe 409 error", async () => {
       "test",
     ),
   ).rejects.toMatchObject({ status: 409 });
+});
+it("fetches one cached history page, not an unbounded pagination chain", async () => {
+  vi.stubEnv("GITHUB_CONTENT_BRANCH", "learning-data");
+  api.listCommits.mockResolvedValue({
+    data: [
+      {
+        sha: "a".repeat(40),
+        commit: { message: "test", committer: { date: "2099-01-01" } },
+        html_url: "#",
+      },
+    ],
+  });
+  const repo = githubRepository();
+  await Promise.all(
+    Array.from({ length: 10 }, () =>
+      repo.getCommitsForPath("content/notes/a.md"),
+    ),
+  );
+  expect(api.listCommits).toHaveBeenCalledTimes(1);
+  expect(api.listCommits).toHaveBeenCalledWith(
+    expect.objectContaining({ sha: "learning-data", per_page: 30, page: 1 }),
+  );
+  await repo.getCommitsForPath("content/notes/a.md", 2);
+  expect(api.listCommits).toHaveBeenLastCalledWith(
+    expect.objectContaining({ page: 2, per_page: 30 }),
+  );
+  expect(api.paginate).not.toHaveBeenCalled();
+  for (const page of [0, -1, 1.5, Infinity, NaN, Number.MAX_SAFE_INTEGER])
+    await expect(
+      repo.getCommitsForPath("content/notes/a.md", page),
+    ).rejects.toMatchObject({ status: 400 });
+  expect(api.listCommits).toHaveBeenCalledTimes(2);
+});
+it("charges history cache misses across repository instances and does not reset the budget when caches clear", async () => {
+  vi.stubEnv("GITHUB_WRITE_TOKEN", "synthetic");
+  api.listCommits.mockResolvedValue({ data: [] });
+  api.getContent.mockResolvedValue({
+    data: {
+      sha: "a".repeat(40),
+      content: Buffer.from("test").toString("base64"),
+    },
+  });
+  for (let page = 1; page <= 59; page++)
+    await githubRepository().getCommitsForPath("content/notes/a.md", page);
+  const repo = githubRepository();
+  await repo.getTextFileAtRef("content/notes/a.md", "a".repeat(40));
+  await repo.getTextFileAtRef("content/notes/a.md", "a".repeat(40));
+  expect(api.getContent).toHaveBeenCalledTimes(1);
+  await repo.getCommitsForPath("content/notes/a.md", 1);
+  clearReads();
+  await expect(
+    repo.getCommitsForPath("content/notes/a.md", 61),
+  ).rejects.toMatchObject({ status: 429 });
+  await expect(
+    repo.getTextFileAtRef("content/notes/a.md", "b".repeat(40)),
+  ).rejects.toMatchObject({ status: 429 });
+  expect(api.listCommits).toHaveBeenCalledTimes(59);
+  expect(api.getContent).toHaveBeenCalledTimes(1);
+  vi.setSystemTime(Date.now() + 60000);
+  await expect(
+    repo.getCommitsForPath("content/notes/a.md", 61),
+  ).resolves.toEqual([]);
+});
+it("caps sustained history reads per hour including failed upstream attempts", async () => {
+  vi.stubEnv("GITHUB_WRITE_TOKEN", "");
+  api.listCommits.mockRejectedValue({ status: 503 });
+  for (let batch = 0; batch < 2; batch++) {
+    for (let i = 0; i < 25; i++)
+      await expect(
+        githubRepository().getCommitsForPath("content/notes/a.md"),
+      ).rejects.toMatchObject({ status: 503 });
+    vi.setSystemTime(Date.now() + 60000);
+  }
+  await expect(
+    githubRepository().getCommitsForPath("content/notes/a.md"),
+  ).rejects.toMatchObject({ status: 429 });
+  expect(api.listCommits).toHaveBeenCalledTimes(50);
 });

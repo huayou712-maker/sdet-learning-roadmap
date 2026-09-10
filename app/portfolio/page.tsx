@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { readProfile, readEntries, readLearning } from "@/lib/content/read";
+import {
+  readProfile,
+  readEntries,
+  readLearning,
+  readProjects,
+} from "@/lib/content/read";
+import { projectAcceptance } from "@/lib/content/project-checks";
 import { progressStats } from "@/lib/stats";
 import { entryUrl } from "@/lib/content/catalog";
 import { Markdown } from "@/components/ui/markdown";
@@ -13,6 +19,7 @@ export default async function Page() {
     readLearning(),
   ]);
   const visible = all.filter((e) => e.showInPortfolio && !e.deletedAt);
+  const definitions = await readProjects();
   const projects = visible.filter((e) => e.type === "project");
   const stats = progressStats(roadmap, progress);
   const branch = encodeURIComponent(
@@ -106,100 +113,109 @@ export default async function Page() {
           </p>
         )}
         <div className="project-grid portfolio-projects">
-          {projects.map((e, i) => (
-            <article className="paper panel" key={e.id}>
-              <Thumbnail kind="project" index={i} />
-              <small>
-                PROJECT {e.projectNo} · {e.status}
-              </small>
-              <h2>
-                <Link href={entryUrl(e)}>{e.title}</Link>
-              </h2>
-              <p>
-                验收：{e.checklist.filter((c) => c.completed).length}/
-                {e.checklist.length}
-              </p>
-              <div className="tags">
-                {e.tags.map((t) => (
-                  <span key={t} className="badge">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <dl className="portfolio-evidence">
-                {[
-                  ["Problem", "项目背景"],
-                  ["Architecture", "架构设计"],
-                  ["Tests", "测试范围"],
-                  ["Result", "成果"],
-                ].map(([label, title]) => (
-                  <div key={label}>
-                    <dt>{label}</dt>
-                    <dd>
-                      {excerpt(
-                        documentSections(e.body).find((s) => s.title === title)
-                          ?.body || "尚未记录",
-                      ).slice(0, 220)}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-              <p>
-                CI / Report：
-                {e.reportUrl ? (
-                  <a href={e.reportUrl}>查看报告 ↗</a>
-                ) : (
-                  "尚未提供"
-                )}
-              </p>
-              <p>
-                Debug Case：
-                {visible
-                  .filter((d) => d.type === "debug" && d.projectId === e.id)
-                  .map((d) => (
-                    <Link key={d.id} href={entryUrl(d)}>
-                      {d.title} ↗{" "}
-                    </Link>
+          {projects.map((e, i) => {
+            const definition = definitions.find((p) => p.id === e.id);
+            const acceptance = definition
+              ? projectAcceptance(definition, e.checklist)
+              : null;
+            return (
+              <article className="paper panel" key={e.id}>
+                <Thumbnail kind="project" index={i} />
+                <small>
+                  PROJECT {e.projectNo} · {e.status}
+                </small>
+                <h2>
+                  <Link href={entryUrl(e)}>{e.title}</Link>
+                </h2>
+                <p>
+                  必做自评：
+                  {acceptance
+                    ? acceptance.completed + "/" + acceptance.total
+                    : "课程定义不可用"}
+                </p>
+                <div className="tags">
+                  {e.tags.map((t) => (
+                    <span key={t} className="badge">
+                      {t}
+                    </span>
                   ))}
-                {!visible.some(
-                  (d) => d.type === "debug" && d.projectId === e.id,
-                ) && "暂无关联案例"}
-              </p>
-              <details>
-                <summary>项目说明与截图</summary>
-                <Markdown body={e.body} />
-              </details>
-              <div className="actions">
-                {e.repositoryPath && (
+                </div>
+                <dl className="portfolio-evidence">
+                  {[
+                    ["Problem", "项目背景"],
+                    ["Architecture", "架构设计"],
+                    ["Tests", "测试范围"],
+                    ["Result", "成果"],
+                  ].map(([label, title]) => (
+                    <div key={label}>
+                      <dt>{label}</dt>
+                      <dd>
+                        {excerpt(
+                          documentSections(e.body).find(
+                            (s) => s.title === title,
+                          )?.body || "尚未记录",
+                        ).slice(0, 220)}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <p>
+                  CI / Report：
+                  {e.reportUrl ? (
+                    <a href={e.reportUrl}>查看报告 ↗</a>
+                  ) : (
+                    "尚未提供"
+                  )}
+                </p>
+                <p>
+                  Debug Case：
+                  {visible
+                    .filter((d) => d.type === "debug" && d.projectId === e.id)
+                    .map((d) => (
+                      <Link key={d.id} href={entryUrl(d)}>
+                        {d.title} ↗{" "}
+                      </Link>
+                    ))}
+                  {!visible.some(
+                    (d) => d.type === "debug" && d.projectId === e.id,
+                  ) && "暂无关联案例"}
+                </p>
+                <details>
+                  <summary>项目说明与截图</summary>
+                  <Markdown body={e.body} />
+                </details>
+                <div className="actions">
+                  {e.repositoryPath && (
+                    <a
+                      href={
+                        "https://github.com/huayou712-maker/sdet-learning-roadmap/tree/" +
+                        branch +
+                        "/" +
+                        e.repositoryPath
+                      }
+                    >
+                      仓库内代码 ↗
+                    </a>
+                  )}
+                  {e.externalRepository && (
+                    <a href={e.externalRepository}>外部仓库 ↗</a>
+                  )}
+                  {e.demoUrl && <a href={e.demoUrl}>演示 ↗</a>}
+                  {e.reportUrl && <a href={e.reportUrl}>测试报告 ↗</a>}
                   <a
                     href={
-                      "https://github.com/huayou712-maker/sdet-learning-roadmap/tree/" +
+                      "https://github.com/huayou712-maker/sdet-learning-roadmap/commits/" +
                       branch +
                       "/" +
-                      e.repositoryPath
+                      e.path
                     }
                   >
-                    仓库内代码 ↗
+                    GitHub 历史 ↗
                   </a>
-                )}
-                {e.externalRepository && (
-                  <a href={e.externalRepository}>外部仓库 ↗</a>
-                )}
-                {e.demoUrl && <a href={e.demoUrl}>演示 ↗</a>}
-                {e.reportUrl && <a href={e.reportUrl}>测试报告 ↗</a>}
-                <a
-                  href={
-                    "https://github.com/huayou712-maker/sdet-learning-roadmap/commits/" +
-                    branch +
-                    "/" +
-                    e.path
-                  }
-                >
-                  GitHub 历史 ↗
-                </a>
-              </div>
-            </article>
-          ))}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
       <section className="paper panel">

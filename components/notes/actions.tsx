@@ -74,36 +74,72 @@ export function ContentActions({
   );
 }
 export function History({ id, kind = "notes" }: { id: string; kind?: string }) {
-  const [commits, setCommits] = useState<CommitInfo[]>([]);
+  const [commits, setCommits] = useState<(CommitInfo & { page: number })[]>([]);
   const [body, setBody] = useState("");
   const [error, setError] = useState("");
-  async function load(ref?: string) {
+  const [nextPage, setNextPage] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  async function load(ref?: string, page = 1) {
+    setLoading(true);
+    setError("");
     try {
       const r = await fetch(
-        "/api/" + kind + "/" + id + "/history" + (ref ? "?ref=" + ref : ""),
+        "/api/" +
+          kind +
+          "/" +
+          id +
+          "/history?page=" +
+          page +
+          (ref ? "&ref=" + ref : ""),
       );
       const data = await r.json();
       if (!r.ok) throw new Error(data.error);
       if (ref) setBody(data.body);
-      else setCommits(data);
+      else {
+        const items = (data as CommitInfo[]).map((commit) => ({
+          ...commit,
+          page,
+        }));
+        setCommits((previous) =>
+          page === 1
+            ? items
+            : [
+                ...previous.filter(
+                  (commit) => !items.some((item) => item.sha === commit.sha),
+                ),
+                ...items,
+              ],
+        );
+        const next = r.headers.get("X-History-Next-Page");
+        setNextPage(next ? Number(next) : null);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "加载失败");
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <section className="paper panel">
-      <button onClick={() => load()}>查看历史版本</button>
+      <button disabled={loading} onClick={() => load()}>
+        查看历史版本
+      </button>
       <p role="status">{error}</p>
       <ol className="history-feed">
         {commits.map((c) => (
           <li key={c.sha}>
-            <button onClick={() => load(c.sha)}>
+            <button disabled={loading} onClick={() => load(c.sha, c.page)}>
               {c.sha.slice(0, 7)} · {c.message}
             </button>{" "}
             <time>{c.date}</time>
           </li>
         ))}
       </ol>
+      {nextPage && (
+        <button disabled={loading} onClick={() => load(undefined, nextPage)}>
+          加载更早版本
+        </button>
+      )}
       {body && <Markdown body={body} />}
     </section>
   );

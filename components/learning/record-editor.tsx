@@ -11,32 +11,66 @@ import {
 } from "@/lib/content/catalog";
 import type { Entry, Kind } from "@/lib/schemas/content";
 import type { Roadmap } from "@/lib/models";
+import { projectChecks, type ProjectCheck } from "@/lib/content/project-checks";
 export function ProjectChecklist({
   items,
   onChange,
+  definition,
 }: {
-  items: { title: string; completed: boolean }[];
-  onChange?: (items: { title: string; completed: boolean }[]) => void;
+  items: ProjectCheck[];
+  onChange?: (items: ProjectCheck[]) => void;
+  definition?: ProjectDefinition;
 }) {
+  const rules = definition?.acceptance;
+  const known = new Set(definition?.checklist || items.map((c) => c.title));
+  const sections = rules
+    ? [
+        { title: "必做", titles: rules.required },
+        ...rules.choices.map((g) => ({
+          title: g.title + " · 至少 " + g.minimum + " 项",
+          titles: g.items,
+        })),
+        { title: "加分（不计入必做完成率）", titles: rules.optional },
+        {
+          title: "历史清单（保留记录，不计入当前验收）",
+          titles: items.filter((c) => !known.has(c.title)).map((c) => c.title),
+        },
+      ].filter((g) => g.titles.length)
+    : [{ title: "", titles: items.map((c) => c.title) }];
   return (
     <fieldset>
       <legend>项目验收清单</legend>
-      {items.map((item, i) => (
-        <label key={item.title} className="check-row">
-          <input
-            type="checkbox"
-            checked={item.completed}
-            disabled={!onChange}
-            onChange={(e) =>
-              onChange?.(
-                items.map((v, j) =>
-                  j === i ? { ...v, completed: e.target.checked } : v,
-                ),
-              )
-            }
-          />
-          {item.title}
-        </label>
+      {rules && (
+        <p>
+          必做项逐条计数，选择组达到最低数量计 1
+          项。勾选为自评，请同时提供可复现证据。
+        </p>
+      )}
+      {sections.map((group) => (
+        <section key={group.title}>
+          {group.title && <h3>{group.title}</h3>}
+          {items
+            .filter((item) => group.titles.includes(item.title))
+            .map((item) => (
+              <label key={item.title} className="check-row">
+                <input
+                  type="checkbox"
+                  checked={item.completed}
+                  disabled={!onChange}
+                  onChange={(e) =>
+                    onChange?.(
+                      items.map((v) =>
+                        v.title === item.title
+                          ? { ...v, completed: e.target.checked }
+                          : v,
+                      ),
+                    )
+                  }
+                />
+                {item.title}
+              </label>
+            ))}
+        </section>
       ))}
     </fieldset>
   );
@@ -90,12 +124,10 @@ export function RecordEditor({
     externalRepository: entry?.externalRepository || "",
     demoUrl: entry?.demoUrl || "",
     reportUrl: entry?.reportUrl || "",
-    checklist: entry?.checklist.length
-      ? entry.checklist
-      : (definition?.checklist || []).map((title) => ({
-          title,
-          completed: false,
-        })),
+    checklist:
+      kind === "project" && definition
+        ? projectChecks(definition, entry?.checklist)
+        : entry?.checklist || [],
   });
   const [ack, setAck] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -172,7 +204,14 @@ export function RecordEditor({
             try {
               const draft = localStorage.getItem(key);
               if (draft) {
-                setForm(JSON.parse(draft));
+                const restored = JSON.parse(draft);
+                setForm({
+                  ...restored,
+                  checklist:
+                    kind === "project" && definition
+                      ? projectChecks(definition, restored.checklist || [])
+                      : restored.checklist || [],
+                });
                 setDirty(true);
                 setMessage("已恢复本机未提交草稿");
               } else setMessage("没有本机草稿");
@@ -396,8 +435,19 @@ export function RecordEditor({
             </div>
             <ProjectChecklist
               items={form.checklist}
+              definition={definition}
               onChange={(v) => update("checklist", v)}
             />
+            {entry &&
+              definition &&
+              definition.checklist.some(
+                (title) => !entry.checklist.some((c) => c.title === title),
+              ) && (
+                <p>
+                  课程清单已更新：旧勾选保留，新增要求未勾选。保存后才提交到
+                  GitHub；原版本仍在历史中。
+                </p>
+              )}
           </>
         )}
         <label className="check-row">

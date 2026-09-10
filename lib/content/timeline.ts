@@ -12,7 +12,7 @@ export async function buildTimeline(repo: Repository, owner: boolean) {
     await repo.getCommitsForPath("data/progress.json"),
     owner,
   );
-  // Enrich recent records with full per-file history; older records keep metadata events.
+  // One bounded history page per recent record; older versions remain available in details.
   for (let i = 0; i < Math.min(records.length, 30); i += 6) {
     await Promise.all(
       records.slice(i, Math.min(i + 6, 30)).map(async (e) => {

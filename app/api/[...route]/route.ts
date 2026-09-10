@@ -17,6 +17,8 @@ import { AppError } from "@/lib/errors";
 import { jsonBody, sameOrigin, errorResponse } from "@/lib/http";
 import { searchIndex } from "@/lib/search";
 import { buildTimeline } from "@/lib/content/timeline";
+import { HISTORY_PAGE_SIZE, historyPage } from "@/lib/github/history-policy";
+import { consumeAnonymousHistoryRequest } from "@/lib/security/read-budget";
 type Context = { params: Promise<{ route: string[] }> };
 const kinds: Record<string, Kind> = {
   notes: "note",
@@ -34,6 +36,14 @@ export async function GET(req: Request, context: Context) {
     const repo = repository();
     const owner = isOwner(await identity());
     const query = new URL(req.url).searchParams;
+    let page = 1;
+    const ref = query.get("ref");
+    if (kinds[kind] && id && sub === "history") {
+      if (!owner) consumeAnonymousHistoryRequest();
+      page = historyPage(query.get("page"));
+      if (ref !== null && !/^[a-f0-9]{40}$/.test(ref))
+        throw new AppError(400, "版本号格式错误");
+    }
     if (kind === "roadmap")
       return NextResponse.json((await readLearning()).roadmap);
     if (kind === "progress") return NextResponse.json(await readLearning());
@@ -65,20 +75,34 @@ export async function GET(req: Request, context: Context) {
       )
         throw new AppError(404, "找不到学习记录");
       if (sub === "history") {
-        const ref = query.get("ref");
+        const commits = await repo.getCommitsForPath(e.path, page);
         if (ref) {
+          if (!commits.some((commit) => commit.sha === ref))
+            throw new AppError(
+              404,
+              "版本不在此记录的当前历史页中，请刷新历史列表",
+            );
           const file = await repo.getTextFileAtRef(e.path, ref);
           if (!file) throw new AppError(404, "找不到版本");
           const past = parseEntry(file.path, file.content, file.sha);
-          if (!owner && (!past.showInPortfolio || past.deletedAt))
+          if (
+            past.id !== e.id ||
+            past.type !== e.type ||
+            (!owner && (!past.showInPortfolio || past.deletedAt))
+          )
             throw new AppError(404, "该版本未公开展示");
           return NextResponse.json(past);
         }
-        const commits = await repo.getCommitsForPath(e.path);
         return NextResponse.json(
           owner
             ? commits
             : commits.map((c) => ({ ...c, message: "公开记录历史版本" })),
+          {
+            headers:
+              commits.length === HISTORY_PAGE_SIZE
+                ? { "X-History-Next-Page": String(page + 1) }
+                : undefined,
+          },
         );
       }
       if (sub) throw new AppError(404, "接口不存在");
