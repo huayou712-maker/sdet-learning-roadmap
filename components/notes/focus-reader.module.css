@@ -1,0 +1,74 @@
+.reader {
+  padding-top: 18px;
+}
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tools button {
+  margin-left: auto;
+  min-height: 44px;
+  padding: 8px 14px;
+  background: var(--paper-50);
+  color: var(--ink-900);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: none;
+}
+.tools button[aria-pressed="true"] {
+  background: var(--ink-900);
+  color: var(--paper-50);
+}
+.tools a {
+  font-size: 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.hint {
+  font-size: 13px;
+  color: var(--muted);
+}
+.reader[data-focused="true"] .tools {
+  position: sticky;
+  top: 66px;
+  z-index: 5;
+  background: var(--paper-100);
+  max-width: 784px;
+  margin-inline: auto;
+}
+.reader[data-focused="true"] :global(.reading-layout) {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 784px;
+  margin-inline: auto;
+}
+.reader[data-focused="true"] :global(.reading-nav),
+.reader[data-focused="true"] :global(.reading-aside) {
+  display: none;
+}
+.reader[data-focused="true"] :global(.markdown h2),
+.reader[data-focused="true"] :global(.markdown h3) {
+  scroll-margin-top: 150px;
+}
+@media (max-width: 767px) {
+  .reader {
+    padding-top: 8px;
+  }
+  .tools {
+    gap: 10px;
+  }
+  .reader :global(.reading-layout) {
+    padding-top: 16px;
+    gap: 20px;
+  }
+  .reader[data-focused="true"] .hint {
+    display: none;
+  }
+  .reader[data-focused="true"] :global(.reading-article) {
+    grid-row: auto;
+  }
+}

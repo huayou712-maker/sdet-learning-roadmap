@@ -1,47 +1,8 @@
-.heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--border);
+.activityGrid:global(.dashboard-grid) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.heading p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-}
-.heading h2 {
-  font-size: 22px;
-  line-height: 1.5;
-  margin: 6px 0 0;
-}
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-  gap: 9px;
-}
-.actions a {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--paper-50);
-  padding: 10px 14px;
-  min-height: 46px;
-  font-size: 14px;
-  transition:
-    border-color 150ms,
-    background-color 150ms;
-}
-.actions a:hover {
-  border-color: var(--jade-700);
-  background: var(--paper-200);
-}
-.actions span {
-  color: var(--jade-700);
+.activityGrid:global(.dashboard-grid) :global(.recent-events) {
+  grid-column: auto;
 }
 .chapter {
   margin: 0 -36px;
@@ -193,21 +154,8 @@
   }
 }
 @media (max-width: 767px) {
-  .heading {
-    padding: 22px 0;
-    align-items: start;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .heading h2 {
-    font-size: 21px;
-  }
-  .heading p {
-    font-size: 13px;
-  }
-  .actions a {
-    padding: 8px 10px;
-    font-size: 14px;
+  .activityGrid:global(.dashboard-grid) {
+    grid-template-columns: minmax(0, 1fr);
   }
   .chapter {
     height: auto;
@@ -276,7 +224,6 @@
   .chapter :global(.hero-cta):hover span {
     transform: none;
   }
-  .actions a,
   .node,
   .chapter :global(.hero-cta) span {
     transition: none;

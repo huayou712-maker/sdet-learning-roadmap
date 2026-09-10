@@ -8,7 +8,7 @@ export const imageSizes = {
   ink: "(max-width: 767px) calc(100vw - 32px), (max-width: 1199px) 50vw, 440px",
   noteRow: "(max-width: 767px) 126px, 115px",
   noteEmpty:
-    "(max-width: 767px) calc(100vw - 74px), (max-width: 1199px) calc(50vw - 100px), 440px",
+    "(max-width: 767px) calc(100vw - 74px), (max-width: 1352px) calc(50vw - 84px), 596px",
   noteGrid:
     "(max-width: 767px) calc(100vw - 32px), (max-width: 1050px) calc(50vw - 146px), 440px",
   projectGrid:

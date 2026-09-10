@@ -7,7 +7,8 @@ import { progressStats, learningStats } from "@/lib/stats";
 import { statusLabel, excerpt } from "@/lib/dashboard";
 import { timeline } from "@/lib/content/timeline";
 import { repository } from "@/lib/github/contents";
-import { Hero, Thumbnail, InkDecoration } from "@/components/dashboard/media";
+import { Hero, Thumbnail } from "@/components/dashboard/media";
+import { LearningBrief } from "@/components/dashboard/learning-brief";
 import { Icon } from "@/components/ui/icon";
 import { Journey } from "@/components/dashboard/journey";
 import styles from "@/components/dashboard/workspace.module.css";
@@ -81,23 +82,14 @@ export default async function Home() {
           行有所学 · 学有所证
         </span>
       </section>
-      <section className={styles.heading} aria-label="当前学习入口">
-        <div>
-          <p>{owner ? "继续今天的进路" : "学习与作品总览"}</p>
-          <h2>
-            {task ? "入门主线 · " + task.title : "当前阶段 · " + current?.title}
-          </h2>
-        </div>
-        <div className={styles.actions}>
-          <Link href={owner ? "/notes/new" : "/notes"}>
-            {owner ? "写学习笔记" : "阅读笔记"}{" "}
-            <span aria-hidden="true">↗</span>
-          </Link>
-          <Link href={owner ? "/daily" : "/timeline"}>
-            {owner ? "记录日课" : "查看动态"} <span aria-hidden="true">↗</span>
-          </Link>
-        </div>
-      </section>
+      <LearningBrief
+        task={task}
+        current={current}
+        nextTitle={next?.title}
+        progress={progress}
+        missingEvidence={stats.missingEvidence}
+        owner={owner}
+      />
       <Journey roadmap={roadmap} progress={progress} currentId={current?.id} />
       <section className="stats core-stats" aria-label="核心学习指标">
         <article className="paper stat progress-stat">
@@ -156,45 +148,7 @@ export default async function Home() {
           </article>
         ))}
       </section>
-      <div className="dashboard-grid">
-        <section className="paper panel roadmap-overview">
-          <InkDecoration />
-          <div className="section-head">
-            <h2>{task ? "下一项实践任务" : "当前学习阶段"}</h2>
-            <Link href="/roadmap">查看全部 →</Link>
-          </div>
-          <div className="current-stage">
-            <p className="eyebrow">
-              {task ? "PRACTICE FIRST" : "STAGE " + current?.order}
-            </p>
-            <h3>{task?.title || current?.title}</h3>
-            <p>{task?.summary || current?.description}</p>
-            <p>
-              {task
-                ? "交付：" + task.deliverable
-                : "下一步：" + (next?.title || "本阶段已完成，回顾学习证据。")}
-            </p>
-            <Link
-              href={
-                task
-                  ? "/roadmap#task-" + task.id
-                  : "/roadmap?stage=" + current?.id
-              }
-            >
-              进入阶段工作区 →
-            </Link>
-            {task && (
-              <p>
-                <Link href="/guide/beginner">第一组练习与执行命令 →</Link>
-                <br />
-                <Link href="/training">进入训练台：练习验收与复习 →</Link>
-              </p>
-            )}
-          </div>
-          <p className="evidence-reminder">
-            {stats.missingEvidence} 个已完成知识点待补证据
-          </p>
-        </section>
+      <div className={"dashboard-grid " + styles.activityGrid}>
         <section className="paper panel recent-notes">
           <div className="section-head">
             <h2>最近笔记</h2>
