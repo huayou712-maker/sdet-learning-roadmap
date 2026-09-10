@@ -2,6 +2,7 @@
 export const navLinks = [
   ["/", "总览"],
   ["/roadmap", "学习路线"],
+  ["/training", "训练台"],
   ["/notes", "学习笔记"],
   ["/assignments", "作业"],
   ["/projects", "项目"],

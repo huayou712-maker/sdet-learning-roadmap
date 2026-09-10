@@ -176,6 +176,8 @@ export default async function Home() {
             {task && (
               <p>
                 <Link href="/guide/beginner">第一组练习与执行命令 →</Link>
+                <br />
+                <Link href="/training">进入训练台：练习验收与复习 →</Link>
               </p>
             )}
           </div>

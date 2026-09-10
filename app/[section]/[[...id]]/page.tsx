@@ -75,7 +75,16 @@ export default async function Page({
             </Link>
           )}
           {section === "debug-journal" ? (
-            <DebugDocument entry={entry} />
+            <>
+              {owner && !entry.deletedAt && (
+                <p>
+                  <Link href={"/training?tab=review&source=" + entry.id}>
+                    加入复习 →
+                  </Link>
+                </p>
+              )}
+              <DebugDocument entry={entry} />
+            </>
           ) : (
             <article className="daily-page">
               <p>

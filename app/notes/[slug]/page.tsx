@@ -60,6 +60,11 @@ export default async function Page({
               </Link>
             )}
             <a href="#note-history">历史</a>
+            {owner && !entry.deletedAt && (
+              <Link href={"/training?tab=review&source=" + entry.id}>
+                加入复习 →
+              </Link>
+            )}
           </nav>
           <article className="reading-article">
             <header className="page-heading">

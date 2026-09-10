@@ -1,0 +1,209 @@
+.workspace {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+.columns > * {
+  min-width: 0;
+}
+.ledger {
+  padding: 24px;
+  border-top: 3px solid var(--gold-600);
+  background: var(--paper-200);
+}
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+.form fieldset {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+.form legend {
+  margin-top: 16px;
+  font-weight: 700;
+  font-size: 20px;
+}
+.form :is(input, select, textarea) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.form textarea {
+  resize: vertical;
+}
+.form :is(button, a):focus-visible,
+.workspace :is(button, input, textarea, select, a, summary):focus-visible {
+  outline: 3px solid var(--gold-600);
+  outline-offset: 3px;
+}
+.matrix {
+  border-block: 1px solid var(--border);
+  padding: 8px 0;
+}
+.matrix label {
+  display: grid;
+  grid-template-columns: 1fr minmax(100px, 40%);
+  align-items: center;
+  gap: 16px;
+}
+.hint {
+  color: var(--muted);
+  font-size: 14px;
+}
+.warning {
+  border-left: 3px solid var(--crimson-600);
+  padding: 12px 16px;
+  color: var(--crimson-700);
+  background: var(--paper-50);
+}
+.command {
+  padding: 18px;
+  background: var(--ink-950);
+  color: var(--paper-100);
+}
+.command pre {
+  background: transparent;
+  padding: 0;
+  margin: 12px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.results {
+  margin: 16px 0;
+}
+.results > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  padding: 9px 0;
+}
+.results dd {
+  margin: 0;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.results dd[data-result="detected"] {
+  color: var(--jade-800);
+}
+.results dd[data-result="missed"] {
+  color: var(--crimson-700);
+}
+.results dd[data-result="not_run"] {
+  color: var(--muted);
+}
+.attempt,
+.reviewCard {
+  border-bottom: 1px solid var(--border);
+  padding: 22px 0;
+}
+.reviewCard {
+  scroll-margin-top: 96px;
+}
+.reviewCard:target {
+  border-left: 3px solid var(--gold-600);
+  padding-left: 16px;
+}
+.prose {
+  white-space: pre-wrap;
+}
+.answer {
+  padding: 18px;
+  border-left: 3px solid var(--jade-700);
+  background: var(--paper-200);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+.actions button {
+  padding-inline: 14px;
+}
+.history {
+  border-left: 1px solid var(--border);
+  padding: 8px 16px;
+}
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+}
+.statusBar label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.statusBar input {
+  width: 100px;
+}
+.plan {
+  list-style: none;
+  margin: 24px 0;
+  padding: 0;
+}
+.plan li {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--border);
+}
+.plan h3 {
+  margin-block: 8px;
+}
+.plan li > div {
+  min-width: 0;
+}
+.plan li > button {
+  flex-shrink: 0;
+}
+.time {
+  color: var(--jade-800);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+@media (max-width: 800px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .ledger {
+    padding: 18px;
+  }
+  .matrix label {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .plan li {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .statusBar > button {
+    width: 100%;
+    padding-inline: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

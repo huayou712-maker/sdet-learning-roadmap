@@ -1,9 +1,34 @@
 import { mkdir, copyFile, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { spawn } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 const runId = randomUUID();
 const root = join(process.cwd(), ".e2e-data", runId);
+// Synthetic code-version evidence, scoped only to this isolated test run.
+// It is neither a learner submission nor a file in the real content branch.
+const practicePath =
+  "projects/beginner-api-lab/tests/test_registration_practice.py";
+const practiceRef = "e".repeat(40);
+await mkdir(join(root, ".history"), { recursive: true });
+await writeFile(
+  join(root, ".history", practiceRef + ".txt"),
+  "# Synthetic E2E code-version fixture; never a learner achievement\ndef test_synthetic():\n    assert True\n",
+);
+await writeFile(
+  join(
+    root,
+    ".history",
+    createHash("sha1").update(practicePath).digest("hex") + ".json",
+  ),
+  JSON.stringify([
+    {
+      sha: practiceRef,
+      message: "synthetic training evidence",
+      date: "2026-09-10T00:00:00Z",
+      url: "#",
+    },
+  ]),
+);
 await mkdir(join(root, "data"), { recursive: true });
 await mkdir(join(root, "docs"), { recursive: true });
 await copyFile("docs/RESOURCES.md", join(root, "docs", "RESOURCES.md"));
