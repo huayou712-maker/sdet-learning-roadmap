@@ -192,7 +192,7 @@ export default async function Home() {
           </div>
           {notes.map((e, i) => (
             <Link href={entryUrl(e)} key={e.id} className="note-row">
-              <Thumbnail kind="note" index={i} />
+              <Thumbnail kind="note" index={i} slot="noteRow" />
               <div>
                 <h3>{e.title}</h3>
                 <p>{excerpt(e.body).slice(0, 65)}</p>
@@ -209,7 +209,7 @@ export default async function Home() {
           ))}
           {!notes.length && (
             <div className="illustrated-empty">
-              <Thumbnail kind="note" index={0} />
+              <Thumbnail kind="note" index={0} slot="noteEmpty" />
               <p>
                 尚无可展示笔记。
                 <br />
@@ -298,7 +298,7 @@ export default async function Home() {
                 href={"/projects/" + p.id}
                 key={p.id}
               >
-                <Thumbnail kind="project" index={i} />
+                <Thumbnail kind="project" index={i} slot="featuredProject" />
                 <div className="project-copy">
                   <small>PROJECT {String(p.projectNo).padStart(2, "0")}</small>
                   <h3>{p.title}</h3>

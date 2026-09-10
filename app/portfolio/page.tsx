@@ -63,7 +63,7 @@ export default async function Page() {
           <h2>{projects[0]?.title || "可验证的项目成果"}</h2>
           {projects[0] ? (
             <>
-              <Thumbnail kind="project" index={0} />
+              <Thumbnail kind="project" index={0} slot="portfolioFeature" />
               <p>{excerpt(projects[0].body).slice(0, 180)}</p>
               <Link href={entryUrl(projects[0])}>进入项目 →</Link>
             </>
@@ -120,7 +120,13 @@ export default async function Page() {
               : null;
             return (
               <article className="paper panel" key={e.id}>
-                <Thumbnail kind="project" index={i} />
+                <Thumbnail
+                  kind="project"
+                  index={i}
+                  slot={
+                    projects.length === 1 ? "portfolioSingle" : "portfolioGrid"
+                  }
+                />
                 <small>
                   PROJECT {e.projectNo} · {e.status}
                 </small>

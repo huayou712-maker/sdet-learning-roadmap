@@ -119,7 +119,11 @@ export default async function Page({
                 <article className="knowledge-row" key={e.id}>
                   {view === "grid" &&
                     (all.indexOf(e) < 3 || e.showInPortfolio) && (
-                      <Thumbnail kind="note" index={all.indexOf(e)} />
+                      <Thumbnail
+                        kind="note"
+                        index={all.indexOf(e)}
+                        slot="noteGrid"
+                      />
                     )}
                   <h2>
                     <Link href={"/notes/" + e.id}>{e.title}</Link>

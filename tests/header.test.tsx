@@ -2,6 +2,7 @@ import { it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Header } from "@/components/layout/header";
 import { Hero, Thumbnail } from "@/components/dashboard/media";
+import { imageSizes } from "@/components/dashboard/image-sizes";
 import { chapterGroups } from "@/lib/dashboard";
 import { signIn, signOut } from "next-auth/react";
 vi.mock("next/navigation", () => ({ usePathname: () => "/roadmap" }));
@@ -51,8 +52,8 @@ it("hero and thumbnail components use supplied assets and reserved image space",
   const { container } = render(
     <>
       <Hero />
-      <Thumbnail kind="note" index={0} />
-      <Thumbnail kind="project" index={3} />
+      <Thumbnail kind="note" index={0} slot="noteEmpty" />
+      <Thumbnail kind="project" index={3} slot="portfolioSingle" />
     </>,
   );
   const sources = Array.from(container.querySelectorAll("img"), (image) =>
@@ -62,6 +63,14 @@ it("hero and thumbnail components use supplied assets and reserved image space",
   expect(sources.some((s) => s.includes("note-thumb-01.webp"))).toBe(true);
   expect(sources.some((s) => s.includes("project-thumb-04.webp"))).toBe(true);
   expect(container.querySelector(".ridge")).toBeNull();
+  expect(screen.getByAltText("学习笔记配图")).toHaveAttribute(
+    "sizes",
+    imageSizes.noteEmpty,
+  );
+  expect(screen.getByAltText("项目档案配图")).toHaveAttribute(
+    "sizes",
+    imageSizes.portfolioSingle,
+  );
   expect(screen.getByAltText("学习笔记配图")).toHaveAttribute(
     "loading",
     "lazy",
