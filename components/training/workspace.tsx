@@ -7,6 +7,8 @@ import { Practice } from "./practice";
 import { Reviews } from "./reviews";
 import { StatePanel } from "@/components/ui/state-panel";
 import { SyncFeedback } from "./sync-feedback";
+import { CaseDesigner } from "./case-designer";
+import { AttemptComparison } from "./attempt-comparison";
 import {
   mutationSchema,
   type TrainingCommand,
@@ -23,6 +25,8 @@ export function TrainingWorkspace({
   sourceId,
   cardId,
   today: initialToday,
+  designProject,
+  debugTags = [],
 }: {
   initial: TrainingSnapshot;
   sources: ReviewSource[];
@@ -32,6 +36,8 @@ export function TrainingWorkspace({
   sourceId: string;
   cardId: string;
   today: string;
+  designProject?: { id: string; stageId: string };
+  debugTags?: string[];
 }) {
   const [snapshot, setSnapshot] = useState(initial);
   const [today, setToday] = useState(initialToday);
@@ -44,8 +50,11 @@ export function TrainingWorkspace({
   const [message, setMessage] = useState("");
   const [commit, setCommit] = useState("");
   const [budget, setBudget] = useState(60);
+  const [mode, setMode] = useState<"balanced" | "review">("balanced");
   const [order, setOrder] = useState<string[]>([]);
-  const active = ["practice", "review"].includes(tab) ? tab : "today";
+  const active = ["practice", "review", "design", "compare"].includes(tab)
+    ? tab
+    : "today";
   async function save(command: TrainingCommand) {
     if (locked.current) return false;
     setOperation("write");
@@ -118,6 +127,7 @@ export function TrainingWorkspace({
     progress,
     today,
     budget,
+    mode,
   );
   const rank = (id: string) =>
     order.includes(id) ? order.indexOf(id) : order.length;
@@ -129,11 +139,13 @@ export function TrainingWorkspace({
         <h1>个人训练台</h1>
         <p>先留独立作答，再对照结果。把漏检变成下一次练习。</p>
       </header>
-      <nav className="status-tabs" aria-label="训练导航">
+      <nav className={"status-tabs " + styles.tabs} aria-label="训练导航">
         {[
           ["today", "今日任务"],
           ["practice", "练习验收"],
           ["review", "复习队列"],
+          ["design", "用例设计"],
+          ["compare", "失败对照"],
         ].map(([key, title]) => (
           <Link
             key={key}
@@ -159,12 +171,26 @@ export function TrainingWorkspace({
       />
       <p className={styles.hint}>
         正式记录只保存在
-        GitHub；本页未提交输入仅留在内存，关闭或刷新页面会丢失。公开仓库不是私密存储。
+        GitHub。未提交输入默认仅在内存中；可在对应表单显式保存本机草稿，7
+        天内手动恢复。公开仓库与共享设备都不是私密存储。
       </p>
       <PublicNotice checked={ack} onChange={setAck} />
       <section hidden={active !== "today"} aria-label="今日训练计划">
         <div className={styles.statusBar}>
           <h2>今天先做什么</h2>
+          <label>
+            今日安排方式
+            <select
+              value={mode}
+              onChange={(e) => {
+                setMode(e.target.value as "balanced" | "review");
+                setOrder([]);
+              }}
+            >
+              <option value="balanced">均衡学习</option>
+              <option value="review">集中复习</option>
+            </select>
+          </label>
           <label>
             可用时间（分钟）
             <input
@@ -181,8 +207,10 @@ export function TrainingWorkspace({
           </label>
         </div>
         <p>
-          默认顺序：到期复习 → 最新练习的阻塞或漏检 →
-          当前主线。时间是投入预算，不是完成承诺。
+          {mode === "balanced"
+            ? "均衡学习：先安排一项实践（优先处理基线阻塞或漏检），再按到期顺序补充复习。"
+            : "集中复习：到期复习 → 最新练习的阻塞或漏检 → 当前主线。"}
+          最多三项，时间是投入预算，不是完成承诺。切换不改学习记录。
         </p>
         <ol className={styles.plan}>
           {plan.map((item, i) => (
@@ -249,6 +277,23 @@ export function TrainingWorkspace({
           today={today}
           disabled={busy}
           save={save}
+        />
+      </section>
+      <section hidden={active !== "design"} aria-label="用例设计台">
+        <CaseDesigner
+          project={designProject}
+          acknowledged={ack}
+          disabled={busy}
+        />
+      </section>
+      <section hidden={active !== "compare"} aria-label="失败对照台">
+        <AttemptComparison
+          active={active === "compare"}
+          attempts={snapshot.state.attempts}
+          project={designProject}
+          categories={debugTags}
+          acknowledged={ack}
+          disabled={busy}
         />
       </section>
     </div>

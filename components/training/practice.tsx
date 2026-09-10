@@ -11,6 +11,8 @@ import {
 import styles from "./training.module.css";
 import { CommandBlock } from "./command-block";
 import { AttemptLedger } from "./attempt-ledger";
+import { DraftControls, useTrainingDraft } from "./draft-controls";
+import { practiceDraftSchema } from "@/lib/training/drafts";
 type Props = {
   attempts: Attempt[];
   disabled: boolean;
@@ -27,6 +29,22 @@ export function Practice({ attempts, disabled, save }: Props) {
   });
   const [reflection, setReflection] = useState("");
   const [ciUrl, setCiUrl] = useState("");
+  const [dirty, setDirty] = useState(false);
+  const draft = useTrainingDraft({
+    scope: "practice",
+    schema: practiceDraftSchema,
+    dirty,
+    value: { id, commitSha, normal, faults: results, reflection, ciUrl },
+    restore: (value) => {
+      setId(value.id);
+      setCommitSha(value.commitSha);
+      setNormal(value.normal);
+      setResults(value.faults);
+      setReflection(value.reflection);
+      setCiUrl(value.ciUrl);
+      setDirty(true);
+    },
+  });
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (
@@ -44,6 +62,8 @@ export function Practice({ attempts, disabled, save }: Props) {
     ) {
       setId(crypto.randomUUID());
       setReflection("");
+      setDirty(false);
+      draft.submitted();
     }
   }
   return (
@@ -113,6 +133,7 @@ export function Practice({ attempts, disabled, save }: Props) {
             。维护者示范测试仅验证环境，不计作个人成果。
           </p>
           <form
+            onChange={() => setDirty(true)}
             onSubmit={submit}
             className={styles.form}
             aria-label="提交独立练习"
@@ -200,6 +221,7 @@ export function Practice({ attempts, disabled, save }: Props) {
               </label>
               <button type="submit">提交练习记录</button>
             </fieldset>
+            <DraftControls draft={draft} disabled={disabled} label="练习记录" />
           </form>
         </section>
         <AttemptLedger attempts={attempts} />

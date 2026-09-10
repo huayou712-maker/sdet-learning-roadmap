@@ -70,6 +70,7 @@ UI 主学 Playwright；Selenium 按目标团队旧项目需要补，不要求先
 - [R4 · 学习入口、专注阅读与项目案例](docs/design/LEARNING_EXPERIENCE_R4.md)
 - [R5 · 训练台结果反馈与公共状态](docs/design/TRAINING_FEEDBACK_R5.md)
 - [R6 · 六站功法长卷与笔记学习关联](docs/design/LEARNING_CONNECTIONS_R6.md)
+- [R7 · 用例设计、证据核对与失败对照](docs/design/PRACTICE_WORKBENCH_R7.md)
 
 ### 实际界面
 
@@ -100,6 +101,8 @@ npm run dev
 ### 个人训练台
 
 新增 `/training`：注册 API 独立练习验收、从笔记/排障提取复习卡，以及按到期复习、最新漏检和实践主线生成的今日建议。验收结果明确为学习者自报；不会执行提交代码、自动增加知识点进度或修改原记录。正式状态只提交 GitHub。
+
+R7 增加均衡学习安排、显式受校验草稿、搜索命中上下文、注册用例设计、手动只读 CI 元数据核对和两次尝试对照。设计与排障经用户确认使用原作业/排障 API；CI 绿灯和字段完整不等于能力验收。江湖视觉与原登录、数据、安全边界不变。
 
 - [执行边界书](docs/TRAINING_EXECUTION_BOUNDARY.md)
 - [训练台使用说明](docs/TRAINING_USER_GUIDE.md)

@@ -54,6 +54,7 @@ export function recommendTraining(
   progress: Progress,
   today: string,
   budget: number,
+  mode: "review" | "balanced" = "review",
 ): Recommendation[] {
   const available = Math.max(
     0,
@@ -99,7 +100,14 @@ export function recommendTraining(
     });
   const result: Recommendation[] = [];
   let remaining = available;
-  for (const item of candidates) {
+  const firstPractice = candidates.find(
+    (candidate) => !state.reviews.some((card) => card.id === candidate.id),
+  );
+  const ordered =
+    mode === "balanced" && firstPractice
+      ? [firstPractice, ...candidates.filter((item) => item !== firstPractice)]
+      : candidates;
+  for (const item of ordered) {
     if (!remaining || result.length === 3) break;
     const minutes = Math.min(item.minutes, remaining);
     result.push({

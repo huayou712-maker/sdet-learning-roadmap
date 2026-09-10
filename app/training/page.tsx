@@ -2,7 +2,7 @@ import Link from "next/link";
 import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
 import { repository } from "@/lib/github/contents";
-import { readEntries, readLearning } from "@/lib/content/read";
+import { readEntries, readLearning, readProjects } from "@/lib/content/read";
 import { readTraining } from "@/lib/training/service";
 import { TrainingWorkspace } from "@/components/training/workspace";
 import { StatePanel } from "@/components/ui/state-panel";
@@ -36,11 +36,12 @@ export default async function Page({
         </StatePanel>
       </>
     );
-  const [snapshot, records, learning, query] = await Promise.all([
+  const [snapshot, records, learning, query, projects] = await Promise.all([
     readTraining(repository()),
     readEntries(),
     readLearning(),
     searchParams,
+    readProjects(),
   ]);
   const sources = records
     .filter((r) => r.type === "note" || r.type === "debug")
@@ -51,6 +52,7 @@ export default async function Page({
       deletedAt,
       sha,
     }));
+  const project = projects.find((p) => p.id === "project-0");
   return (
     <TrainingWorkspace
       initial={snapshot}
@@ -61,6 +63,16 @@ export default async function Page({
       sourceId={query.source || ""}
       cardId={query.card || ""}
       today={new Date().toISOString().slice(0, 10)}
+      designProject={
+        project ? { id: project.id, stageId: project.stageId } : undefined
+      }
+      debugTags={[
+        ...new Set(
+          records
+            .filter((r) => r.type === "debug" && !r.deletedAt)
+            .flatMap((r) => r.tags),
+        ),
+      ].sort()}
     />
   );
 }

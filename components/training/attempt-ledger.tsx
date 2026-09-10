@@ -6,6 +6,7 @@ import {
 } from "@/lib/training/schema";
 import { StatePanel } from "@/components/ui/state-panel";
 import styles from "./training.module.css";
+import { VerifyCI } from "./ci-verification";
 
 function AttemptRecord({
   attempt: a,
@@ -82,6 +83,7 @@ function AttemptRecord({
           <span>未附 CI 运行链接</span>
         )}
       </div>
+      {a.ciUrl && <VerifyCI attemptId={a.id} />}
     </article>
   );
 }
@@ -99,8 +101,8 @@ export function AttemptLedger({ attempts }: { attempts: Attempt[] }) {
       <h2>验收记录</h2>
       <p>学习者自报 · 未自动验真</p>
       <p className={styles.hint}>
-        系统只检查指定代码文件在 commit 中存在；不执行代码，不验证 CI
-        结果，不自动增加知识点进度。
+        提交时只检查指定代码文件在 commit 中存在。可手动核对 CI 来源与元数据；
+        不执行代码，不自动增加知识点进度。
       </p>
       {latest ? (
         <>

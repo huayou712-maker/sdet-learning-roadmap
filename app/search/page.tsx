@@ -2,19 +2,27 @@ import Link from "next/link";
 import { readEntries, readLearning } from "@/lib/content/read";
 import { identity } from "@/lib/auth/session";
 import { isOwner } from "@/lib/github/authz";
-import { searchIndex } from "@/lib/search";
+import {
+  searchIndex,
+  searchType,
+  searchTypes,
+  type SearchType,
+} from "@/lib/search";
 import { SearchCommand } from "@/components/ui/search-command";
+import { SearchHighlight } from "@/components/ui/search-highlight";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; type?: string }>;
 }) {
-  const { q = "" } = await searchParams;
+  const { q = "", type = "all" } = await searchParams;
+  const selectedType = searchType(type);
   const results = searchIndex(
     await readEntries(),
     (await readLearning()).roadmap,
     q,
     isOwner(await identity()),
+    selectedType,
   );
   return (
     <>
@@ -22,10 +30,19 @@ export default async function Page({
         <h1>检索学习档案</h1>
         <p>搜索标题、正文、标签、阶段与知识点。</p>
       </div>
-      <SearchCommand query={q} />
+      <SearchCommand
+        key={q + ":" + selectedType}
+        query={q}
+        type={selectedType}
+      />
+      {q && (
+        <p>
+          找到 {results.length} 项 · {searchTypes[selectedType]}
+        </p>
+      )}
       {Array.from(new Set(results.map((r) => r.type))).map((type) => (
         <section className="search-group" key={type}>
-          <h2>{type}</h2>
+          <h2>{searchTypes[type as SearchType] || type}</h2>
           <ul>
             {results
               .filter((r) => r.type === type)
@@ -40,10 +57,14 @@ export default async function Page({
                     }
                   >
                     <small>
-                      {r.type} · {r.stage}
+                      {searchTypes[r.type as SearchType] || r.type} · {r.stage}
                     </small>
-                    <h2>{r.title}</h2>
-                    <p>{r.body}</p>
+                    <h2>
+                      <SearchHighlight text={r.title} query={q} />
+                    </h2>
+                    <p>
+                      <SearchHighlight text={r.body} query={q} />
+                    </p>
                   </Link>
                 </li>
               ))}
