@@ -11,6 +11,11 @@ import { Hero, Thumbnail } from "@/components/dashboard/media";
 import { LearningBrief } from "@/components/dashboard/learning-brief";
 import { Icon } from "@/components/ui/icon";
 import { Journey } from "@/components/dashboard/journey";
+import {
+  HomeMotion,
+  MotionToggle,
+  CinematicAtmosphere,
+} from "@/components/dashboard/home-motion";
 import styles from "@/components/dashboard/workspace.module.css";
 import { nextBeginnerTask, nextLearningTopic } from "@/lib/learning-path";
 export default async function Home() {
@@ -48,9 +53,11 @@ export default async function Home() {
       e.type === "daily" && e.date === new Date().toISOString().slice(0, 10),
   );
   return (
-    <>
-      <section className={"hero " + styles.chapter}>
+    <HomeMotion>
+      <section className={"hero " + styles.chapter} data-cinematic-hero>
         <Hero />
+        <CinematicAtmosphere />
+        <MotionToggle />
         <div className="hero-copy">
           <p className="eyebrow">行知 · 测试开发学习与作品档案</p>
           <h1>SDET Learning OS</h1>
@@ -91,7 +98,11 @@ export default async function Home() {
         owner={owner}
       />
       <Journey roadmap={roadmap} progress={progress} currentId={current?.id} />
-      <section className="stats core-stats" aria-label="核心学习指标">
+      <section
+        className="stats core-stats"
+        aria-label="核心学习指标"
+        data-motion-reveal
+      >
         <article className="paper stat progress-stat">
           <div
             className="progress-ring"
@@ -149,7 +160,7 @@ export default async function Home() {
         ))}
       </section>
       <div className={"dashboard-grid " + styles.activityGrid}>
-        <section className="paper panel recent-notes">
+        <section className="paper panel recent-notes" data-motion-reveal>
           <div className="section-head">
             <h2>最近笔记</h2>
             <Link href="/notes">查看全部 →</Link>
@@ -187,7 +198,7 @@ export default async function Home() {
             <Link href="/assignments">{activity.assignments} 次作业提交</Link>
           </div>
         </section>
-        <aside className="ink panel recent-events">
+        <aside className="ink panel recent-events" data-motion-reveal>
           <div className="section-head">
             <h2>最近动态</h2>
             <Link href="/timeline">查看全部 →</Link>
@@ -245,7 +256,7 @@ export default async function Home() {
           </div>
         </aside>
       </div>
-      <section className="paper panel featured-projects">
+      <section className="paper panel featured-projects" data-motion-reveal>
         <div className="section-head">
           <h2>项目档案</h2>
           <Link href="/projects">查看全部 →</Link>
@@ -288,6 +299,6 @@ export default async function Home() {
           })}
         </div>
       </section>
-    </>
+    </HomeMotion>
   );
 }
