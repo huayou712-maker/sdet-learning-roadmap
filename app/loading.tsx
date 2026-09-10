@@ -1,3 +1,4 @@
+import { StatePanel } from "@/components/ui/state-panel";
 export default function Loading() {
   return (
     <div
@@ -6,12 +7,9 @@ export default function Loading() {
       aria-live="polite"
       aria-busy="true"
     >
-      <p>正在读取 GitHub 学习记录…</p>
-      <div className="loading-lines" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
+      <StatePanel kind="loading" title="正在读取 GitHub 学习记录…">
+        <p>学习内容就绪后会显示在这里；等待期间仍可使用顶部导航。</p>
+      </StatePanel>
     </div>
   );
 }

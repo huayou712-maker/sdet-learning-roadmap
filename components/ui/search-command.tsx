@@ -1,6 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
-export function SearchCommand({ query }: { query: string }) {
+import { searchTypes, type SearchType } from "@/lib/search";
+export function SearchCommand({
+  query,
+  type = "all",
+}: {
+  query: string;
+  type?: SearchType;
+}) {
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -34,6 +41,16 @@ export function SearchCommand({ query }: { query: string }) {
           maxLength={200}
           placeholder="搜索笔记、作业、项目、问题、路线…"
         />
+      </label>
+      <label>
+        内容类型
+        <select name="type" defaultValue={type}>
+          {Object.entries(searchTypes).map(([key, label]) => (
+            <option key={key} value={key}>
+              {label}
+            </option>
+          ))}
+        </select>
       </label>
       <button>搜索</button>
       <small>

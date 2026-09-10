@@ -6,6 +6,7 @@ import { kindRoute } from "@/lib/content/catalog";
 import type { Kind } from "@/lib/schemas/content";
 import { BeginnerPath } from "./beginner-path";
 import { nextLearningTopic } from "@/lib/learning-path";
+import type { RecordConnection } from "@/lib/content/learning-connections";
 type Candidate = { id: string; type: Kind; title: string; stageId?: string };
 function EvidenceEditor({
   current,
@@ -116,6 +117,7 @@ export function Checklist({
   entries = [],
   initialStage,
   initialFilter = "all",
+  connections = {},
 }: {
   roadmap: Roadmap;
   progress: Progress;
@@ -124,6 +126,7 @@ export function Checklist({
   entries?: Candidate[];
   initialStage?: string;
   initialFilter?: string;
+  connections?: Record<string, RecordConnection[]>;
 }) {
   const [filter, setFilter] = useState(initialFilter);
   const selected =
@@ -167,7 +170,19 @@ export function Checklist({
   }
   return (
     <>
-      {!initialStage && <BeginnerPath roadmap={roadmap} progress={state} />}
+      {!initialStage && (
+        <BeginnerPath
+          roadmap={roadmap}
+          progress={state}
+          connections={connections}
+        />
+      )}
+      {!initialStage && (
+        <div id="knowledge-catalog" className="page-heading">
+          <h2>十阶段参考目录</h2>
+          <p>遇到具体问题，再回来查知识点。这里保留原来的自评与证据登记。</p>
+        </div>
+      )}
       {owner && <PublicNotice checked={ack} onChange={setAck} />}
       <div className="toolbar">
         <label>

@@ -11,7 +11,9 @@ import { entryUrl } from "@/lib/content/catalog";
 import { Markdown } from "@/components/ui/markdown";
 import { Hero, Thumbnail } from "@/components/dashboard/media";
 import { documentSections } from "@/lib/presentation";
-import { excerpt } from "@/lib/dashboard";
+import { excerpt, statusLabel } from "@/lib/dashboard";
+import { ProjectEvidence } from "@/components/learning/project-evidence";
+import styles from "./cases.module.css";
 export default async function Page() {
   const [profile, all, { roadmap, progress }] = await Promise.all([
     readProfile(),
@@ -112,6 +114,15 @@ export default async function Page() {
             尚无已选择展示的项目。提交成果并勾选“在作品集展示”后会出现在这里。
           </p>
         )}
+        {projects.length > 1 && (
+          <nav className={styles.index} aria-label="项目案例导航">
+            {projects.map((entry) => (
+              <a key={entry.id} href={"#case-" + entry.id}>
+                {entry.title} ↓
+              </a>
+            ))}
+          </nav>
+        )}
         <div className="project-grid portfolio-projects">
           {projects.map((e, i) => {
             const definition = definitions.find((p) => p.id === e.id);
@@ -119,7 +130,12 @@ export default async function Page() {
               ? projectAcceptance(definition, e.checklist)
               : null;
             return (
-              <article className="paper panel" key={e.id}>
+              <article
+                className={"paper panel " + styles.case}
+                key={e.id}
+                id={"case-" + e.id}
+                aria-label={e.title + "案例"}
+              >
                 <Thumbnail
                   kind="project"
                   index={i}
@@ -127,17 +143,21 @@ export default async function Page() {
                     projects.length === 1 ? "portfolioSingle" : "portfolioGrid"
                   }
                 />
-                <small>
-                  PROJECT {e.projectNo} · {e.status}
-                </small>
+                <div className={styles.meta}>
+                  <span>
+                    PROJECT {String(e.projectNo ?? "—").padStart(2, "0")}
+                  </span>
+                  <span>{statusLabel[e.status] || e.status}</span>
+                </div>
                 <h2>
                   <Link href={entryUrl(e)}>{e.title}</Link>
                 </h2>
-                <p>
+                <p className={styles.assessment}>
                   必做自评：
                   {acceptance
                     ? acceptance.completed + "/" + acceptance.total
                     : "课程定义不可用"}
+                  <small>学习者自评 · 非自动测试结论</small>
                 </p>
                 <div className="tags">
                   {e.tags.map((t) => (
@@ -146,12 +166,12 @@ export default async function Page() {
                     </span>
                   ))}
                 </div>
-                <dl className="portfolio-evidence">
+                <dl className={styles.summary}>
                   {[
-                    ["Problem", "项目背景"],
-                    ["Architecture", "架构设计"],
-                    ["Tests", "测试范围"],
-                    ["Result", "成果"],
+                    ["要解决的问题", "项目背景"],
+                    ["实现方法", "架构设计"],
+                    ["如何验证", "测试范围"],
+                    ["结果与反思", "成果"],
                   ].map(([label, title]) => (
                     <div key={label}>
                       <dt>{label}</dt>
@@ -165,49 +185,13 @@ export default async function Page() {
                     </div>
                   ))}
                 </dl>
-                <p>
-                  CI / Report：
-                  {e.reportUrl ? (
-                    <a href={e.reportUrl}>查看报告 ↗</a>
-                  ) : (
-                    "尚未提供"
-                  )}
-                </p>
-                <p>
-                  Debug Case：
-                  {visible
-                    .filter((d) => d.type === "debug" && d.projectId === e.id)
-                    .map((d) => (
-                      <Link key={d.id} href={entryUrl(d)}>
-                        {d.title} ↗{" "}
-                      </Link>
-                    ))}
-                  {!visible.some(
-                    (d) => d.type === "debug" && d.projectId === e.id,
-                  ) && "暂无关联案例"}
-                </p>
+                <ProjectEvidence entry={e} entries={visible} branch={branch} />
                 <details>
                   <summary>项目说明与截图</summary>
                   <Markdown body={e.body} />
                 </details>
-                <div className="actions">
-                  {e.repositoryPath && (
-                    <a
-                      href={
-                        "https://github.com/huayou712-maker/sdet-learning-roadmap/tree/" +
-                        branch +
-                        "/" +
-                        e.repositoryPath
-                      }
-                    >
-                      仓库内代码 ↗
-                    </a>
-                  )}
-                  {e.externalRepository && (
-                    <a href={e.externalRepository}>外部仓库 ↗</a>
-                  )}
-                  {e.demoUrl && <a href={e.demoUrl}>演示 ↗</a>}
-                  {e.reportUrl && <a href={e.reportUrl}>测试报告 ↗</a>}
+                <div className={styles.caseActions}>
+                  <Link href={entryUrl(e)}>阅读完整项目 →</Link>
                   <a
                     href={
                       "https://github.com/huayou712-maker/sdet-learning-roadmap/commits/" +

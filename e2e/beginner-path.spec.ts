@@ -6,10 +6,10 @@ test("beginner path guides anonymous learners without writing progress, across m
 }) => {
   const before = await (await page.request.get("/api/progress")).json();
   await page.goto("/");
-  await expect(page.locator(".hero-copy")).toContainText(
-    "入门主线 · 环境与 Python 诊断",
-  );
-  await page.getByRole("link", { name: "继续学习路线" }).click();
+  await expect(
+    page.getByRole("region", { name: "当前学习入口" }),
+  ).toContainText("入门主线 · 环境与 Python 诊断");
+  await page.getByRole("link", { name: "查看学习路线", exact: true }).click();
   await expect(page).toHaveURL(/\/roadmap#task-start$/);
   const path = page.getByRole("region", { name: "先做出第一个可复现的测试" });
   await expect(path.locator("details")).toHaveCount(6);

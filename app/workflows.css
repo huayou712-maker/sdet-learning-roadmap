@@ -33,9 +33,6 @@ body:has(
 .section-head a.button.secondary {
   color: var(--ink-950);
 }
-.hero .hero-image {
-  object-position: 58% 60%;
-}
 .document-actions button {
   background: transparent;
   color: var(--jade-700);
@@ -114,7 +111,9 @@ body:has(
   color: #deceb0;
 }
 .portfolio-intro h1 {
-  font-size: clamp(35px, 4.5vw, 60px);
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 500;
+  line-height: 1.4;
 }
 .portfolio-bento {
   display: grid;
@@ -128,12 +127,14 @@ body:has(
   background: var(--paper-50);
   border: 1px solid var(--border);
   min-width: 0;
+  border-radius: 8px;
 }
 .bento-feature {
   grid-row: span 2;
 }
 .bento-feature .project-thumbnail {
   max-height: 280px;
+  margin-bottom: 24px;
 }
 .bento-skills {
   grid-column: span 2;
@@ -148,6 +149,7 @@ body:has(
 .bento-progress strong {
   font-size: 48px;
   color: var(--jade-700);
+  font-family: var(--font-mono);
 }
 .portfolio-evidence {
   margin: 22px 0;
@@ -591,19 +593,60 @@ progress {
 }
 .reading-layout {
   display: grid;
-  grid-template-columns: 135px minmax(0, 800px) minmax(160px, 1fr);
+  grid-template-columns: 150px minmax(0, 784px) minmax(160px, 1fr);
   gap: 30px;
   padding-top: 32px;
   align-items: start;
 }
 .reading-article {
-  background: #f1e7d3;
-  padding: 24px;
+  background: var(--paper-50);
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   min-width: 0;
 }
 .reading-article .markdown {
-  font-size: 18px;
-  line-height: 1.95;
+  font-size: 17px;
+  line-height: 30px;
+}
+.reading-article > .page-heading {
+  padding: 0 0 24px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.reading-article .markdown p {
+  color: var(--ink-900);
+  margin-bottom: 20px;
+}
+.reading-article > section {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.reading-article .markdown code {
+  font-size: 14px;
+  line-height: 23px;
+}
+.reading-article .markdown h2 {
+  margin-top: 36px;
+  line-height: 1.5;
+}
+.reading-nav {
+  font-size: 14px;
+}
+.reading-nav > a,
+.reading-aside nav > a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  overflow-wrap: anywhere;
+}
+.reading-aside p {
+  font-size: 14px;
+}
+.reading-aside summary {
+  font-weight: 500;
+  min-height: 44px;
 }
 .reading-aside,
 .reading-nav {
@@ -647,7 +690,7 @@ progress {
 }
 .studio-toolbar {
   position: sticky;
-  top: 0;
+  top: 66px;
   z-index: 3;
   background: var(--paper-50);
   padding: 12px;
@@ -691,6 +734,9 @@ progress {
 }
 .studio-writing textarea {
   min-height: 570px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 28px;
 }
 .studio-writing .editor-tabs {
   display: flex;
@@ -752,7 +798,20 @@ progress {
     grid-row: 2;
   }
   .reading-article {
+    padding: 24px 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+  .reading-article .markdown {
+    font-size: 16px;
+    line-height: 28px;
+  }
+  .reading-aside {
     padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--paper-50);
   }
   .studio-metadata {
     grid-column: 1;
@@ -777,17 +836,15 @@ progress {
   margin-bottom: 12px;
 }
 .page-heading h1 {
-  font-size: clamp(26px, 3vw, 38px);
-}
-.hero {
-  height: 410px;
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.4;
 }
 .featured-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .workflow {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
+  grid-template-columns: 240px minmax(0, 1fr);
   gap: 32px;
   align-items: start;
 }
@@ -805,6 +862,9 @@ progress {
   display: block;
   padding: 10px 12px;
   text-decoration: none;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.6;
 }
 .workflow-nav a[aria-current="page"] {
   background: var(--ink-950);
@@ -819,6 +879,8 @@ progress {
 }
 .stage-workspace .stage-groups {
   padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 28px;
 }
 .stage-workspace h2 {
   margin-top: 0;
@@ -829,6 +891,14 @@ progress {
 }
 .stage-workspace .check-row {
   margin-bottom: 0;
+  align-items: flex-start;
+  min-height: 44px;
+  line-height: 1.75;
+  font-size: 15px;
+}
+.stage-workspace .check-row input {
+  margin-top: 5px;
+  flex-shrink: 0;
 }
 .stage-workspace .evidence {
   margin: 0 0 12px 30px;
@@ -842,8 +912,8 @@ progress {
   border-bottom: 1px solid var(--border);
 }
 .current-stage {
-  font-size: 20px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.8;
 }
 .button.secondary,
 button.secondary {
@@ -860,6 +930,9 @@ button.ghost {
   box-shadow: none;
 }
 @media (max-width: 767px) {
+  .stage-workspace .stage-groups {
+    grid-template-columns: 1fr;
+  }
   .workflow {
     grid-template-columns: 1fr;
     gap: 20px;

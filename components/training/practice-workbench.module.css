@@ -1,0 +1,207 @@
+.workbench {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.intro {
+  padding-block: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.intro h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.4;
+}
+.intro p {
+  max-width: 68ch;
+}
+.designLayout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.5fr);
+  gap: 32px;
+  align-items: start;
+}
+.designLayout > * {
+  min-width: 0;
+}
+.contract {
+  position: sticky;
+  top: 96px;
+  padding: 24px;
+  border-top: 3px solid var(--gold-600);
+  background: var(--paper-50);
+  border-radius: 6px;
+}
+.contract h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+}
+.contract dl > div {
+  border-top: 1px solid var(--border);
+  padding-block: 12px;
+}
+.contract dt {
+  font-weight: 650;
+}
+.contract dd {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.contract > p:not(.endpoint),
+.footnote {
+  font-size: 14px;
+  color: var(--muted);
+}
+.endpoint {
+  font-family: var(--font-mono);
+  color: var(--gold-600);
+}
+.workbench fieldset.case {
+  padding: 20px;
+  border: 1px solid var(--border);
+  margin: 20px 0;
+  border-radius: 8px;
+  background: var(--paper-50);
+}
+.workbench fieldset.case legend {
+  margin: 0;
+  padding-inline: 8px;
+  font: 600 15px var(--font-mono);
+  color: var(--gold-600);
+}
+.case textarea {
+  min-height: 80px;
+}
+.filling {
+  font-size: 14px;
+  padding-block: 12px;
+  border-block: 1px solid var(--border);
+}
+.missing {
+  font-size: 13px;
+  color: var(--muted);
+}
+.hintPanel {
+  margin-top: 16px;
+  padding: 16px;
+  border-left: 3px solid var(--jade-800);
+  background: var(--paper-100);
+  animation: appear 150ms ease-out;
+}
+.hintPanel p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.submitLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block: 28px 12px;
+}
+.preview {
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+  padding-top: 20px;
+  min-width: 0;
+}
+.preview pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.pairSelectors,
+.reflections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.pairSelectors label {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.pairSelectors select {
+  width: 100%;
+  min-width: 0;
+}
+.comparison {
+  margin-block: 28px;
+  border-block: 1px solid var(--border);
+  padding-block: 20px;
+}
+.comparisonRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-block: 12px;
+  align-items: center;
+}
+.comparisonRow h4,
+.comparisonRow p {
+  margin: 0;
+}
+.comparisonRow small,
+.comparisonRow span {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-block: 4px;
+}
+.reflections {
+  margin-block: 24px;
+}
+.reflections article {
+  min-width: 0;
+  padding: 18px;
+  background: var(--paper-50);
+  border-left: 2px solid var(--gold-600);
+}
+.reflections article > p {
+  white-space: pre-wrap;
+}
+.comparisonForm {
+  max-width: 780px;
+  padding-block: 20px;
+}
+@keyframes appear {
+  from {
+    opacity: 0.4;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 780px) {
+  .pairSelectors,
+  .reflections {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .comparisonRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .comparisonRow h4 {
+    grid-column: 1 / -1;
+  }
+  .designLayout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .contract {
+    position: static;
+    padding: 18px;
+  }
+  .workbench fieldset.case {
+    padding: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hintPanel {
+    animation: none;
+  }
+}

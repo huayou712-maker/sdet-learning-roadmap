@@ -5,9 +5,12 @@ import type { Progress, Roadmap } from "@/lib/models";
 import { PublicNotice } from "@/components/ui/public-notice";
 import { Practice } from "./practice";
 import { Reviews } from "./reviews";
+import { StatePanel } from "@/components/ui/state-panel";
+import { SyncFeedback } from "./sync-feedback";
+import { CaseDesigner } from "./case-designer";
+import { AttemptComparison } from "./attempt-comparison";
 import {
   mutationSchema,
-  REPOSITORY_URL,
   type TrainingCommand,
   type TrainingSnapshot,
 } from "@/lib/training/schema";
@@ -22,6 +25,8 @@ export function TrainingWorkspace({
   sourceId,
   cardId,
   today: initialToday,
+  designProject,
+  debugTags = [],
 }: {
   initial: TrainingSnapshot;
   sources: ReviewSource[];
@@ -31,21 +36,28 @@ export function TrainingWorkspace({
   sourceId: string;
   cardId: string;
   today: string;
+  designProject?: { id: string; stageId: string };
+  debugTags?: string[];
 }) {
   const [snapshot, setSnapshot] = useState(initial);
   const [today, setToday] = useState(initialToday);
   const [sources, setSources] = useState(initialSources);
   const [ack, setAck] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [operation, setOperation] = useState<"read" | "write">("read");
   const locked = useRef(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [commit, setCommit] = useState("");
   const [budget, setBudget] = useState(60);
+  const [mode, setMode] = useState<"balanced" | "review">("balanced");
   const [order, setOrder] = useState<string[]>([]);
-  const active = ["practice", "review"].includes(tab) ? tab : "today";
+  const active = ["practice", "review", "design", "compare"].includes(tab)
+    ? tab
+    : "today";
   async function save(command: TrainingCommand) {
     if (locked.current) return false;
+    setOperation("write");
     setError("");
     setMessage("");
     setCommit("");
@@ -87,10 +99,12 @@ export function TrainingWorkspace({
   }
   async function refresh() {
     if (locked.current) return;
+    setOperation("read");
     locked.current = true;
     setBusy(true);
     setError("");
     setCommit("");
+    setMessage("");
     try {
       const response = await fetch("/api/training", { cache: "no-store" });
       const data = await response.json();
@@ -113,6 +127,7 @@ export function TrainingWorkspace({
     progress,
     today,
     budget,
+    mode,
   );
   const rank = (id: string) =>
     order.includes(id) ? order.indexOf(id) : order.length;
@@ -124,11 +139,13 @@ export function TrainingWorkspace({
         <h1>个人训练台</h1>
         <p>先留独立作答，再对照结果。把漏检变成下一次练习。</p>
       </header>
-      <nav className="status-tabs" aria-label="训练导航">
+      <nav className={"status-tabs " + styles.tabs} aria-label="训练导航">
         {[
           ["today", "今日任务"],
           ["practice", "练习验收"],
           ["review", "复习队列"],
+          ["design", "用例设计"],
+          ["compare", "失败对照"],
         ].map(([key, title]) => (
           <Link
             key={key}
@@ -145,31 +162,35 @@ export function TrainingWorkspace({
           获取最新版本（保留输入）
         </button>
       </div>
-      <div role="status" aria-live="polite">
-        {busy ? "正在与 GitHub 同步…" : message}
-        {commit && (
-          <>
-            {" "}
-            · Commit:{" "}
-            <a href={REPOSITORY_URL + "/commit/" + commit}>
-              {commit.slice(0, 7)}
-            </a>
-          </>
-        )}
-      </div>
-      {error && (
-        <p role="alert" className={styles.warning}>
-          {error}
-        </p>
-      )}
+      <SyncFeedback
+        busy={busy}
+        operation={operation}
+        error={error}
+        message={message}
+        commit={commit}
+      />
       <p className={styles.hint}>
         正式记录只保存在
-        GitHub；本页未提交输入仅留在内存，关闭或刷新页面会丢失。公开仓库不是私密存储。
+        GitHub。未提交输入默认仅在内存中；可在对应表单显式保存本机草稿，7
+        天内手动恢复。公开仓库与共享设备都不是私密存储。
       </p>
       <PublicNotice checked={ack} onChange={setAck} />
       <section hidden={active !== "today"} aria-label="今日训练计划">
         <div className={styles.statusBar}>
           <h2>今天先做什么</h2>
+          <label>
+            今日安排方式
+            <select
+              value={mode}
+              onChange={(e) => {
+                setMode(e.target.value as "balanced" | "review");
+                setOrder([]);
+              }}
+            >
+              <option value="balanced">均衡学习</option>
+              <option value="review">集中复习</option>
+            </select>
+          </label>
           <label>
             可用时间（分钟）
             <input
@@ -186,8 +207,10 @@ export function TrainingWorkspace({
           </label>
         </div>
         <p>
-          默认顺序：到期复习 → 最新练习的阻塞或漏检 →
-          当前主线。时间是投入预算，不是完成承诺。
+          {mode === "balanced"
+            ? "均衡学习：先安排一项实践（优先处理基线阻塞或漏检），再按到期顺序补充复习。"
+            : "集中复习：到期复习 → 最新练习的阻塞或漏检 → 当前主线。"}
+          最多三项，时间是投入预算，不是完成承诺。切换不改学习记录。
         </p>
         <ol className={styles.plan}>
           {plan.map((item, i) => (
@@ -215,9 +238,22 @@ export function TrainingWorkspace({
           ))}
         </ol>
         {!plan.length && (
-          <p className="empty">
-            当前没有可安排任务。可调整时间、创建复习卡或回顾已有作品；不会凭空生成学习成绩。
-          </p>
+          <StatePanel
+            compact
+            title={budget === 0 ? "先安排一点可用时间" : "当前没有可安排任务"}
+            actions={
+              <>
+                <Link href="/training?tab=review">查看或创建复习卡 →</Link>
+                <Link href="/roadmap">回顾学习路线 →</Link>
+              </>
+            }
+          >
+            <p>
+              {budget === 0
+                ? "当前时间预算为 0 分钟。调整上方可用时间后，按原规则显示可安排任务。"
+                : "可调整时间、创建复习卡或回顾已有作品；没有任务不代表已经完成全部学习。"}
+            </p>
+          </StatePanel>
         )}
         <p>
           本次安排 {plan.reduce((sum, p) => sum + p.minutes, 0)} / {budget}{" "}
@@ -241,6 +277,23 @@ export function TrainingWorkspace({
           today={today}
           disabled={busy}
           save={save}
+        />
+      </section>
+      <section hidden={active !== "design"} aria-label="用例设计台">
+        <CaseDesigner
+          project={designProject}
+          acknowledged={ack}
+          disabled={busy}
+        />
+      </section>
+      <section hidden={active !== "compare"} aria-label="失败对照台">
+        <AttemptComparison
+          active={active === "compare"}
+          attempts={snapshot.state.attempts}
+          project={designProject}
+          categories={debugTags}
+          acknowledged={ack}
+          disabled={busy}
         />
       </section>
     </div>
