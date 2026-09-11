@@ -1,0 +1,326 @@
+.atlas {
+  background: #1f2520;
+  color: #fff0d1;
+  border: 1px solid #5d584a;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  scroll-margin-top: 92px;
+}
+.intro {
+  position: relative;
+  z-index: 1;
+  padding: 30px 38px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+.eyebrow {
+  font: 12px/1.6 var(--font-ui);
+  color: #c5b791;
+  margin: 0 0 12px;
+}
+.heading h2 {
+  font: 400 42px/1.4 var(--font-art);
+  max-width: 350px;
+  color: #fff0d1;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+.description {
+  font-size: 14px;
+  line-height: 1.85;
+  color: #c8c9b7;
+  margin: 0 0 8px;
+}
+.heading > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #ead5a4;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  min-height: 44px;
+  white-space: nowrap;
+  padding: 7px 14px;
+  border: 1px solid #8a8974;
+  border-radius: 24px;
+  color: #fff0d1;
+  background: transparent;
+  font: 13px/1.5 var(--font-ui);
+}
+.toggle:disabled {
+  opacity: 0.75;
+}
+.terrain {
+  height: 320px;
+  position: relative;
+  margin-top: 6px;
+}
+.artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.trail {
+  fill: none;
+  stroke: #d5b36b;
+  stroke-width: 2;
+}
+.stops {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.stops li {
+  position: absolute;
+  left: var(--stop-x);
+  top: var(--stop-y);
+  width: 14%;
+  transform: translate(-50%, -22px);
+  text-align: center;
+}
+.stops a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-height: 92px;
+  color: #fff0d1;
+  text-decoration: none;
+  font-size: 14px;
+}
+.marker {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #a9a080;
+  border-radius: 50%;
+  background: #263129;
+  box-shadow: 0 0 0 6px #1f252050;
+  font: 13px var(--font-mono);
+}
+.label {
+  overflow-wrap: anywhere;
+}
+.label small {
+  display: block;
+  margin-top: 3px;
+  font: 12px/1.6 var(--font-ui);
+  color: #ead5a4;
+}
+.label .viewing {
+  display: none;
+  color: #fff0d1;
+}
+.stops a[aria-current="step"] .marker {
+  background: #b58a3b;
+  border-color: #b58a3b;
+  color: #1f1b15;
+}
+.stops a[data-viewing="true"] .marker {
+  outline: 1px solid #fff0d1;
+  outline-offset: 5px;
+}
+.stops a[data-viewing="true"] .viewing {
+  display: block;
+}
+.stops a:hover .marker {
+  border-color: #fff0d1;
+  box-shadow: 0 0 0 9px #fff0d114;
+}
+.stops a:hover .label {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.atlas a:focus-visible,
+.toggle:focus-visible {
+  outline: 2px solid #fff0d1;
+  outline-offset: 5px;
+  border-radius: 3px;
+}
+.legend {
+  position: relative;
+  border-top: 1px solid #91a58e40;
+  padding: 14px 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #c4c3ae;
+}
+.legend > span:first-child {
+  color: #ead5a4;
+}
+/* An unexpected task count stays a readable list, never a six-node fiction. */
+.atlas[data-layout="list"] .terrain {
+  height: auto;
+  padding: 24px 38px;
+}
+.atlas[data-layout="list"] .artwork {
+  display: none;
+}
+.atlas[data-layout="list"] .stops li {
+  position: static;
+  transform: none;
+  width: auto;
+  text-align: left;
+}
+.atlas[data-layout="list"] .stops a {
+  flex-direction: row;
+  min-height: 70px;
+  gap: 18px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :global([data-roadmap-motion="running"]) .marker {
+    transition:
+      box-shadow 180ms ease-out,
+      border-color 180ms ease-out;
+  }
+  :global([data-roadmap-motion="running"][data-atlas-animate]) .trail {
+    stroke-dasharray: 1;
+    animation: draw-trail 1700ms ease-out both;
+  }
+  :global([data-roadmap-motion="running"][data-atlas-animate]) .far {
+    animation: lift-ridge 1600ms ease-out both;
+  }
+  :global([data-roadmap-motion="running"][data-atlas-animate]) .near {
+    animation: lift-ridge 1100ms ease-out both;
+  }
+  :global([data-atlas-scene="resting"]) .artwork * {
+    animation-play-state: paused !important;
+  }
+}
+@keyframes draw-trail {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes lift-ridge {
+  from {
+    transform: translateY(15px);
+    opacity: 0.4;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@media (max-width: 900px) {
+  .intro {
+    padding: 24px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .heading {
+    padding-top: 18px;
+  }
+  .heading h2 {
+    font-size: 34px;
+    max-width: 280px;
+  }
+  .description {
+    font-size: 14px;
+  }
+  .toggle {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    min-height: 44px;
+    padding: 5px 12px;
+  }
+  .eyebrow {
+    max-width: calc(100% - 85px);
+    font-size: 11px;
+  }
+  .terrain {
+    height: auto;
+    padding: 0 24px 24px;
+  }
+  .artwork {
+    height: 170px;
+    inset: auto 0 0;
+    opacity: 0.45;
+  }
+  .trail {
+    visibility: hidden;
+  }
+  .stops {
+    position: relative;
+  }
+  .stops::before {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 22px;
+    bottom: 32px;
+    width: 1px;
+    background: #bc9c6266;
+  }
+  .stops li {
+    position: static;
+    transform: none;
+    width: auto;
+    text-align: left;
+  }
+  .stops a {
+    flex-direction: row;
+    min-height: 70px;
+    gap: 18px;
+    padding-block: 5px;
+  }
+  .label small {
+    display: block;
+    margin: 3px 0 0;
+  }
+  .label .viewing {
+    display: none;
+  }
+  .stops a[data-viewing="true"] .viewing {
+    display: block;
+  }
+  .legend {
+    padding: 14px 24px;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+@media (max-width: 380px) {
+  .intro {
+    padding: 24px 18px 16px;
+  }
+  .heading {
+    padding-top: 28px;
+  }
+  .heading h2 {
+    font-size: 30px;
+    max-width: 240px;
+  }
+  .eyebrow {
+    max-width: none;
+  }
+  .terrain {
+    padding-inline: 18px;
+  }
+  .stops a {
+    gap: 14px;
+  }
+  .legend {
+    padding-inline: 18px;
+  }
+}

@@ -1,94 +1,32 @@
 .path {
   background: var(--paper-50);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   margin-bottom: 40px;
-  padding: clamp(18px, 3vw, 36px);
-}
-.intro {
-  max-width: 760px;
-  padding-bottom: 30px;
-}
-.intro h2 {
-  font-size: clamp(25px, 2.5vw, 32px);
-  line-height: 1.5;
-}
-.intro > a {
-  color: var(--jade-800);
-  text-decoration: underline;
-  text-underline-offset: 5px;
+  padding: 0;
 }
 .journey {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 40px;
-  align-items: start;
+  padding: 28px clamp(4px, 2vw, 24px) 0;
 }
-.rail {
-  position: sticky;
-  top: 96px;
-}
-.railTitle {
-  font-size: 17px;
-  font-family: var(--font-display);
-  color: var(--ink-900);
-}
-.railTitle > span {
-  margin-left: 12px;
-  font: 13px var(--font-mono);
-  color: var(--muted);
-}
-.rail ol {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  position: relative;
-}
-.rail ol::before {
-  content: "";
-  position: absolute;
-  left: 16px;
-  top: 28px;
-  bottom: 28px;
-  border-left: 1px solid var(--paper-300);
-}
-.rail a {
+.chapterHeading {
   display: flex;
   align-items: center;
-  gap: 12px;
-  position: relative;
-  min-height: 64px;
-  padding: 10px 0;
-  font-size: 14px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
 }
-.rail small {
-  display: block;
-  color: var(--gold-600);
-  font-size: 12px;
-  margin-top: 2px;
+.chapterHeading h2 {
+  font: 400 24px/1.5 var(--font-display);
+  margin: 0;
 }
-.marker {
-  display: grid;
-  place-items: center;
-  flex: 0 0 34px;
-  height: 34px;
-  border: 1px solid var(--paper-300);
-  border-radius: 50%;
-  background: var(--paper-50);
-  color: var(--muted);
-  font: 13px var(--font-mono);
-}
-.rail a[aria-current="step"] .marker {
-  color: var(--paper-50);
-  background: var(--gold-600);
-  border-color: var(--gold-600);
-}
-.rail a:hover .marker {
-  border-color: var(--gold-600);
-}
-.railHint {
+.chapterHeading a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 13px;
-  line-height: 1.8;
+  color: var(--jade-800);
+}
+.path[data-roadmap-motion]:not([data-roadmap-motion="running"]) .chapterBody {
+  animation: none;
 }
 .chapters {
   list-style: none;
@@ -278,54 +216,7 @@
     transform: translateY(0);
   }
 }
-@media (max-width: 900px) {
-  .journey {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-  }
-  .rail {
-    position: static;
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-  }
-  .rail ol {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 16px;
-  }
-  .rail ol::before {
-    display: none;
-  }
-  .rail a {
-    align-items: flex-start;
-    min-height: 68px;
-  }
-  .railHint {
-    margin: 0;
-  }
-}
 @media (max-width: 480px) {
-  .rail ol {
-    grid-template-columns: minmax(0, 1fr);
-    margin-bottom: 12px;
-  }
-  .rail ol::before {
-    display: block;
-  }
-  .rail a {
-    min-height: 54px;
-    align-items: center;
-    padding: 8px 0;
-  }
-  .rail a > span:last-child {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: 8px;
-  }
-  .intro {
-    padding-bottom: 22px;
-  }
   .chapters summary {
     grid-template-columns: 28px minmax(0, 1fr) 16px;
     gap: 8px;
