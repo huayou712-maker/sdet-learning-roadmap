@@ -1,0 +1,337 @@
+/* R8: a single cinematic opening. No selectors escape this home-page root. */
+.home {
+  min-width: 0;
+  --motion-ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+.home [data-cinematic-hero] {
+  min-height: 528px;
+  padding-block: 64px;
+}
+.home :global(.hero-copy) {
+  animation: none;
+}
+.home :global(.hero-poem) {
+  font-size: clamp(52px, 5.1vw, 72px);
+  line-height: 1.24;
+}
+.home :global(.hero-visual) {
+  transform: translate(var(--scene-x, 0px), var(--scene-y, 0px));
+  transition: transform 650ms var(--motion-ease);
+}
+.home :global(.hero-caption) {
+  bottom: 28px;
+}
+.toggle {
+  position: absolute;
+  z-index: 4;
+  top: 20px;
+  right: 24px;
+  display: inline-flex;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #fff0d14d;
+  border-radius: 24px;
+  color: #fff0d1;
+  background: #1f1b15d9;
+  font: 12px/1.4 var(--font-ui);
+  letter-spacing: 0.03em;
+}
+.toggle:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.toggle:not(:disabled):hover {
+  background: #1f1b15;
+  border-color: #fff0d1;
+}
+.toggle:focus-visible {
+  outline-color: #fff0d1;
+}
+.toggle svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+.atmosphere {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(100%, 960px);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  mask-image: linear-gradient(90deg, transparent, #000 28%);
+}
+.light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 78% 39%, #fff0d133, transparent 50%);
+  opacity: 0.55;
+}
+.mist,
+.mistFar {
+  position: absolute;
+  inset: 49% -12% -12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #fff0d130, transparent 67%);
+  opacity: 0;
+}
+.mistFar {
+  inset: 12% -16% 23%;
+  background: radial-gradient(ellipse at center, #b58a3b24, transparent 68%);
+}
+.sword {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.sword path {
+  fill: none;
+  stroke-width: 2.6px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+.sword .swordHalo {
+  stroke-width: 18px;
+}
+.dust {
+  position: absolute;
+  inset: 0;
+}
+.dust span {
+  position: absolute;
+  left: var(--dust-left);
+  top: var(--dust-top);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff0d1;
+  opacity: 0;
+}
+.home :global(.featured-grid .thumbnail)::after {
+  content: "";
+  position: absolute;
+  inset: -40% -70%;
+  background: linear-gradient(
+    110deg,
+    transparent 42%,
+    #fff0d142 50%,
+    transparent 58%
+  );
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home[data-motion="running"] :global(.hero-image) {
+    animation: landscape 1800ms var(--motion-ease) both;
+  }
+  .home[data-motion="running"] :global(.hero-poem) > span {
+    animation: inscription 1050ms var(--motion-ease) both;
+  }
+  .home[data-motion="running"] :global(.hero-poem) > span + span {
+    animation-delay: 230ms;
+  }
+  .home[data-motion="running"] .sword path {
+    animation: sword-pass 2200ms 380ms var(--motion-ease) both;
+  }
+  .home[data-motion="running"] .sword .swordHalo {
+    animation-name: sword-halo;
+  }
+  .home[data-motion="running"] .mist {
+    animation: valley-wind 16s ease-in-out infinite alternate;
+  }
+  .home[data-motion="running"] .mistFar {
+    animation: valley-wind 22s -8s ease-in-out infinite alternate-reverse;
+  }
+  .home[data-motion="running"] .light {
+    animation: sunlight 14s ease-in-out infinite alternate;
+  }
+  .home[data-motion="running"] .dust span {
+    animation: wind-dust var(--dust-duration) var(--dust-delay) linear infinite;
+  }
+  .home[data-scene="resting"] [data-cinematic-hero] *,
+  .home[data-document="hidden"] * {
+    animation-play-state: paused !important;
+  }
+  .home[data-motion="running"] [data-motion-reveal][data-revealing="true"] {
+    animation: scroll-unfold 700ms var(--motion-ease);
+  }
+  .home [data-motion-reveal]:focus-within {
+    animation: none !important;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .home[data-motion="running"]
+      :global(.project-tile:hover .thumbnail)::after {
+      opacity: 1;
+      transform: translateX(50%);
+      transition:
+        transform 850ms var(--motion-ease),
+        opacity 150ms;
+    }
+    .home[data-motion="running"] :global(.project-tile:hover .thumbnail img) {
+      transform: scale(1.045);
+      transition: transform 700ms var(--motion-ease);
+    }
+  }
+  @keyframes landscape {
+    from {
+      transform: translate3d(18px, 4px, 0) scale(1.04);
+    }
+    to {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  @keyframes inscription {
+    from {
+      opacity: 0.35;
+      clip-path: inset(0 95% 0 0);
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0);
+      transform: translateX(0);
+    }
+  }
+  @keyframes sword-pass {
+    0% {
+      stroke-dashoffset: 1;
+      opacity: 0;
+    }
+    18% {
+      opacity: 0.85;
+    }
+    70% {
+      stroke-dashoffset: 0;
+      opacity: 0.75;
+    }
+    100% {
+      stroke-dashoffset: -1;
+      opacity: 0;
+    }
+  }
+  @keyframes sword-halo {
+    0% {
+      stroke-dashoffset: 1;
+      opacity: 0;
+    }
+    18% {
+      opacity: 0.14;
+    }
+    70% {
+      stroke-dashoffset: 0;
+      opacity: 0.1;
+    }
+    100% {
+      stroke-dashoffset: -1;
+      opacity: 0;
+    }
+  }
+  @keyframes valley-wind {
+    from {
+      transform: translate3d(-5%, 0, 0) scale(0.9);
+      opacity: 0.25;
+    }
+    to {
+      transform: translate3d(8%, -5%, 0) scale(1.1);
+      opacity: 0.7;
+    }
+  }
+  @keyframes sunlight {
+    from {
+      transform: translate3d(0, 0, 0);
+      opacity: 0.35;
+    }
+    to {
+      transform: translate3d(-18px, 8px, 0);
+      opacity: 0.7;
+    }
+  }
+  @keyframes wind-dust {
+    0% {
+      transform: translate3d(-20px, 10px, 0);
+      opacity: 0;
+    }
+    25%,
+    65% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate3d(95px, -40px, 0);
+      opacity: 0;
+    }
+  }
+  @keyframes scroll-unfold {
+    from {
+      opacity: 0.55;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+/* Explicit off freezes the complete home presentation, including older thumbnail
+   and CTA transitions. The system preference is an equal hard stop. */
+.home:not([data-motion="running"]) *,
+.home:not([data-motion="running"]) *::before,
+.home:not([data-motion="running"]) *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.home:not([data-motion="running"]) :global(.hero-image),
+.home:not([data-motion="running"]) :global(.hero-visual),
+.home:not([data-motion="running"]) :global(.thumbnail img),
+.home:not([data-motion="running"]) :global(.hero-cta span) {
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home :global(.hero-visual),
+  .home :global(.hero-image),
+  .home :global(.thumbnail img),
+  .home :global(.hero-cta span) {
+    transform: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .home [data-cinematic-hero] {
+    min-height: 0;
+    padding: 278px 22px 28px;
+  }
+  .home :global(.hero-poem) {
+    font-size: clamp(42px, 11.5vw, 58px);
+    line-height: 1.25;
+  }
+  .home :global(.hero-visual) {
+    transform: none;
+  }
+  .home :global(.hero-caption) {
+    top: 18px;
+    left: 18px;
+    right: auto;
+    bottom: auto;
+  }
+  .atmosphere {
+    height: 260px;
+    mask-image: linear-gradient(#000 70%, transparent);
+  }
+  .toggle {
+    top: 14px;
+    right: 14px;
+  }
+  .dust span:nth-child(n + 5),
+  .mistFar {
+    display: none;
+  }
+  .home[data-motion="running"] :global(.hero-image) {
+    animation: none;
+  }
+}
