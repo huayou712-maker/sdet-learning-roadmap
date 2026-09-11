@@ -1,11 +1,24 @@
 .atlas {
-  background: #1f2520;
+  background: #142a25;
   color: #fff0d1;
   border: 1px solid #5d584a;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
   scroll-margin-top: 92px;
+}
+.backdrop {
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #0d231bb8, #0d231b1a 68%),
+    linear-gradient(0deg, #0b201adc, #0b201a26 70%, #0b201a38);
 }
 .intro {
   position: relative;
@@ -53,7 +66,7 @@
   border: 1px solid #8a8974;
   border-radius: 24px;
   color: #fff0d1;
-  background: transparent;
+  background: #102b23de;
   font: 13px/1.5 var(--font-ui);
 }
 .toggle:disabled {
@@ -113,6 +126,10 @@
 }
 .label {
   overflow-wrap: anywhere;
+  padding: 3px 7px;
+  max-width: 100%;
+  background: #102b23d9;
+  border-radius: 3px;
 }
 .label small {
   display: block;
@@ -152,6 +169,7 @@
 }
 .legend {
   position: relative;
+  background: #0b201adc;
   border-top: 1px solid #91a58e40;
   padding: 14px 30px;
   display: flex;
@@ -193,13 +211,11 @@
     stroke-dasharray: 1;
     animation: draw-trail 1700ms ease-out both;
   }
-  :global([data-roadmap-motion="running"][data-atlas-animate]) .far {
-    animation: lift-ridge 1600ms ease-out both;
+  :global([data-roadmap-motion="running"][data-atlas-animate]) .backdrop {
+    animation: reveal-landscape 1600ms ease-out both;
   }
-  :global([data-roadmap-motion="running"][data-atlas-animate]) .near {
-    animation: lift-ridge 1100ms ease-out both;
-  }
-  :global([data-atlas-scene="resting"]) .artwork * {
+  :global([data-atlas-scene="resting"]) .artwork *,
+  :global([data-atlas-scene="resting"]) .backdrop {
     animation-play-state: paused !important;
   }
 }
@@ -211,10 +227,10 @@
     stroke-dashoffset: 0;
   }
 }
-@keyframes lift-ridge {
+@keyframes reveal-landscape {
   from {
-    transform: translateY(15px);
-    opacity: 0.4;
+    transform: scale(1.025);
+    opacity: 0.75;
   }
   to {
     transform: none;
@@ -222,6 +238,14 @@
   }
 }
 @media (max-width: 900px) {
+  .backdrop {
+    object-position: 70% center;
+  }
+  .shade {
+    background:
+      linear-gradient(90deg, #0d231ba6, #0d231b33),
+      linear-gradient(0deg, #0b201ab3, #0b201a26 48%, #0b201a9e);
+  }
   .intro {
     padding: 24px;
     gap: 12px;

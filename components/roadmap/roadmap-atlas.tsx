@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { CSSProperties, MouseEvent } from "react";
 import type { BeginnerTask } from "@/lib/models";
 import {
@@ -58,6 +59,19 @@ export function RoadmapAtlas({
       data-layout={tasks.length === 6 ? "panorama" : "list"}
       id="practice-atlas"
     >
+      <Image
+        src="/images/roadmap/roadmap-landscape-r9-v2.webp"
+        alt=""
+        aria-hidden="true"
+        data-atlas-background
+        className={styles.backdrop}
+        fill
+        sizes="(max-width: 900px) 1774px, (max-width: 1352px) calc(100vw - 72px), 1280px"
+        quality={85}
+        loading="eager"
+        draggable={false}
+      />
+      <div className={styles.shade} aria-hidden="true" />
       <header className={styles.intro}>
         <div className={styles.heading}>
           <p className={styles.eyebrow}>循序实践 · {tasks.length} 站行卷</p>
@@ -91,28 +105,6 @@ export function RoadmapAtlas({
           focusable="false"
           data-atlas-artwork
         >
-          <g className={styles.far}>
-            <path
-              d="M0 130 75 95 114 108 180 43 214 78 256 52 312 87 355 60 405 113 449 68 494 91 562 10 605 61 632 48 706 108 775 62 824 88 884 18 917 49 945 33 1000 70V280H0Z"
-              fill="#354a3c"
-            />
-            <path
-              d="m110 110 70-67 34 35 42-26 56 35m137-19 45 23 68-81 43 51m219 27 60-70 33 31 28-16"
-              fill="none"
-              stroke="#738c80"
-              strokeOpacity=".36"
-            />
-          </g>
-          <g className={styles.near}>
-            <path
-              d="M0 190 62 144 120 161 183 98 239 132 279 102 350 172 408 116 442 151 514 96 568 139 633 65 680 122 733 97 802 156 873 98 920 119 971 77 1000 111V280H0Z"
-              fill="#42624b"
-            />
-            <path
-              d="M0 210 106 182 170 224 222 176 298 221 360 189 447 241 516 179 570 197 646 138 709 185 767 161 824 205 894 163 951 183 1000 144V280H0Z"
-              fill="#233b2d"
-            />
-          </g>
           {tasks.length === 6 && (
             <path
               className={styles.trail}
@@ -121,10 +113,6 @@ export function RoadmapAtlas({
               d="M70 190C135 193 167 107 240 140S341 208 410 170S524 70 580 90S696 162 750 125S862 18 920 45"
             />
           )}
-          <path
-            d="M0 265Q96 229 192 259T366 256T546 248T736 249T1000 227V280H0Z"
-            fill="#192b23"
-          />
         </svg>
         <ol className={styles.stops}>
           {tasks.map((task, i) => (

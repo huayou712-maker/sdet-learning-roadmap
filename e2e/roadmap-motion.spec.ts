@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { contentScreenshotOptions } from "./helpers/images";
+import { contentScreenshotOptions, expectImageLoaded } from "./helpers/images";
 
 const key = "sdet-ui-roadmap-motion";
 const root = "[data-roadmap-motion]";
@@ -17,6 +17,7 @@ async function ready(page: Page) {
     "data-roadmap-motion",
     "pending",
   );
+  await expectImageLoaded(page.locator("[data-atlas-background]"));
 }
 
 test("R9 path really draws once and clicks remain available without learning writes", async ({
@@ -294,6 +295,34 @@ test("R9 atlas fits mobile, tablet and desktop with distinct touch targets and r
       );
     });
   }
+});
+
+test("R9 failed background loading never blocks the real chapter controls", async ({
+  page,
+}) => {
+  await page.route("**/*roadmap-landscape-r9-v2*", (route) =>
+    route.abort("failed"),
+  );
+  await page.goto("/roadmap");
+  const background = page.locator("[data-atlas-background]");
+  await expect
+    .poll(() =>
+      background.evaluate(
+        (image: HTMLImageElement) => image.complete && image.naturalWidth === 0,
+      ),
+    )
+    .toBe(true);
+  await expect(page.locator("[data-roadmap-atlas]")).toHaveCSS(
+    "background-color",
+    "rgb(20, 42, 37)",
+  );
+  await expect(
+    page.getByRole("navigation", { name: "实践任务导航" }),
+  ).toBeVisible();
+  await expect(page.locator("[data-atlas-task]")).toHaveCount(6);
+  await page.locator('[data-atlas-task="ci"]').click();
+  await expect(page.locator("#task-ci summary")).toBeFocused();
+  await expect(page.locator("#task-ci details")).toHaveAttribute("open", "");
 });
 
 test("R9 viewing state follows hash history while recommendation and open chapters remain stable", async ({
