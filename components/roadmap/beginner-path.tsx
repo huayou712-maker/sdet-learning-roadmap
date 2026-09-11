@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import type { Progress, Roadmap } from "@/lib/models";
 import { nextBeginnerTask, taskProgress } from "@/lib/learning-path";
@@ -9,15 +9,13 @@ import {
   type RecordConnection,
 } from "@/lib/content/learning-connections";
 import styles from "./beginner-path.module.css";
-
-const chapterNames: Record<string, string> = {
-  start: "环境与 Python",
-  design: "测试设计与 HTTP",
-  api: "第一组接口测试",
-  ci: "最小 CI",
-  data: "数据与可靠性",
-  ui: "UI 与综合作品",
-};
+import { RoadmapAtlas } from "./roadmap-atlas";
+import {
+  getRoadmapMotion,
+  getServerRoadmapMotion,
+  mountRoadmapMotion,
+  subscribeRoadmapMotion,
+} from "@/lib/roadmap-motion";
 
 export function BeginnerPath({
   roadmap,
@@ -29,11 +27,26 @@ export function BeginnerPath({
   connections?: Record<string, RecordConnection[]>;
 }) {
   const root = useRef<HTMLElement>(null);
+  const mode = useSyncExternalStore(
+    subscribeRoadmapMotion,
+    getRoadmapMotion,
+    getServerRoadmapMotion,
+  );
+  useEffect(() => {
+    if (mode !== "running" || !root.current) return;
+    return mountRoadmapMotion(root.current);
+  }, [mode, roadmap.beginnerPath]);
   const reveal = useCallback((id: string) => {
     const chapter = document.getElementById("task-" + id);
     if (!chapter || !root.current?.contains(chapter)) return;
     const details = chapter.querySelector("details");
     if (details) details.open = true;
+    root.current
+      .querySelectorAll<HTMLElement>("[data-atlas-task]")
+      .forEach((link) => {
+        if (link.dataset.atlasTask === id) link.dataset.viewing = "true";
+        else delete link.dataset.viewing;
+      });
     chapter.querySelector("summary")?.focus({ preventScroll: true });
     chapter.scrollIntoView({ block: "start", behavior: "instant" });
   }, []);
@@ -43,6 +56,10 @@ export function BeginnerPath({
         (item) => "#task-" + item.id === window.location.hash,
       );
       if (task) reveal(task.id);
+      else
+        root.current
+          ?.querySelectorAll<HTMLElement>("[data-viewing]")
+          .forEach((link) => delete link.dataset.viewing);
     };
     followHash();
     window.addEventListener("hashchange", followHash);
@@ -55,43 +72,20 @@ export function BeginnerPath({
       ref={root}
       className={styles.path}
       aria-labelledby="beginner-path-heading"
+      data-roadmap-motion={mode}
+      data-atlas-scene="resting"
     >
-      <header className={styles.intro}>
-        <p className="eyebrow">PRACTICE FIRST / 入门主线</p>
-        <h2 id="beginner-path-heading">先做出第一个可复现的测试</h2>
-        <p>按产出推进。下方十阶段是参考目录，不需要全部学完才开始测试。</p>
-        <Link href="/guide/beginner">入门指南与执行命令 →</Link>
-      </header>
+      <RoadmapAtlas
+        tasks={roadmap.beginnerPath}
+        nextId={next?.id}
+        mode={mode}
+        reveal={reveal}
+      />
       <div className={styles.journey}>
-        <nav className={styles.rail} aria-label="实践任务导航">
-          <p className={styles.railTitle}>
-            循序实践 <span>{roadmap.beginnerPath.length} 站</span>
-          </p>
-          <ol>
-            {roadmap.beginnerPath.map((task, i) => (
-              <li key={task.id}>
-                <a
-                  href={"#task-" + task.id}
-                  aria-current={task.id === next?.id ? "step" : undefined}
-                  onClick={() => reveal(task.id)}
-                >
-                  <span className={styles.marker} aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span>
-                    {chapterNames[task.id] ?? task.title}
-                    {task.id === next?.id && <small>建议从这里继续</small>}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ol>
-          <p className={styles.railHint}>
-            每一站都可展开查阅。
-            <br />
-            展开章节不会更改学习进度。
-          </p>
-        </nav>
+        <div className={styles.chapterHeading}>
+          <h2>逐章实践</h2>
+          <a href="#practice-atlas">返回山河图 ↑</a>
+        </div>
         <ol className={styles.chapters}>
           {roadmap.beginnerPath.map((task, i) => {
             const count = taskProgress(task, progress);
