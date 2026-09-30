@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/validate-course-index.mjs && node scripts/validate-huace-supplement.mjs && node scripts/validate-resource-locations.mjs && node scripts/validate-links.mjs"
+    "test": "node scripts/validate-course-index.mjs && node scripts/validate-huace-supplement.mjs && node scripts/validate-resource-locations.mjs && node scripts/validate-stage-navigation.mjs && node scripts/validate-links.mjs"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
+    "github-slugger": "2.0.0",
     "marked": "17.0.5"
   }
 }

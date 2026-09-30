@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, isAbsolute, relative, resolve, win32 } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
+import GithubSlugger from 'github-slugger';
 
 const repository = fileURLToPath(new URL('../../../', import.meta.url));
 const files = [
@@ -16,6 +17,21 @@ const files = [
   'docs/minimall/resource-locations.md',
 ];
 let linkCount = 0;
+let fragmentCount = 0;
+const headingCache = new Map();
+
+function getHeadingIds(path) {
+  if (headingCache.has(path)) return headingCache.get(path);
+  const ids = new Set();
+  const slugger = new GithubSlugger();
+  marked.walkTokens(marked.lexer(readFileSync(path, 'utf8')), token => {
+    if (token.type !== 'heading') return;
+    const text = marked.Parser.parseInline(token.tokens, new marked.TextRenderer());
+    ids.add(slugger.slug(text));
+  });
+  headingCache.set(path, ids);
+  return ids;
+}
 
 for (const file of files) {
   const absolute = resolve(repository, file);
@@ -30,13 +46,17 @@ for (const file of files) {
     }
     assert.ok(!win32.isAbsolute(href), '文档含本机绝对路径');
     assert.ok(!href.startsWith('file:'), '文档含本机文件链接');
-    const target = decodeURIComponent(href.split('#')[0]);
-    if (!target) return;
-    const resolved = resolve(dirname(absolute), target);
+    const [path, fragment] = href.split('#');
+    const target = decodeURIComponent(path);
+    const resolved = target ? resolve(dirname(absolute), target) : absolute;
     const location = relative(repository, resolved);
     assert.ok(!location.startsWith('..') && !isAbsolute(location), '链接超出仓库范围');
     assert.ok(existsSync(resolved), '链接目标不存在：' + file + ' → ' + href);
+    if (fragment && resolved.endsWith('.md')) {
+      fragmentCount += 1;
+      assert.ok(getHeadingIds(resolved).has(decodeURIComponent(fragment)), '章节跳转目标不存在：' + file + ' → ' + href);
+    }
   });
 }
 
-console.log(JSON.stringify({ validation: '通过', documents: files.length, links: linkCount }));
+console.log(JSON.stringify({ validation: '通过', documents: files.length, links: linkCount, fragments: fragmentCount }));
