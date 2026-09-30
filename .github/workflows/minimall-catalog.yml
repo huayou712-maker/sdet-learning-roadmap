@@ -1,0 +1,32 @@
+name: MiniMall Catalog
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/minimall/**'
+      - 'README.md'
+      - 'docs/ROADMAP.md'
+      - 'docs/RESOURCES.md'
+      - '.github/workflows/minimall-catalog.yml'
+  pull_request:
+    paths:
+      - 'docs/minimall/**'
+      - 'README.md'
+      - 'docs/ROADMAP.md'
+      - 'docs/RESOURCES.md'
+      - '.github/workflows/minimall-catalog.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: docs/minimall/package-lock.json
+      - run: npm ci --ignore-scripts --prefix docs/minimall
+      - run: npm test --prefix docs/minimall

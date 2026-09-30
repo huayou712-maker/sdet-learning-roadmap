@@ -1,5 +1,9 @@
 # 完整学习路线
 
+## MiniMall 课程学习路线
+
+[进入 MiniMall 课程目录](minimall/README.md)：按照 15 个项目阶段查找原始视频标题、完整网盘路径、观看优先级与练习。主清单覆盖 72 章，华测视频与 Linux DO 补充主题分别保留核查状态。详细目录见 [课程索引](minimall/course-index.md)。
+
 ## 初学者执行入口（课程 v2）
 
 从 [实践主线](BEGINNER_PATH.md) 与 [首组练习](../projects/beginner-api-lab/README.md) 开始。下方十阶段保留为完整知识目录，编号表示分类，不是学习前置锁。不要先刷完计算机基础、Redis、Docker 才开始写测试。现有知识点 ID 与进度不变。

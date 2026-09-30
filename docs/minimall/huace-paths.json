@@ -1,0 +1,257 @@
+{
+  "source_url": "https://pan.quark.cn/s/61c96b0b5fc6?pwd=p5GV",
+  "checked_date": "2026-09-29",
+  "verification": "网页目录与文件名核查；没有下载或播放视频；主题覆盖依据文件名判断。",
+  "video_count": 31,
+  "full_paths_sha256": "2a8dd0e37178eb4fe43f8e1d8b54fb366d64e234a5363cd226d4aa8271452025",
+  "records": [
+    {
+      "index": "F1",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/15.【华测教育】网络通信测试必备-TCPIP协议-Fiddler抓包课程/华测-网络协议班/01 Fiddler工具介绍与安装/3701925920495899724_Fiddler工具介绍与安装.mp4",
+      "original_title": "3701925920495899724_Fiddler工具介绍与安装.mp4",
+      "displayed_size": "277.1M",
+      "priority": "P1",
+      "exercise": "使用自己的测试浏览器核验请求分析工具配置。"
+    },
+    {
+      "index": "F2",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/15.【华测教育】网络通信测试必备-TCPIP协议-Fiddler抓包课程/华测-网络协议班/02 Fiddler原理与HTTP协议详解/3701925920495727820_Fiddler原理与HTTP协议详解.mp4",
+      "original_title": "3701925920495727820_Fiddler原理与HTTP协议详解.mp4",
+      "displayed_size": "344.1M",
+      "priority": "P0",
+      "exercise": "解释商城请求的方法、URL、请求头、请求体及状态码。"
+    },
+    {
+      "index": "F3",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/15.【华测教育】网络通信测试必备-TCPIP协议-Fiddler抓包课程/华测-网络协议班/03 Fiddler抓包与过滤/5285890818393256193_Fiddler抓包与过滤.mp4",
+      "original_title": "5285890818393256193_Fiddler抓包与过滤.mp4",
+      "displayed_size": "42.5M",
+      "priority": "P1",
+      "exercise": "过滤自己的商城域名，对照登录与下单请求定位参数问题；报告隐藏认证信息。"
+    },
+    {
+      "index": "P1",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/12.【华测教育】接口自动化测试postman接口关联实战/接口postman一期/01 Postman安装与使用/5285890806901802160_Postman安装与使用【更多精选‖公众号：CunWorknotes】 .mp4",
+      "original_title": "5285890806901802160_Postman安装与使用【更多精选‖公众号：CunWorknotes】 .mp4",
+      "displayed_size": "161.6M",
+      "priority": "P0",
+      "exercise": "调用真实商品查询和登录接口，核验方法、参数与响应。"
+    },
+    {
+      "index": "P2",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/12.【华测教育】接口自动化测试postman接口关联实战/接口postman一期/02 Postman集合测试/5285890806901802218_Postman集合测试.mp4",
+      "original_title": "5285890806901802218_Postman集合测试.mp4",
+      "displayed_size": "60.2M",
+      "priority": "P0",
+      "exercise": "将登录、商品、购物车与订单请求组成可重复运行的集合。"
+    },
+    {
+      "index": "P3",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/12.【华测教育】接口自动化测试postman接口关联实战/接口postman一期/03 Postman接口关联/5285890806901802299_Postman接口关联.mp4",
+      "original_title": "5285890806901802299_Postman接口关联.mp4",
+      "displayed_size": "93.3M",
+      "priority": "P0",
+      "exercise": "提取登录 Token 与订单编号，传入后续请求。"
+    },
+    {
+      "index": "P4",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/12.【华测教育】接口自动化测试postman接口关联实战/接口postman一期/04 Postman断言/5285890806901802252_Postman断言.mp4",
+      "original_title": "5285890806901802252_Postman断言.mp4",
+      "displayed_size": "92.3M",
+      "priority": "P0",
+      "exercise": "校验状态码、商品数量、订单金额与用户归属，验证错误输入确实失败。"
+    },
+    {
+      "index": "P5",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/12.【华测教育】接口自动化测试postman接口关联实战/接口postman一期/05 Postman参数化/5285890806901802194_Postman参数化【整理不易‖免费奉上：cuNlove.cn】.mp4",
+      "original_title": "5285890806901802194_Postman参数化【整理不易‖免费奉上：cuNlove.cn】.mp4",
+      "displayed_size": "47.4M",
+      "priority": "P0",
+      "exercise": "参数化服务地址、商品编号与数量，隔离个人测试数据。"
+    },
+    {
+      "index": "P6",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/12.【华测教育】接口自动化测试postman接口关联实战/接口postman一期/06 Postman数据驱动/5285890806901802275_Postman数据驱动【不易整理‖请关注：CunWorkNoteS】.mp4",
+      "original_title": "5285890806901802275_Postman数据驱动【不易整理‖请关注：CunWorkNoteS】.mp4",
+      "displayed_size": "118.7M",
+      "priority": "P0",
+      "exercise": "批量验证数量为 0、1、库存上限及超过上限的输入，并核验数据库结果。"
+    },
+    {
+      "index": "A1",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/01 性能专项第一阶段/5285890809081007657_性能测试讲解QPS、TPS、场景、虚拟用户等【耗时整理‖ cunlove.cn】.mp4",
+      "original_title": "5285890809081007657_性能测试讲解QPS、TPS、场景、虚拟用户等【耗时整理‖ cunlove.cn】.mp4",
+      "displayed_size": "96.3M",
+      "priority": "P0",
+      "exercise": "为商品查询与订单提交说明计数口径、场景和并发用户含义。"
+    },
+    {
+      "index": "A2",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/01 性能专项第一阶段/5285890809081007692_jmeter测试计划、线程组、http请求等.mp4",
+      "original_title": "5285890809081007692_jmeter测试计划、线程组、http请求等.mp4",
+      "displayed_size": "88.6M",
+      "priority": "P0",
+      "exercise": "建立查询测试计划，检查线程组与 HTTP 请求实际配置。"
+    },
+    {
+      "index": "A3",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/01 性能专项第一阶段/5285890809081007728_参数化,文件参数化,数值函数参数化【手动整理‖：cunlove.Cn】.mp4",
+      "original_title": "5285890809081007728_参数化,文件参数化,数值函数参数化【手动整理‖：cunlove.Cn】.mp4",
+      "displayed_size": "93.6M",
+      "priority": "P0",
+      "exercise": "使用独立账号和商品数据，确保每次运行数据可追溯。"
+    },
+    {
+      "index": "A4",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/01 性能专项第一阶段/5285890816832483511_jmeter关联和控制器【优质资源‖关注：cunWorkNotes 解锁】.mp4",
+      "original_title": "5285890816832483511_jmeter关联和控制器【优质资源‖关注：cunWorkNotes 解锁】.mp4",
+      "displayed_size": "84.1M",
+      "priority": "P0",
+      "exercise": "关联登录与订单请求，核验用户之间的数据隔离。"
+    },
+    {
+      "index": "A5",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/01 性能专项第一阶段/5285890816832571321_http协议讲解、fiddler抓包使用，等.mp4",
+      "original_title": "5285890816832571321_http协议讲解、fiddler抓包使用，等.mp4",
+      "displayed_size": "115.6M",
+      "priority": "P2",
+      "exercise": "对 HTTP 或请求分析仍有疑问时补充观看，用实际请求核验理解。"
+    },
+    {
+      "index": "B1",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081007719_测试需求调研，方案编写，准备阶段.mp4",
+      "original_title": "5285890809081007719_测试需求调研，方案编写，准备阶段.mp4",
+      "displayed_size": "117.3M",
+      "priority": "P0",
+      "exercise": "写明目标接口、环境、数据规模、持续时间和停止阈值。"
+    },
+    {
+      "index": "B2",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081007680_jmeter插件管理，场景设置，tps图，等【公重号：CunWorkNotes】.mp4",
+      "original_title": "5285890809081007680_jmeter插件管理，场景设置，tps图，等【公重号：CunWorkNotes】.mp4",
+      "displayed_size": "155.1M",
+      "priority": "P0",
+      "exercise": "配置目标场景，读取吞吐曲线并检查其统计口径。"
+    },
+    {
+      "index": "B3",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081089345_场景压测测试验,混合负载,压力测试等.mp4",
+      "original_title": "5285890809081089345_场景压测测试验,混合负载,压力测试等.mp4",
+      "displayed_size": "178.8M",
+      "priority": "P0",
+      "exercise": "按预先设计的查询与下单比例执行测试，观察响应与错误率。"
+    },
+    {
+      "index": "B4",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081017761_jmeter监控服务器资源设置，jmeter录制http【手动整理‖：cunlove.Cn】.mp4",
+      "original_title": "5285890809081017761_jmeter监控服务器资源设置，jmeter录制http【手动整理‖：cunlove.Cn】.mp4",
+      "displayed_size": "141.3M",
+      "priority": "P1",
+      "exercise": "同步记录服务端资源，调试请求后再执行加压。"
+    },
+    {
+      "index": "B5",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081007703_jdbc协议使用及技巧【整理不易‖免费奉上：cuNlove.cn】.mp4",
+      "original_title": "5285890809081007703_jdbc协议使用及技巧【整理不易‖免费奉上：cuNlove.cn】.mp4",
+      "displayed_size": "97.8M",
+      "priority": "P1",
+      "exercise": "在独立数据库核验 JDBC 查询，明确数据库测试与业务接口测试各自目标。"
+    },
+    {
+      "index": "B6",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081130602_java请求，计数器，固定定时器，集合点设置.mp4",
+      "original_title": "5285890809081130602_java请求，计数器，固定定时器，集合点设置.mp4",
+      "displayed_size": "122.3M",
+      "priority": "P1",
+      "exercise": "学习计数器和请求节奏；当前商城练习使用 HTTP 请求部分所需的组件。"
+    },
+    {
+      "index": "B7",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081119949_jmeter启动内存设置及字体，jvm监控jmeter.mp4",
+      "original_title": "5285890809081119949_jmeter启动内存设置及字体，jvm监控jmeter.mp4",
+      "displayed_size": "154.8M",
+      "priority": "P1",
+      "exercise": "观察 JMeter 自身资源，区分请求生成端与被测服务的问题。"
+    },
+    {
+      "index": "B8",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081007665_jmeter集群压测设置及结果统计【耗时整理‖ cunlove.cn】.mp4",
+      "original_title": "5285890809081007665_jmeter集群压测设置及结果统计【耗时整理‖ cunlove.cn】.mp4",
+      "displayed_size": "205.2M",
+      "priority": "P2",
+      "exercise": "单机请求生成能力不足且具备测试资源时，核验分布式执行与结果汇总。"
+    },
+    {
+      "index": "B9",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/02 性能专项第二阶段-全面讲解jmeter性能实战/5285890809081007672_可扩展性测试，可恢复性测试等其它场景测试【耗时整理‖ cunlove.cn】.mp4",
+      "original_title": "5285890809081007672_可扩展性测试，可恢复性测试等其它场景测试【耗时整理‖ cunlove.cn】.mp4",
+      "displayed_size": "163.1M",
+      "priority": "P2",
+      "exercise": "对自己的测试系统设计有明确条件的扩容或恢复实验，记录恢复结果。"
+    },
+    {
+      "index": "C1",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081130703_linux环境命令动态监控，top,free,vmstat等【耗时整理‖ cunlove.cn】.mp4",
+      "original_title": "5285890809081130703_linux环境命令动态监控，top,free,vmstat等【耗时整理‖ cunlove.cn】.mp4",
+      "displayed_size": "182.6M",
+      "priority": "P0",
+      "exercise": "观察商城运行期间的 CPU、内存与系统活动，保留时间信息。"
+    },
+    {
+      "index": "C2",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081099480_数据库监控，慢查询sql定位，等.mp4",
+      "original_title": "5285890809081099480_数据库监控，慢查询sql定位，等.mp4",
+      "displayed_size": "179.3M",
+      "priority": "P0",
+      "exercise": "定位商品或订单查询的耗时 SQL，修改自己的查询后复测。"
+    },
+    {
+      "index": "C3",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081130648_grafana平台监控.mp4",
+      "original_title": "5285890809081130648_grafana平台监控.mp4",
+      "displayed_size": "189.6M",
+      "priority": "P1",
+      "exercise": "确认课程采用的数据源，展示测试时段指标并核验单位。"
+    },
+    {
+      "index": "C4",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081017744_测试报告编写及性能测试流程总结.mp4",
+      "original_title": "5285890809081017744_测试报告编写及性能测试流程总结.mp4",
+      "displayed_size": "108.7M",
+      "priority": "P0",
+      "exercise": "形成可复现的测试报告，包含环境、配置、指标、问题与复测证据。"
+    },
+    {
+      "index": "C5",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081119866_全链路压测，集群压测原理解析.mp4",
+      "original_title": "5285890809081119866_全链路压测，集群压测原理解析.mp4",
+      "displayed_size": "116.2M",
+      "priority": "P2",
+      "exercise": "需要多服务测试时，说明请求范围、数据隔离和观测位置。"
+    },
+    {
+      "index": "C6",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081069121_jvm命令监控jmap,jstat,jstack使用.mp4",
+      "original_title": "5285890809081069121_jvm命令监控jmap,jstat,jstack使用.mp4",
+      "displayed_size": "169.7M",
+      "priority": "P3",
+      "exercise": "当前 Python 后端路线暂缓；使用 Java 服务时再安排专题练习。"
+    },
+    {
+      "index": "C7",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081079326_&#39;&#39;JVM监控，JProfiler工具使用，类耗时.mp4",
+      "original_title": "5285890809081079326_&#39;&#39;JVM监控，JProfiler工具使用，类耗时.mp4",
+      "displayed_size": "124.5M",
+      "priority": "P3",
+      "exercise": "当前 Python 后端路线暂缓 Java 服务诊断专题。"
+    },
+    {
+      "index": "C8",
+      "full_path": "【华测教育】年薪50W-高级测试开发全栈系列课/4.【华测教育】高级性能专项测试全栈实战课程/华测性能VIP班/03 性能专项第三阶段-服务器监控定位，性能结果分析/5285890809081130273_监控堆栈内存使用，线程抓取&#39;&#39;.mp4",
+      "original_title": "5285890809081130273_监控堆栈内存使用，线程抓取&#39;&#39;.mp4",
+      "displayed_size": "229.7M",
+      "priority": "P3",
+      "exercise": "当前 Python 后端路线暂缓，具体运行环境需观看确认。"
+    }
+  ]
+}
