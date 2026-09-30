@@ -6,6 +6,7 @@ import { marked } from 'marked';
 import GithubSlugger from 'github-slugger';
 
 const repository = fileURLToPath(new URL('../../../', import.meta.url));
+const chapterPlan = JSON.parse(readFileSync(new URL('chapter-plan.json', import.meta.url), 'utf8'));
 const files = [
   'README.md',
   'docs/ROADMAP.md',
@@ -15,6 +16,7 @@ const files = [
   'docs/minimall/huace-supplement.md',
   'docs/minimall/linuxdo-supplement.md',
   'docs/minimall/resource-locations.md',
+  ...chapterPlan.chapters.map(chapter => 'docs/minimall/' + chapter.file),
 ];
 let linkCount = 0;
 let fragmentCount = 0;
