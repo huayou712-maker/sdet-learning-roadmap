@@ -1,5 +1,7 @@
 # MiniMall：Linux DO 学习资源与缺项补充
 
+网盘补充视频的原始课号、名称和目录见 [资源入口与视频定位](resource-locations.md)。该页同时列出 Docker、Compose 与 Prometheus 的可点击网页入口。
+
 ## 核查范围与资源状态
 
 核查日期：2026-09-29。根据 [原课程索引](course-index.md) 与 [华测补充对照](huace-supplement.md)，检索 Linux DO，阅读相关帖子正文与课程目录，并核对必要的官方文档。
@@ -12,12 +14,12 @@
 
 | 编号 | 资源与来源 | 帖子日期 | 类型与核查结果 |
 |---|---|---|---|
-| R1 | [Requests＋Pytest 接口自动化与 CI/CD](https://linux.do/t/topic/2047858) | 2026-04-24 | 公开课程目录，包含 66 条编号课程；第 24、51、65 条为 `.tle`，其余编号条目显示 `.mp4`。网盘和播放方式未确认。 |
-| R2 | [Python 主流测试框架课程](https://linux.do/t/topic/2924615) | 2026-09-20 | 公开目录，可定位第 5—7 章；正文列出文件名及大小。网盘与播放未确认。 |
-| R3 | [黑马软件测试 2025](https://linux.do/t/topic/1836119) | 2026-03-27 | 公开目录，可定位 Cookie／Session、JSON Schema、JMeter 与禅道主题。网盘与播放未确认。 |
-| D1 | [论坛推荐的 GeekHour Docker 入门视频](https://linux.do/t/topic/214651/12)；[作者视频页面](https://www.bilibili.com/video/BV14s4y1i7Vf) | 论坛推荐：2024-09-24；视频发布：2023-06-02 | 论坛推荐及视频搜索索引显示 9 个分段。视频页面直接读取受限，播放未确认。 |
-| D2 | [一文入门 Docker Compose](https://linux.do/t/topic/877671) | 2025-08-16 | 已读取正文，包含配置说明及 Flask＋PostgreSQL 示例。MiniMall 的 MySQL 配置需要按所用数据库编写。 |
-| M1 | [Prometheus＋Grafana＋Alertmanager](https://linux.do/t/topic/503969) | 2025-03-20 | 已读取正文，包含部署、Exporter、采集配置、数据源与告警。示例使用 Linux。 |
+| R1 | [Requests＋Pytest 接口自动化与 CI/CD](https://linux.do/t/topic/2047858) | 2026-04-24 | 网盘课程，论坛目录包含 66 条编号课程；第 24、51、65 条为 `.tle`，其余编号条目显示 `.mp4`。[所需视频编号与名称](resource-locations.md) 已列出；网盘和播放方式未确认。 |
+| R2 | [Python 主流测试框架课程](https://linux.do/t/topic/2924615) | 2026-09-20 | 网盘课程，[第 5—7 章视频编号与名称](resource-locations.md) 已列出。目录来自帖子正文；网盘与播放未确认。 |
+| R3 | [黑马软件测试 2025](https://linux.do/t/topic/1836119) | 2026-03-27 | 网盘课程，[Cookie／Session、JSON Schema、JMeter 与禅道的视频编号及名称](resource-locations.md) 已列出。网盘与播放未确认。 |
+| D1 | [作者视频页面](https://www.bilibili.com/video/BV14s4y1i7Vf)；[Linux DO 推荐来源](https://linux.do/t/topic/214651/12) | 论坛推荐：2024-09-24；视频发布：2023-06-02 | 网页在线视频，论坛推荐及视频搜索索引显示 9 个分段。视频页面直接读取受限，播放未确认。 |
+| D2 | [一文入门 Docker Compose](https://linux.do/t/topic/877671) | 2025-08-16 | 网页文字教程，已读取正文，包含配置说明及 Flask＋PostgreSQL 示例。MiniMall 的 MySQL 配置需要按所用数据库编写。 |
+| M1 | [Prometheus＋Grafana＋Alertmanager](https://linux.do/t/topic/503969) | 2025-03-20 | 网页文字教程，已读取正文，包含部署、Exporter、采集配置、数据源与告警。示例使用 Linux。 |
 
 ## 进入原路线的位置
 

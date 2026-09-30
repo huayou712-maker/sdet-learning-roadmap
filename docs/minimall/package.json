@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/validate-course-index.mjs && node scripts/validate-huace-supplement.mjs && node scripts/validate-links.mjs"
+    "test": "node scripts/validate-course-index.mjs && node scripts/validate-huace-supplement.mjs && node scripts/validate-resource-locations.mjs && node scripts/validate-links.mjs"
   },
   "engines": {
     "node": ">=20"

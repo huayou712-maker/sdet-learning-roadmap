@@ -13,6 +13,7 @@ const files = [
   'docs/minimall/course-index.md',
   'docs/minimall/huace-supplement.md',
   'docs/minimall/linuxdo-supplement.md',
+  'docs/minimall/resource-locations.md',
 ];
 let linkCount = 0;
 

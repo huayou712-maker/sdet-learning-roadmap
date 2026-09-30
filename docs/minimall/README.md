@@ -6,11 +6,22 @@
 
 | 内容 | 入口 |
 |---|---|
+| Docker／Compose／Prometheus 网页链接，网盘课程编号与原始视频名称 | [资源入口与视频定位](resource-locations.md) |
 | 15 阶段路线、72 章原始视频标题、完整网盘路径、优先级与练习 | [完整课程索引](course-index.md) |
 | 华测课程中的 HTTP、Postman、Fiddler、JMeter 与监控补充 | [31 个补充视频](huace-supplement.md) |
 | Requests、Cookie、JSON Schema、Docker 与 Prometheus 补充 | [Linux DO 资源与章节安排](linuxdo-supplement.md) |
 | 主课程逐条路径、状态、优先级与练习 | [course-paths.json](course-paths.json) |
 | 华测视频逐条路径、原始名称与练习 | [huace-paths.json](huace-paths.json) |
+
+## 网页资源入口
+
+| 原章节 | 类型 | 点击查看 |
+|---|---|---|
+| 97：Docker | 在线视频 | [GeekHour：30 分钟 Docker 入门教程](https://www.bilibili.com/video/BV14s4y1i7Vf) |
+| 98：Compose | 网页文字教程 | [一文入门 Docker Compose](https://linux.do/t/topic/877671) |
+| 95：Prometheus | 网页文字教程 | [Prometheus＋Grafana＋Alertmanager 部署教程](https://linux.do/t/topic/503969) |
+
+网盘课程使用章节编号和原始文件名定位，详细位置见 [资源入口与视频定位](resource-locations.md)。网页视频的播放状态与网盘补充课程的核查状态在该页分别说明。
 
 ## 15 阶段执行顺序
 

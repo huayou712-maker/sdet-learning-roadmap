@@ -24,6 +24,7 @@
 ## 课程入口
 
 - [MiniMall 完整课程学习路线](docs/minimall/README.md)：15 阶段、72 章、404 个视频与 99 个空目录记录，包含完整路径、优先级、练习，以及华测和 Linux DO 补充。
+- [MiniMall 网页入口与网盘视频定位](docs/minimall/resource-locations.md)：Docker、Compose、Prometheus 可点击链接，以及网盘课程的原始编号、视频名称和目录。
 - [初学者实践指南](docs/BEGINNER_PATH.md)：任务、交付物与执行命令
 - [十阶段知识目录](docs/ROADMAP.md)：查缺补漏，不是前置锁
 - [项目验收规范](docs/PROJECTS.md)：必做、选择组与加分分开
