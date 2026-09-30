@@ -37,7 +37,7 @@ for (const record of records) {
 const hash = createHash('sha256').update(JSON.stringify(records.map(record => record.full_path).sort())).digest('hex');
 assert.equal(hash, '2a8dd0e37178eb4fe43f8e1d8b54fb366d64e234a5363cd226d4aa8271452025', '路径与浏览器记录不一致');
 const result = {
-  source_url: 'https://pan.quark.cn/s/61c96b0b5fc6?pwd=p5GV',
+  source_url: 'https://pan.quark.cn/s/f5e7f322f3ac',
   checked_date: '2026-09-29',
   verification: '网页目录与文件名核查；没有下载或播放视频；主题覆盖依据文件名判断。',
   video_count: records.length,

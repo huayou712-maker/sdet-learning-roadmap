@@ -20,9 +20,9 @@ assert.deepEqual(readdirSync(new URL('../', import.meta.url)).filter(file => /^\
 const requiredUrls = {
   hogwarts: main.source_url,
   huace: huace.source_url,
-  R1: 'https://pan.quark.cn/s/9057ac1f66fa',
+  R1: 'https://pan.quark.cn/s/8a4ac0d0a811',
   R2: 'https://pan.quark.cn/s/df982e81b057',
-  R3: 'https://pan.quark.cn/s/2cd2325104de',
+  R3: 'https://pan.quark.cn/s/0a687de6a454',
   D1: 'https://www.bilibili.com/video/BV14s4y1i7Vf',
   D2: 'https://linux.do/t/topic/877671',
   M1: 'https://linux.do/t/topic/503969',

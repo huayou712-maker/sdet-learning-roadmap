@@ -7,6 +7,7 @@ import GithubSlugger from 'github-slugger';
 
 const repository = fileURLToPath(new URL('../../../', import.meta.url));
 const chapterPlan = JSON.parse(readFileSync(new URL('chapter-plan.json', import.meta.url), 'utf8'));
+const shareUrls = new Set(Object.values(chapterPlan.sources).filter(source => source.type === '网盘视频').map(source => source.url));
 const files = [
   'README.md',
   'docs/ROADMAP.md',
@@ -44,6 +45,7 @@ for (const file of files) {
     linkCount += 1;
     if (/^https?:\/\//.test(href)) {
       assert.ok(new URL(href).hostname, '外部链接缺少域名');
+      if (new URL(href).hostname === 'pan.quark.cn') assert.ok(shareUrls.has(href), '网盘入口与资源清单不一致：' + file);
       return;
     }
     assert.ok(!win32.isAbsolute(href), '文档含本机绝对路径');

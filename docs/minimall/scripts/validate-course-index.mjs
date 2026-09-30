@@ -63,7 +63,7 @@ assert.equal(videoHash, '2c703e3eed0d6a37cbdefe817abb64a74c71643c0d197a40291fb95
 assert.equal(emptyHash, 'fc03647815828f111219572cc186fd4f672b1e423a0f1637f00813955a57daf8', '空目录路径与浏览器记录不一致');
 
 const result = {
-  source_url: 'https://pan.quark.cn/s/e291b632d4f3',
+  source_url: 'https://pan.quark.cn/s/4c327b891ef8',
   checked_date: '2026-09-29',
   scope: '附件 MiniMall 学习路线，含配套理论与选修章节',
   verification: '分享页面目录及文件名称核查；未播放、下载、转存或修改网盘文件',

@@ -10,14 +10,14 @@
 
 | 完整资源名称 | 类型 | 直接入口 | 核查状态 |
 |---|---|---|---|
-| 【霍格沃兹】Python测试开发进阶线上班28期 | 网盘视频 | [打开网盘分享](https://pan.quark.cn/s/e291b632d4f3) | 分享页面目录与文件名称已核查；视频播放及完整性未核验。 |
-| Requests+Pytest接口自动化测试与CI CD实战 | 网盘视频 | [打开网盘分享](https://pan.quark.cn/s/9057ac1f66fa)；[原始来源](https://linux.do/t/topic/2047858) | 目录与文件名来自论坛；分享有效性与视频播放未核验。 |
+| 【霍格沃兹】Python测试开发进阶线上班28期 | 网盘视频 | [打开网盘分享](https://pan.quark.cn/s/4c327b891ef8) | 用户提供的永久分享入口；目录与文件名沿用既有清单，视频播放未核验。 |
+| Requests+Pytest接口自动化测试与CI CD实战 | 网盘视频 | [打开网盘分享](https://pan.quark.cn/s/8a4ac0d0a811)；[原始来源](https://linux.do/t/topic/2047858) | 用户提供的永久分享入口；目录与文件名来自论坛，视频播放未核验。 |
 
 ## 1. 第 104 章：Jenkins 环境
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：持续集成、安装、Job、用户、授权与安全配置。
 
@@ -37,7 +37,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：凭据、环境变量、节点、参数、插件、Git、接口与 Web 自动化集成。
 
@@ -60,7 +60,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：单元测试体系、代码覆盖率集成。
 
@@ -75,7 +75,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：Pipeline、Jenkinsfile、agent／stage／step、post、参数、环境与触发器。
 
@@ -99,7 +99,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：Web service 持续交付练习。
 
@@ -113,7 +113,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：质量门禁。
 
@@ -127,7 +127,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：持续集成与持续交付直播训练营。
 
@@ -141,7 +141,7 @@
 
 资源名称：**Requests+Pytest接口自动化测试与CI CD实战**
 
-资源入口：[Requests+Pytest接口自动化测试与CI CD实战](https://pan.quark.cn/s/9057ac1f66fa)
+资源入口：[Requests+Pytest接口自动化测试与CI CD实战](https://pan.quark.cn/s/8a4ac0d0a811)
 
 学习内容：Docker、Jenkins、Python 镜像、Allure 与流水线。
 

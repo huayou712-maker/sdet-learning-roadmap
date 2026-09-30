@@ -12,7 +12,7 @@
 |---|---|---|---|
 | GeekHour：30分钟Docker入门教程 | 网页在线视频 | [打开网页](https://www.bilibili.com/video/BV14s4y1i7Vf)；[原始来源](https://linux.do/t/topic/214651/12) | 推荐及分段目录已核对；视频页面直接读取受限，播放未核验。 |
 | 一文入门 Docker Compose | 网页文字教程 | [打开网页](https://linux.do/t/topic/877671) | 教程正文已读取，示例采用 Flask 与 PostgreSQL。 |
-| 【霍格沃兹】Python测试开发进阶线上班28期 | 网盘视频 | [打开网盘分享](https://pan.quark.cn/s/e291b632d4f3) | 分享页面目录与文件名称已核查；视频播放及完整性未核验。 |
+| 【霍格沃兹】Python测试开发进阶线上班28期 | 网盘视频 | [打开网盘分享](https://pan.quark.cn/s/4c327b891ef8) | 用户提供的永久分享入口；目录与文件名沿用既有清单，视频播放未核验。 |
 
 ## 1. GeekHour：30分钟Docker入门教程
 
@@ -44,7 +44,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：Docker 容器技术直播训练营，2024-03-10。
 
@@ -58,7 +58,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：Docker 与虚拟机、使用场景、容器网络、Compose 练习。
 
@@ -75,7 +75,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：镜像简介、制作命令、镜像制作练习。
 
@@ -91,7 +91,7 @@
 
 资源名称：**【霍格沃兹】Python测试开发进阶线上班28期**
 
-资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/e291b632d4f3)
+资源入口：[【霍格沃兹】Python测试开发进阶线上班28期](https://pan.quark.cn/s/4c327b891ef8)
 
 学习内容：镜像分层、镜像设计练习。
 
